@@ -1,0 +1,24 @@
+Usando o JFLEX para gerar o analisador léxico:
+
+java -jar [JFLEX_HOME]/jflex-1.6.1.jar --noinputstreamctor -d [PATH_WHERE_TO_CREATE] .[PATH_OF_.FLEX]
+
+No meu caso:
+java -jar libs/jflex-1.6.1.jar --noinputstreamctor -d ./src/compiler/generated ./spec/lexical.flex
+
+
+Usando o CUP para gerar o analisador semântico:
+
+java -jar [CUP_HOME]/java-cup-11a.jar -compact_red -expect [NUM_MAX_WARNING] -package [PACKAGE] -destdir [PATH_WHERE_TO_CREATE] -parser [NAME_OF_FILE_TO_CREATE] .[PATH_OF_.CUP]
+
+No meu caso:
+java -jar libs/java-cup-11a.jar -compact_red -expect 10000 -package compiler.generated -destdir ./src/compiler/generated -parser Parser ./spec/parser.cup
+
+
+Warning serão os conflitos que ele encontrar, se ultrapassar o numero que você colocou, ele não irá compilar.
+
+Para testar o meu compilador eu apenas dou Run (as Java Application) em main/MainTest.java
+O filePath declarado nesse arquivo é o arquivo que o compilador deve tentar compilar.
+
+
+Para facilitar debugar, no meu exemplo eu coloquei um Logger que é possível chamar de dentro das regrar para printar coisas na tela.
+Perceba que ele executa as coisas na ordem, então se uma chamada ao Logger for feita entre a chamada de dois não-terminais, ele irá printar apenas após ter terminado de ler o primeiro não-terminal e antes de começar a ler o segundo não-terminal.
