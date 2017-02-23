@@ -12,36 +12,78 @@ parser code  {:
  }
 :};
 
-terminal PLUS, MINUS, DIV, MULT;
-terminal LPAREN, RPAREN;
-terminal java.lang.Number INTEGER_LITERAL;
+terminal PROGRAM, BEGIN, AND, ARRAY, LABEL;
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON;
+terminal java.lang.String IDENTIFIER;
+terminal INTEGER_LITERAL, PLUS, MINUS;
 
-non terminal expression, expression_unity, operator;
-non terminal compilation_unit;
-
-precedence left PLUS, MINUS;
-precedence left MULT, DIV;
+non terminal compilation_unit, program_heading, block, identifier_list;
+non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
+non terminal label_declaration_part, constant_definition_part, type_definition_part, variable_declaration_part;
+non terminal label, label_optionals;
+non terminal statement_part;
+non terminal sign, sign_optional, digit_sequence, integer_number;
 
 start with compilation_unit;
 
 compilation_unit ::=
-   expression
+//	program_heading block DOT
+	PROGRAM IDENTIFIER SEMICOLON DOT
 ;
 
-expression ::=
-	expression_unity operator expression
-	| expression_unity
+//Programs and Blocks
+
+program_heading ::=
+   PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON{:Logger.print("Line 26");:}
 ;
 
-expression_unity ::=
-	MINUS expression_unity
-	| LPAREN expression RPAREN
-	| INTEGER_LITERAL
+block ::=
+	declaration_part statement_part
 ;
 
-operator ::=
-	PLUS {: Logger.print("+"); :}
-	| MINUS {: Logger.print("-"); :}
-	| MULT {: Logger.print("*"); :}
-	| DIV {: Logger.print("/"); :}
+declaration_part ::=
+	declaration_part_optional declaration_part_required
 ;
+
+declaration_part_optional ::=
+	| label_declaration_part
+	| constant_definition_part
+	| type_definition_part
+	| variable_declaration_part
+;
+
+declaration_part_required ::=
+	procedure_and_function_declaration_part
+;
+
+statement_part ::=
+;
+
+label_declaration_part ::=
+	LABEL label label_optionals SEMICOLON
+;
+
+label_optionals ::=
+	| COMMA label label_optionals
+;
+
+identifier_list ::=
+	IDENTIFIER 
+	| IDENTIFIER COMMA identifier_list
+;
+
+integer_number ::=
+	digit_sequence
+;
+
+digit_sequence ::= 
+	sign_optional INTEGER_LITERAL
+;
+
+sign ::= PLUS | MINUS;
+
+sign_optional ::=
+	| sign
+;
+
+
