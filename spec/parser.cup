@@ -56,9 +56,6 @@ declaration_part_required ::= {:Logger.print("Declaration Part required");:}
 	procedure_and_function_declaration_part
 ;
 
-statement_part ::=
-;
-
 label_declaration_part ::=
 	LABEL label label_optionals SEMICOLON
 ;
@@ -79,6 +76,14 @@ constant_definition_aux ::=
 	| constant_definition SEMICOLON constant_definition_aux
 ;
 
+
+
+// END BLOCK AND PROGRAMS
+
+statement_part ::=
+;
+
+
 constant ::=
 	sign_optional constant_identifier
 	| sign_optional number
@@ -87,18 +92,6 @@ constant ::=
 
 constant_identifier ::=
 	IDENTIFIER
-;
-
-type_definition_part ::=
-	TYPE type_definition SEMICOLON type_definition_aux
-;
-
-type_definition_aux ::=
-	| type_definition SEMICOLON type_definition_aux
-;
-
-type_definition ::=
-	IDENTIFIER EQUALS type
 ;
 
 identifier_list ::= 
@@ -132,8 +125,6 @@ type ::=
 	simple_type | structured_type | pointer_type | type_identifier
 ;
 
-
-// TODO
 
 procedure_and_function_declaration_part ::= 
 ;
