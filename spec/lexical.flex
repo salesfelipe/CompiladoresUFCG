@@ -29,7 +29,7 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
 /* Comments */
-Comment = "/**" ( [^*] | \*+ [^/*] )* "*"+ "/"
+Comment = "(*" ( [^*] | \*+ [^/*] )* "*)"
 
 /* Identifiers */
 Identifier = [:jletter:][:jletterdigit:]*
@@ -43,10 +43,12 @@ DecimalLiteral = 0 | [1-9][0-9]*
 
     /* Keywords Pascal*/
     "program"                      	{ return symbol(sym.PROGRAM); }
-    "and"                     		{ return symbol(sym.AND); }
+    "and"               		    { return symbol(sym.AND); }
     "array"                      	{ return symbol(sym.ARRAY); }
     "begin"                      	{ return symbol(sym.BEGIN); }
-    "label"                      	{ return symbol(sym.LABEL); }
+    "label"                       	{ return symbol(sym.LABEL); }
+    "const"							{ return symbol(sym.CONST); }
+    "type"							{ return symbol(sym.TYPE); }
     
     /* Separators */
     "("                             { return symbol(sym.LPAREN); }
@@ -57,6 +59,7 @@ DecimalLiteral = 0 | [1-9][0-9]*
     
     "+"								{ return symbol(sym.PLUS); }
     "-"								{ return symbol(sym.MINUS); }
+    "="								{ return symbol(sym.EQUALS); }
     
     /* Comments*/
     {Comment}                       { /* just ignore it */ }
@@ -67,6 +70,6 @@ DecimalLiteral = 0 | [1-9][0-9]*
     /* Identifier*/
     {Identifier} 					{ return symbol(sym.IDENTIFIER,yytext());}
     
-    {DecimalLiteral}                { return symbol(sym.INTEGER_LITERAL, new Integer(yytext())); 
+    {DecimalLiteral}                { return symbol(sym.INTEGER_LITERAL, new Integer(yytext()));} 
 
 }

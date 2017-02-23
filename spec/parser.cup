@@ -12,47 +12,47 @@ parser code  {:
  }
 :};
 
-terminal PROGRAM, BEGIN, AND, ARRAY, LABEL;
+terminal PROGRAM, BEGIN, AND, ARRAY, LABEL, CONST, TYPE;
 terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON;
 terminal java.lang.String IDENTIFIER;
-terminal INTEGER_LITERAL, PLUS, MINUS;
+terminal INTEGER_LITERAL, PLUS, MINUS, EQUALS;
 
-non terminal compilation_unit, program_heading, block, identifier_list;
+non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
 non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
 non terminal label_declaration_part, constant_definition_part, type_definition_part, variable_declaration_part;
 non terminal label, label_optionals;
+non terminal constant_definition, constant_definition_aux, constant;
 non terminal statement_part;
 non terminal sign, sign_optional, digit_sequence, integer_number;
 
 start with compilation_unit;
 
 compilation_unit ::=
-//	program_heading block DOT
-	PROGRAM IDENTIFIER SEMICOLON DOT
+	program_heading block DOT
 ;
 
-//Programs and Blocks
+// Programs and Blocks
 
-program_heading ::=
-   PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON{:Logger.print("Line 26");:}
+program_heading ::=  {:Logger.print("Program Heading");:}
+   PROGRAM IDENTIFIER identifier_list SEMICOLON
 ;
 
 block ::=
-	declaration_part statement_part
+	declaration_part statement_part {:Logger.print("block");:}
 ;
 
-declaration_part ::=
-	declaration_part_optional declaration_part_required
+declaration_part ::= {:Logger.print("Declaration Part");:}
+	declaration_part_optional declaration_part_required 
 ;
 
-declaration_part_optional ::=
+declaration_part_optional ::= {:Logger.print("Declaration Part optional");:}
 	| label_declaration_part
 	| constant_definition_part
 	| type_definition_part
 	| variable_declaration_part
 ;
 
-declaration_part_required ::=
+declaration_part_required ::= {:Logger.print("Declaration Part required");:}
 	procedure_and_function_declaration_part
 ;
 
@@ -67,9 +67,51 @@ label_optionals ::=
 	| COMMA label label_optionals
 ;
 
-identifier_list ::=
-	IDENTIFIER 
-	| IDENTIFIER COMMA identifier_list
+constant_definition_part ::=
+	CONST constant_definition SEMICOLON constant_definition_aux
+;
+
+constant_definition ::=
+	IDENTIFIER EQUALS constant 
+;
+
+constant_definition_aux ::=
+	| constant_definition SEMICOLON constant_definition_aux
+;
+
+constant ::=
+	sign_optional constant_identifier
+	| sign_optional number
+	| string 
+;
+
+constant_identifier ::=
+	IDENTIFIER
+;
+
+type_definition_part ::=
+	TYPE type_definition SEMICOLON type_definition_aux
+;
+
+type_definition_aux ::=
+	| type_definition SEMICOLON type_definition_aux
+;
+
+type_definition ::=
+	IDENTIFIER EQUALS type
+;
+
+identifier_list ::= 
+	| LPAREN identifier_list_aux RPAREN
+;
+
+identifier_list_aux ::=
+	| IDENTIFIER
+	| IDENTIFIER COMMA identifier_list_aux
+;
+
+number ::=
+	integer_number | real_number
 ;
 
 integer_number ::=
@@ -85,5 +127,34 @@ sign ::= PLUS | MINUS;
 sign_optional ::=
 	| sign
 ;
+
+type ::=
+	simple_type | structured_type | pointer_type | type_identifier
+;
+
+
+// TODO
+
+procedure_and_function_declaration_part ::= 
+;
+
+real_number ::=
+;
+
+string ::=
+;
+
+simple_type ::=
+;
+
+structured_type ::=
+;
+
+pointer_type ::=
+;
+
+type_identifier ::=
+;
+
 
 
