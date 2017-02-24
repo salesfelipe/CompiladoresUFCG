@@ -1,4 +1,1 @@
-program HelloWorld;
-
-(* Here the main program block starts *)
-. 
+program HelloWorld;. 

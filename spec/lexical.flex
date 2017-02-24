@@ -46,9 +46,14 @@ DecimalLiteral = 0 | [1-9][0-9]*
     "and"               		    { return symbol(sym.AND); }
     "array"                      	{ return symbol(sym.ARRAY); }
     "begin"                      	{ return symbol(sym.BEGIN); }
+    "end" 							{ return symbol(sym.END); }
     "label"                       	{ return symbol(sym.LABEL); }
     "const"							{ return symbol(sym.CONST); }
     "type"							{ return symbol(sym.TYPE); }
+    "var"							{ return symbol(sym.VAR); }
+   	"forward"						{ return symbol(sym.FORWARD); }
+   	"procedure"						{ return symbol(sym.PROCEDURE); }
+   	"function"						{ return symbol(sym.FUNCTION); }
     
     /* Separators */
     "("                             { return symbol(sym.LPAREN); }
@@ -56,20 +61,23 @@ DecimalLiteral = 0 | [1-9][0-9]*
     ";"                             { return symbol(sym.SEMICOLON); }
     ","                             { return symbol(sym.COMMA); }
     "."   		  				    { return symbol(sym.DOT); }
-    
+
     "+"								{ return symbol(sym.PLUS); }
     "-"								{ return symbol(sym.MINUS); }
     "="								{ return symbol(sym.EQUALS); }
-    
+
+    /* Operators */
+    ":"                             { return symbol(sym.COLON); }
+
     /* Comments*/
     {Comment}                       { /* just ignore it */ }
-    
+
     /* White spaces */
     {WhiteSpace}				    { /*just ignore it*/ }
-    
+
     /* Identifier*/
     {Identifier} 					{ return symbol(sym.IDENTIFIER,yytext());}
-    
-    {DecimalLiteral}                { return symbol(sym.INTEGER_LITERAL, new Integer(yytext()));} 
+
+    {DecimalLiteral}                { return symbol(sym.INTEGER_LITERAL, new Integer(yytext()));}
 
 }

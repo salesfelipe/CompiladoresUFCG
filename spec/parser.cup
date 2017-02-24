@@ -12,18 +12,20 @@ parser code  {:
  }
 :};
 
-terminal PROGRAM, BEGIN, AND, ARRAY, LABEL, CONST, TYPE;
-terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON;
+terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION;
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON;
 terminal java.lang.String IDENTIFIER;
 terminal INTEGER_LITERAL, PLUS, MINUS, EQUALS;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
 non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
-non terminal label_declaration_part, constant_definition_part, type_definition_part, variable_declaration_part;
-non terminal label, label_optionals;
-non terminal constant_definition, constant_definition_aux, constant;
-non terminal statement_part;
-non terminal sign, sign_optional, digit_sequence, integer_number;
+non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part;
+non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
+non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
+non terminal statement_part, procedure_identification, function_heading, function_identification, function_body, function_identifier;
+non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type;
+non terminal type, variable_declaration, procedure_declaration, function_declaration, procedure_heading, procedure_body, directive;
+non terminal type_identifier, constant_identifier, number, string, real_number, simple_type, structured_type, pointer_type;
 
 start with compilation_unit;
 
@@ -37,12 +39,12 @@ program_heading ::=  {:Logger.print("Program Heading");:}
    PROGRAM IDENTIFIER identifier_list SEMICOLON
 ;
 
-block ::=
-	declaration_part statement_part {:Logger.print("block");:}
+block ::= {:Logger.print("Block");:}
+	declaration_part statement_part
 ;
 
 declaration_part ::= {:Logger.print("Declaration Part");:}
-	declaration_part_optional declaration_part_required 
+	declaration_part_optional declaration_part_required
 ;
 
 declaration_part_optional ::= {:Logger.print("Declaration Part optional");:}
@@ -54,6 +56,11 @@ declaration_part_optional ::= {:Logger.print("Declaration Part optional");:}
 
 declaration_part_required ::= {:Logger.print("Declaration Part required");:}
 	procedure_and_function_declaration_part
+;
+
+procedure_and_function_declaration_part ::= {:Logger.print("");:}
+	| procedure_declaration SEMICOLON procedure_and_function_declaration_part
+	| function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 label_declaration_part ::=
@@ -69,32 +76,128 @@ constant_definition_part ::=
 ;
 
 constant_definition ::=
-	IDENTIFIER EQUALS constant 
+	IDENTIFIER EQUALS constant
 ;
 
 constant_definition_aux ::=
 	| constant_definition SEMICOLON constant_definition_aux
 ;
 
+type_definition_part ::=
+	TYPE type_definition SEMICOLON | TYPE type_definition SEMICOLON type_definition_part
+;
 
+type_definition ::=
+	IDENTIFIER EQUALS type
+;
+
+variable_declaration_part ::=
+	VAR variable_declaration SEMICOLON | VAR variable_declaration SEMICOLON variable_declaration_part
+;
+
+variable_declaration ::=
+	identifier_list COLON type
+;
+
+procedure_declaration ::=
+	procedure_heading SEMICOLON procedure_body |
+	procedure_heading SEMICOLON directive |
+	procedure_identification SEMICOLON procedure_body
+;
+
+procedure_body ::=
+	block
+;
+
+function_declaration ::=
+	function_heading SEMICOLON function_body |
+	function_heading SEMICOLON directive |
+	function_identification SEMICOLON function_body
+;
+
+function_body ::=
+	block
+;
+
+directive ::=
+	FORWARD |
+	compiler_defined_directives
+;
+
+statement_part ::=
+	BEGIN statement_sequence END
+;
 
 // END BLOCK AND PROGRAMS
 
-statement_part ::=
+// Procedure and Function Definitions
+
+procedure_heading ::=
+  PROCEDURE IDENTIFIER optional_formal_parameter_list
 ;
+
+optional_formal_parameter_list ::=
+  | formal_parameter_list
+;
+
+formal_parameter_list ::=
+  LPAREN formal_parameter_section aux_formal_parameter_section RPAREN
+;
+
+aux_formal_parameter_section ::=
+  | SEMICOLON formal_parameter_section aux_formal_parameter_section
+;
+
+procedure_identification ::=
+  PROCEDURE procedure_identifier
+;
+
+procedure_identifier ::=
+  IDENTIFIER
+;
+
+function_identifier ::=
+  IDENTIFIER
+;
+
+function_heading ::=
+  FUNCTION IDENTIFIER optional_formal_parameter_list COLON result_type
+;
+
+result_type ::=
+  type_identifier
+;
+
+function_identification ::=
+  FUNCTION function_identifier
+;
+
+
+compiler_defined_directives ::=
+;
+
+// Statements
+
+statement_sequence ::=
+;
+
+label ::=
+  integer_number
+;
+
 
 
 constant ::=
 	sign_optional constant_identifier
 	| sign_optional number
-	| string 
+	| string
 ;
 
 constant_identifier ::=
 	IDENTIFIER
 ;
 
-identifier_list ::= 
+identifier_list ::=
 	| LPAREN identifier_list_aux RPAREN
 ;
 
@@ -111,7 +214,7 @@ integer_number ::=
 	digit_sequence
 ;
 
-digit_sequence ::= 
+digit_sequence ::=
 	sign_optional INTEGER_LITERAL
 ;
 
@@ -123,10 +226,6 @@ sign_optional ::=
 
 type ::=
 	simple_type | structured_type | pointer_type | type_identifier
-;
-
-
-procedure_and_function_declaration_part ::= 
 ;
 
 real_number ::=
@@ -145,7 +244,5 @@ pointer_type ::=
 ;
 
 type_identifier ::=
+  IDENTIFIER
 ;
-
-
-
