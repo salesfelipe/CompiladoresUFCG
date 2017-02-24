@@ -13,6 +13,7 @@ parser code  {:
 :};
 
 terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO;
+terminal UNTIL, REPEAT, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, WITH;
 terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS;
 terminal java.lang.String IDENTIFIER;
 terminal INTEGER_LITERAL, PLUS, MINUS, EQUALS;
@@ -23,7 +24,7 @@ non terminal label_declaration_part, constant_definition_part, type_definition, 
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
 non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
 non terminal statement_part, procedure_identification, function_heading, function_identification, function_body, function_identifier;
-non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type;
+non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type, statement, aux_statement_sequence, optional_label, simple_statement, structured_statement, assignment_statement, procedure_statement, goto_statement, variable, expression, actual_parameter_list, compound_statement, repetitive_statement, conditional_statement, with_statement, while_statement, repeat_statement, for_statement, variable_identifier, initial_expression, final_expression, if_statement, case_statement, case_limb, case_limb_aux, case_label_list, constant_aux, record_variable, record_variable_aux;
 non terminal type, variable_declaration, procedure_declaration, function_declaration, procedure_heading, procedure_body, directive;
 non terminal type_identifier, constant_identifier, number, string, real_number, simple_type, structured_type, pointer_type;
 
@@ -92,7 +93,7 @@ type_definition ::=
 	IDENTIFIER EQUALS type
 ;
 
-uses_definition_part :==
+uses_definition_part ::=
   USES IDENTIFIER SEMICOLON
 ;
 
@@ -244,7 +245,61 @@ while_statement ::=
   WHILE expression DO statement
 ;
 
+repeat_statement ::=
+  REPEAT statement_sequence UNTIL expression
+;
 
+for_statement ::=
+  FOR variable_identifier COLONEQUALS initial_expression TO final_expression DO statement
+| FOR variable_identifier COLONEQUALS initial_expression DOWNTO final_expression DO statement
+;
+
+initial_expression ::=
+  expression
+;
+
+final_expression ::=
+  expression
+;
+
+conditional_statement ::=
+  if_statement
+| case_statement
+;
+
+if_statement ::=
+  IF expression THEN statement
+| IF expression THEN statement ELSE statement
+;
+
+case_statement ::=
+  CASE expression OF case_limb case_limb_aux END
+| CASE expression OF case_limb case_limb_aux SEMICOLON END
+;
+
+case_limb_aux ::=
+| SEMICOLON case_limb case_limb_aux
+;
+
+case_limb ::=
+  case_label_list COLON statement
+;
+
+case_label_list ::=
+  constant constant_aux
+;
+
+with_statement ::=
+  WITH record_variable record_variable_aux DO statement
+;
+
+record_variable_aux ::=
+| COLON record_variable record_variable_aux
+;
+
+constant_aux ::=
+| COLON constant constant_aux
+;
 
 label ::=
   integer_number

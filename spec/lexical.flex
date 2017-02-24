@@ -57,7 +57,18 @@ DecimalLiteral = 0 | [1-9][0-9]*
     "uses"                { return symbol(sym.USES);}
     "goto"                { return symbol(sym.GOTO);}
     "while"               { return symbol(sym.WHILE);}
+    "with"               { return symbol(sym.WITH);}
     "do"                   { return symbol(sym.DO);}
+    "until"                   { return symbol(sym.UNTIL);}
+    "repeat"                   { return symbol(sym.REPEAT);}
+    "for"                   { return symbol(sym.FOR);}
+    "to"                   { return symbol(sym.TO);}
+    "downto"                   { return symbol(sym.DOWNTO);}
+    "if"                   { return symbol(sym.IF);}
+    "then"                   { return symbol(sym.THEN);}
+    "else"                   { return symbol(sym.ELSE);}
+    "case"                   { return symbol(sym.CASE);}
+    "of"                   { return symbol(sym.OF);}
 
     /* Separators */
     "("                             { return symbol(sym.LPAREN); }
