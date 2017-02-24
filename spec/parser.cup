@@ -12,14 +12,14 @@ parser code  {:
  }
 :};
 
-terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION;
-terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON;
+terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO;
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS;
 terminal java.lang.String IDENTIFIER;
 terminal INTEGER_LITERAL, PLUS, MINUS, EQUALS;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
 non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
-non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part;
+non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part, uses_definition_part;
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
 non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
 non terminal statement_part, procedure_identification, function_heading, function_identification, function_body, function_identifier;
@@ -49,6 +49,7 @@ declaration_part ::= {:Logger.print("Declaration Part");:}
 
 declaration_part_optional ::= {:Logger.print("Declaration Part optional");:}
 	| label_declaration_part
+  | uses_definition_part
 	| constant_definition_part
 	| type_definition_part
 	| variable_declaration_part
@@ -89,6 +90,10 @@ type_definition_part ::=
 
 type_definition ::=
 	IDENTIFIER EQUALS type
+;
+
+uses_definition_part :==
+  USES IDENTIFIER SEMICOLON
 ;
 
 variable_declaration_part ::=
@@ -179,7 +184,67 @@ compiler_defined_directives ::=
 // Statements
 
 statement_sequence ::=
+  statement | statement aux_statement_sequence
 ;
+
+aux_statement_sequence ::=
+| SEMICOLON statement
+| SEMICOLON statement aux_statement_sequence
+;
+
+statement ::=
+  optional_label simple_statement
+| optional_label structured_statement
+;
+
+optional_label ::=
+| label COLON
+;
+
+simple_statement ::=
+| assignment_statement
+| procedure_statement
+| goto_statement
+;
+
+assignment_statement ::=
+  variable COLONEQUALS expression
+| function_identifier COLONEQUALS expression
+;
+
+// TODO expression ::=
+
+procedure_statement ::=
+  procedure_identifier actual_parameter_list
+| procedure_identifier
+;
+
+goto_statement ::=
+  GOTO label
+;
+
+structured_statement ::=
+  compound_statement
+| repetitive_statement
+| conditional_statement
+| with_statement
+;
+
+compound_statement ::=
+  BEGIN statement_sequence END
+;
+
+repetitive_statement ::=
+  while_statement
+| repeat_statement
+| for_statement
+;
+
+while_statement ::=
+  WHILE expression DO statement
+;
+
+
 
 label ::=
   integer_number

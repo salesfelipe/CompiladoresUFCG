@@ -54,7 +54,11 @@ DecimalLiteral = 0 | [1-9][0-9]*
    	"forward"						{ return symbol(sym.FORWARD); }
    	"procedure"						{ return symbol(sym.PROCEDURE); }
    	"function"						{ return symbol(sym.FUNCTION); }
-    
+    "uses"                { return symbol(sym.USES);}
+    "goto"                { return symbol(sym.GOTO);}
+    "while"               { return symbol(sym.WHILE);}
+    "do"                   { return symbol(sym.DO);}
+
     /* Separators */
     "("                             { return symbol(sym.LPAREN); }
     ")"                             { return symbol(sym.RPAREN); }
@@ -65,6 +69,7 @@ DecimalLiteral = 0 | [1-9][0-9]*
     "+"								{ return symbol(sym.PLUS); }
     "-"								{ return symbol(sym.MINUS); }
     "="								{ return symbol(sym.EQUALS); }
+    ":="              { return symbol(sym.COLONEQUALS); }
 
     /* Operators */
     ":"                             { return symbol(sym.COLON); }
