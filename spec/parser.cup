@@ -39,6 +39,7 @@ element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
 non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
+non terminal pointer_variable;
 
 start with compilation_unit;
 
@@ -691,6 +692,60 @@ variant ::=
 // end IN/OUT
 
 // Variable and Identifier Categories
+
+file_variable ::=
+  {:Logger.print("File Variable");:} variable
+;
+
+referenced_variable ::=
+  {:Logger.print("Referenced Variable");:} pointer_variable XOR
+;
+
+record_variable ::=
+  {:Logger.print("Record Variable");:} variable
+;
+
+pointer_variable ::=
+  {:Logger.print("Pointer Variable");:} variable
+;
+
+actual_variable ::=
+  {:Logger.print("Actual Variable");:} variable
+;
+
+array_variable ::=
+  {:Logger.print("Array Variable");:} variable
+;
+
+field_identifier ::=
+  {:Logger.print("Field Identifier");:} IDENTIFIER
+;
+
+constant_identifier ::=
+  {:Logger.print("Constant Identifier");:} IDENTIFIER
+;
+
+variable_identifier ::=
+  {:Logger.print("Variable Identifier");:} IDENTIFIER
+;
+
+type_identifier ::=
+  {:Logger.print("Type Identifier");:} IDENTIFIER
+;
+
+procedure_identifier ::=
+  {:Logger.print("Procedure Identifier");:} IDENTIFIER
+;
+
+function_identifier ::=
+  {:Logger.print("Function Identifier");:} IDENTIFIER
+;
+
+bound_identifier ::=
+  {:Logger.print("Bound Identifier");:} IDENTIFIER
+;
+
+// Low Level Definitions
 
 real_number ::=
   {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL
