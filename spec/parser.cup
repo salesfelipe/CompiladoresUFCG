@@ -39,7 +39,7 @@ element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
 non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
-non terminal pointer_variable;
+non terminal pointer_variable, variable_list, expression_list_aux;
 
 start with compilation_unit;
 
@@ -48,7 +48,9 @@ compilation_unit ::=
 ;
 
 program_heading ::=
-  {:Logger.print("Program Heading");:} PROGRAM IDENTIFIER identifier_list SEMICOLON
+  {:Logger.print("Program Heading - line 1");:} PROGRAM IDENTIFIER SEMICOLON |
+  {:Logger.print("Program Heading - line 2");:} PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON 
+
 ;
 
 block ::=
@@ -311,50 +313,6 @@ constant_aux ::=
 
 label ::=
   {:Logger.print("Label");:} integer_number
-;
-
-constant ::=
-	{:Logger.print("Constant - line 1");:} sign_optional constant_identifier |
-  {:Logger.print("Constant - line 2");:} sign_optional number |
-  {:Logger.print("Constant - line 3");:} string
-;
-
-constant_identifier ::=
-  {:Logger.print("Constant Identifier");:} IDENTIFIER
-;
-
-identifier_list ::=
-  {:Logger.print("Identifier List - line 1");:} |
-  {:Logger.print("Identifier List - line 2");:} LPAREN identifier_list_aux RPAREN
-;
-
-identifier_list_aux ::=
-  {:Logger.print("Identifier List Aux - line 1");:} |
-  {:Logger.print("Identifier List Aux - line 2");:} IDENTIFIER |
-  {:Logger.print("Identifier List Aux - line 3");:} IDENTIFIER COMMA identifier_list_aux
-;
-
-number ::=
-  {:Logger.print("Number - line 1");:} integer_number |
-  {:Logger.print("Number - line 2");:} real_number
-;
-
-integer_number ::=
-  {:Logger.print("Integer Number" );:} digit_sequence
-;
-
-digit_sequence ::=
-  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL
-;
-
-sign ::=
-  {:Logger.print("Sign - line 1");:} PLUS |
-  {:Logger.print("Sign - line 2");:} MINUS
-;
-
-sign_optional ::=
-  {:Logger.print("Sign Optional - line 1");:} |
-  {:Logger.print("Sign Optional - line 2");:} sign
 ;
 
 actual_parameter_list ::=
@@ -747,14 +705,64 @@ bound_identifier ::=
 
 // Low Level Definitions
 
+variable_list ::=
+ // WTF?
+;
+
+identifier_list ::=
+  {:Logger.print("Identifier List");:} IDENTIFIER identifier_list_aux
+;
+
+identifier_list_aux ::=
+  {:Logger.print("Identifier List Aux - line 1");:} COMMA IDENTIFIER identifier_list_aux |
+  {:Logger.print("Identifier List Aux - line 2");:}
+;
+
+expression_list ::=
+  {:Logger.print("Expression List");:} expression expression_list_aux
+;
+
+expression_list_aux ::=
+  {:Logger.print("Expression List Aux - line 1");:} COMMA expression expression_list_aux |
+  {:Logger.print("Expression List Aux - line 2");:}
+;
+
+number ::=
+  {:Logger.print("Number - line 1");:} integer_number |
+  {:Logger.print("Number - line 2");:} real_number
+;
+
+integer_number ::=
+  {:Logger.print("Integer Number" );:} digit_sequence
+;
+
+digit_sequence ::=
+  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL
+;
+
 real_number ::=
   {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL
+;
+
+sign ::=
+  {:Logger.print("Sign - line 1");:} PLUS |
+  {:Logger.print("Sign - line 2");:} MINUS
+;
+
+sign_optional ::=
+  {:Logger.print("Sign Optional - line 1");:} |
+  {:Logger.print("Sign Optional - line 2");:} sign
 ;
 
 string ::=
   {:Logger.print("String");:} STRING_LITERAL
 ;
 
+constant ::=
+	{:Logger.print("Constant - line 1");:} sign_optional constant_identifier |
+  {:Logger.print("Constant - line 2");:} sign_optional number |
+  {:Logger.print("Constant - line 3");:} string
+;
 
 type_identifier ::=
   {:Logger.print("Type Identifier");:} IDENTIFIER
