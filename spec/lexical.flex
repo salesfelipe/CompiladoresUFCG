@@ -86,6 +86,9 @@ Exponent  = [eE] [+-]? [0-9]+
     "packed"                        { return symbol(sym.PACKED);}
     "not"                           { return symbol(sym.NOT);}
     "nil"                           { return symbol(sym.NIL);}
+    "record"                        { return symbol(sym.RECORD);}
+    "set"                           { return symbol(sym.SET);}
+    "file"                          { return symbol(sym.FILE);}
 
     /* Separators */
     "("                             { return symbol(sym.LPAREN); }

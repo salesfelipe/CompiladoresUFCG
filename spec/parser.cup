@@ -12,7 +12,8 @@ parser code  {:
  }
 :};
 
-terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED;
+terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED,
+RECORD, SET, FILE;
 terminal UNTIL, REPEAT, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, WITH;
 terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS, LBRACK, RBRACK, DOTDOT;
 terminal java.lang.String IDENTIFIER;
@@ -35,7 +36,9 @@ non terminal ordinal_type_identifier, simple_expression, expression_aux, relatio
 factor, term_aux, multiplication_operator, set, bound_identifier, function_designator, entire_variable, component_variable;
 non terminal referenced_variable, field_identifier, indexed_variable, field_designator, file_buffer, array_variable, expression_list,
 element_list, element_list_aux, optional_actual_parameter_list, file_variable;
-
+non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
+non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
+file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
 
 start with compilation_unit;
 
@@ -353,13 +356,6 @@ sign_optional ::=
   {:Logger.print("Sign Optional - line 2");:} sign
 ;
 
-type ::=
-  {:Logger.print("Type - line 1");:} simple_type |
-  {:Logger.print("Type - line 2");:} structured_type |
-  {:Logger.print("Type - line 3");:} pointer_type |
-  {:Logger.print("Type - line 4");:} type_identifier
-;
-
 actual_parameter_list ::=
   {:Logger.print("Actual Parameter List - line 1");:} LPAREN actual_parameter  actual_parameter_aux RPAREN |
   {:Logger.print("Actual Parameter List - line 2");:}
@@ -562,10 +558,139 @@ file_buffer ::=
 ;
 
 
+// Types
 
+type ::=
+  {:Logger.print("Type - line 1");:} simple_type |
+  {:Logger.print("Type - line 2");:} structured_type |
+  {:Logger.print("Type - line 3");:} pointer_type |
+  {:Logger.print("Type - line 4");:} type_identifier
+;
 
+simple_type ::=
+  {:Logger.print("Simple Type - line 1");:} subrange_type |
+  {:Logger.print("Simple Type - line 2");:} enumerated_type
+;
 
+enumerated_type ::=
+  {:Logger.print("Enumerated Type");:} LPAREN identifier_list RPAREN
+;
 
+subrange_type ::=
+  {:Logger.print("Subrange Type");:} lower_bound DOTDOT upper_bound
+;
+
+lower_bound ::=
+  {:Logger.print("Lower Bound");:} constant
+;
+
+upper_bound ::=
+  {:Logger.print("Upper Bound");:} constant
+;
+
+structured_type ::=
+  {:Logger.print("Structure Type - line 1");:} unpacked_structured_type |
+  {:Logger.print("Structure Type - line 2");:} PACKED unpacked_structured_type
+;
+
+unpacked_structured_type ::=
+  {:Logger.print("Unpacked Structured Type - line 1");:} array_type |
+  {:Logger.print("Unpacked Structured Type - line 2");:} record_type |
+  {:Logger.print("Unpacked Structured Type - line 3");:} set_type |
+  {:Logger.print("Unpacked Structured Type - line 4");:} file_type
+;
+
+array_type ::=
+  {:Logger.print("Array Type");:} ARRAY LBRACK index_type array_type_aux RBRACK OF element_type
+;
+
+array_type_aux ::=
+  {:Logger.print("Array Type Aux - line 1");:} COMMA index_type array_type_aux |
+  {:Logger.print("Array Type Aux - line 2");:}
+;
+
+index_type ::=
+  {:Logger.print("Index Type");:} simple_type
+;
+
+element_type ::=
+  {:Logger.print("Element Type");:} type
+;
+
+record_type ::=
+  {:Logger.print("Record Type");:} RECORD field_list END
+;
+
+set_type ::=
+  {:Logger.print("Set Type");:} SET OF base_type
+;
+
+base_type ::=
+  {:Logger.print("Base Type");:} type
+;
+
+file_type ::=
+  {:Logger.print("File Type");:} FILE OF file_component_type
+;
+
+file_component_type ::=
+  {:Logger.print("File Component Type");:} type
+;
+
+pointer_type ::=
+  {:Logger.print("Pointer Type");:} XOR type_identifier
+;
+
+// Record Fields
+
+field_list ::=
+  {:Logger.print("Field List - line 1");:} field_list_aux SEMICOLON|
+  {:Logger.print("Field List - line 2");:} field_list_aux |
+  {:Logger.print("Field List - line 3");:}
+;
+
+field_list_aux ::=
+  {:Logger.print("Field List Aux- line 1");:} fixed_part SEMICOLON variant_part |
+  {:Logger.print("Field List Aux- line 2");:} fixed_part |
+  {:Logger.print("Field List Aux- line 3");:} variant_part
+;
+
+fixed_part ::=
+  {:Logger.print("Fixed Part");:} record_section fixed_part_aux
+;
+
+fixed_part_aux ::=
+  {:Logger.print("Fixed Part Aux - line 1");:} SEMICOLON record_section fixed_part_aux |
+  {:Logger.print("Fixed Part Aux - line 2");:}
+;
+
+record_section ::=
+  identifier_list COLON type
+;
+
+variant_part ::=
+  {:Logger.print("Variant Part");:} CASE tag_field type_identifier OF variant variant_part_aux
+;
+
+variant_part_aux ::=
+  {:Logger.print("Variant Part Aux - line 1");:} SEMICOLON variant |
+  {:Logger.print("Variant Part Aux - line 2");:}
+;
+
+tag_field ::=
+  {:Logger.print("Tag Field - line 1");:} IDENTIFIER COLON |
+  {:Logger.print("Tag Field - line 2");:}
+;
+
+variant ::=
+  {:Logger.print("Variant");:} case_label_list COLON LPAREN field_list RPAREN
+;
+
+// Input Output
+
+// end IN/OUT
+
+// Variable and Identifier Categories
 
 real_number ::=
   {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL
@@ -575,14 +700,6 @@ string ::=
   {:Logger.print("String");:} STRING_LITERAL
 ;
 
-simple_type ::=
-;
-
-structured_type ::=
-;
-
-pointer_type ::=
-;
 
 type_identifier ::=
   {:Logger.print("Type Identifier");:} IDENTIFIER
