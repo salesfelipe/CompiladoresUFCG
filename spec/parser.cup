@@ -12,11 +12,12 @@ parser code  {:
  }
 :};
 
-terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO;
+terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED;
 terminal UNTIL, REPEAT, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, WITH;
-terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS;
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS, LBRACK, RBRACK, DOTDOT;
 terminal java.lang.String IDENTIFIER;
-terminal INTEGER_LITERAL, PLUS, MINUS, EQUALS;
+terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LITERAL,  NOT, NIL, DIFFERENT, LESST, GREATERT, LESSTOE, GREATERTOE, IN, OR,
+DIV, DIVWORD, MOD, MULT, XOR;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
 non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
@@ -26,7 +27,15 @@ non terminal constant_definition, constant_definition_aux, constant, optional_fo
 non terminal statement_part, procedure_identification, function_heading, function_identification, function_body, function_identifier;
 non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type, statement, aux_statement_sequence, optional_label, simple_statement, structured_statement, assignment_statement, procedure_statement, goto_statement, variable, expression, actual_parameter_list, compound_statement, repetitive_statement, conditional_statement, with_statement, while_statement, repeat_statement, for_statement, variable_identifier, initial_expression, final_expression, if_statement, case_statement, case_limb, case_limb_aux, case_label_list, constant_aux, record_variable, record_variable_aux;
 non terminal type, variable_declaration, procedure_declaration, function_declaration, procedure_heading, procedure_body, directive;
-non terminal type_identifier, constant_identifier, number, string, real_number, simple_type, structured_type, pointer_type;
+non terminal type_identifier, constant_identifier, number, string, real_number, simple_type, structured_type, pointer_type,
+actual_parameter, actual_value, actual_variable, actual_function, actual_procedure, actual_parameter_aux;
+non terminal value_parameter_section, variable_parameter_section, procedure_parameter_section, function_parameter_section, parameter_type,
+conformant_array_schema, packed_conformant_array_schema, unpacked_conformant_array_schema, bound_specification, bound_specification_aux;
+non terminal ordinal_type_identifier, simple_expression, expression_aux, relational_operator, term, simple_expression_aux, addition_operator,
+factor, term_aux, multiplication_operator, set, bound_identifier, function_designator, entire_variable, component_variable;
+non terminal referenced_variable, field_identifier, indexed_variable, field_designator, file_buffer, array_variable, expression_list,
+element_list, element_list_aux, optional_actual_parameter_list, file_variable;
+
 
 start with compilation_unit;
 
@@ -34,324 +43,536 @@ compilation_unit ::=
 	program_heading block DOT
 ;
 
-// Programs and Blocks
-
-program_heading ::=  {:Logger.print("Program Heading");:}
-   PROGRAM IDENTIFIER identifier_list SEMICOLON
+program_heading ::=
+  {:Logger.print("Program Heading");:} PROGRAM IDENTIFIER identifier_list SEMICOLON
 ;
 
-block ::= {:Logger.print("Block");:}
-	declaration_part statement_part
+block ::=
+  {:Logger.print("Block");:} declaration_part statement_part
 ;
 
-declaration_part ::= {:Logger.print("Declaration Part");:}
-	declaration_part_optional declaration_part_required
+declaration_part ::=
+    {:Logger.print("Declaration Part - line 1");:}
+	| {:Logger.print("Declaration Part - line 2");:} label_declaration_part
+  | {:Logger.print("Declaration Part - line 3");:} uses_definition_part
+	| {:Logger.print("Declaration Part - line 4");:} constant_definition_part
+	| {:Logger.print("Declaration Part - line 5");:} type_definition_part
+	| {:Logger.print("Declaration Part - line 6");:} variable_declaration_part
+  | {:Logger.print("Declaration Part - line 7");:} procedure_and_function_declaration_part
 ;
 
-declaration_part_optional ::= {:Logger.print("Declaration Part optional");:}
-	| label_declaration_part
-  | uses_definition_part
-	| constant_definition_part
-	| type_definition_part
-	| variable_declaration_part
-;
-
-declaration_part_required ::= {:Logger.print("Declaration Part required");:}
-	procedure_and_function_declaration_part
-;
-
-procedure_and_function_declaration_part ::= {:Logger.print("");:}
-	| procedure_declaration SEMICOLON procedure_and_function_declaration_part
-	| function_declaration SEMICOLON procedure_and_function_declaration_part
+procedure_and_function_declaration_part ::=
+    {:Logger.print("Procedure and function declaration part - line 1");:}
+	| {:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part
+	| {:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 label_declaration_part ::=
-	LABEL label label_optionals SEMICOLON
+  {:Logger.print("Label Declaration Part");:} LABEL label label_optionals SEMICOLON
 ;
 
 label_optionals ::=
-	| COMMA label label_optionals
+    {:Logger.print("Label optionals - line 1");:}
+	| {:Logger.print("Label optionals - line 2");:} COMMA label label_optionals
 ;
 
 constant_definition_part ::=
-	CONST constant_definition SEMICOLON constant_definition_aux
+{:Logger.print("Constant definition part");:} CONST constant_definition SEMICOLON constant_definition_aux
 ;
 
 constant_definition ::=
-	IDENTIFIER EQUALS constant
+{:Logger.print("Constant Definition");:} IDENTIFIER EQUALS constant
 ;
 
 constant_definition_aux ::=
-	| constant_definition SEMICOLON constant_definition_aux
+    {:Logger.print("Constant Definition aux - line 1");:}
+	| {:Logger.print("Constant Definition aux - line 2");:} constant_definition SEMICOLON constant_definition_aux
 ;
 
 type_definition_part ::=
-	TYPE type_definition SEMICOLON | TYPE type_definition SEMICOLON type_definition_part
+  {:Logger.print("Type definition part - line 1");:} TYPE type_definition SEMICOLON |
+  {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part
 ;
 
 type_definition ::=
-	IDENTIFIER EQUALS type
+  {:Logger.print("Type definition");:} IDENTIFIER EQUALS type
 ;
 
 uses_definition_part ::=
-  USES IDENTIFIER SEMICOLON
+  {:Logger.print("Uses definition Part");:} USES IDENTIFIER SEMICOLON
 ;
 
 variable_declaration_part ::=
-	VAR variable_declaration SEMICOLON | VAR variable_declaration SEMICOLON variable_declaration_part
+  {:Logger.print("Variable declaration part - line 1");:} VAR variable_declaration SEMICOLON |
+  {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part
 ;
 
 variable_declaration ::=
-	identifier_list COLON type
+  {:Logger.print("Variable declaration");:} identifier_list COLON type
 ;
 
 procedure_declaration ::=
-	procedure_heading SEMICOLON procedure_body |
-	procedure_heading SEMICOLON directive |
-	procedure_identification SEMICOLON procedure_body
+	 {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_body |
+	 {:Logger.print("Procedure declaration - line 2");:} procedure_heading SEMICOLON directive |
+	 {:Logger.print("Procedure declaration - line 3");:} procedure_identification SEMICOLON procedure_body
 ;
 
 procedure_body ::=
-	block
+  {:Logger.print("Procedure body");:} block
 ;
 
 function_declaration ::=
-	function_heading SEMICOLON function_body |
-	function_heading SEMICOLON directive |
-	function_identification SEMICOLON function_body
+  {:Logger.print("Function declaration - line 1");:} function_heading SEMICOLON function_body |
+	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive |
+	{:Logger.print("Function declaration - line 3");:} function_identification SEMICOLON function_body
 ;
 
 function_body ::=
-	block
+  {:Logger.print("Function Body");:} block
 ;
 
 directive ::=
-	FORWARD |
-	compiler_defined_directives
+  {:Logger.print("Directive - line 1");:} FORWARD |
+	{:Logger.print("Directive - line 2");:} compiler_defined_directives
 ;
 
 statement_part ::=
-	BEGIN statement_sequence END
+  {:Logger.print("Statement Part");:} BEGIN statement_sequence END
 ;
 
-// END BLOCK AND PROGRAMS
-
-// Procedure and Function Definitions
-
 procedure_heading ::=
-  PROCEDURE IDENTIFIER optional_formal_parameter_list
+  {:Logger.print("Procedure heading");:} PROCEDURE IDENTIFIER optional_formal_parameter_list
 ;
 
 optional_formal_parameter_list ::=
-  | formal_parameter_list
+  {:Logger.print("Optional formal parameter list - line 1");:} |
+  {:Logger.print("Optional formal parameter list - line 2");:} formal_parameter_list
 ;
 
 formal_parameter_list ::=
-  LPAREN formal_parameter_section aux_formal_parameter_section RPAREN
+  {:Logger.print("Formal parameter list");:} LPAREN formal_parameter_section aux_formal_parameter_section RPAREN
 ;
 
 aux_formal_parameter_section ::=
-  | SEMICOLON formal_parameter_section aux_formal_parameter_section
+  {:Logger.print("Aux formal parameter section - line 1");:} |
+  {:Logger.print("Aux formal parameter section - line 2");:} SEMICOLON formal_parameter_section aux_formal_parameter_section
 ;
 
 procedure_identification ::=
-  PROCEDURE procedure_identifier
+  {:Logger.print("Procedure Identification");:} PROCEDURE procedure_identifier
 ;
 
 procedure_identifier ::=
-  IDENTIFIER
+  {:Logger.print("Procedure identifier");:} IDENTIFIER
 ;
 
 function_identifier ::=
-  IDENTIFIER
+  {:Logger.print("Function Identifier");:} IDENTIFIER
 ;
 
 function_heading ::=
-  FUNCTION IDENTIFIER optional_formal_parameter_list COLON result_type
+  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER optional_formal_parameter_list COLON result_type
 ;
 
 result_type ::=
-  type_identifier
+  {:Logger.print("Result type");:} type_identifier
 ;
 
 function_identification ::=
-  FUNCTION function_identifier
+  {:Logger.print("Function Identificaton");:} FUNCTION function_identifier
 ;
-
 
 compiler_defined_directives ::=
+  {:Logger.print("Compiler directives");:}
 ;
 
-// Statements
-
 statement_sequence ::=
-  statement | statement aux_statement_sequence
+  {:Logger.print("Statement sequence");:} statement SEMICOLON aux_statement_sequence
 ;
 
 aux_statement_sequence ::=
-| SEMICOLON statement
-| SEMICOLON statement aux_statement_sequence
+  {:Logger.print("Aux statement sequence - line 1 -> ");:} |
+  {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:} statement SEMICOLON aux_statement_sequence
 ;
 
 statement ::=
-  optional_label simple_statement
-| optional_label structured_statement
+  {:Logger.print("Statement - line 1");:} optional_label simple_statement |
+  {:Logger.print("Statement - line 2");:} optional_label structured_statement
 ;
 
 optional_label ::=
-| label COLON
+  {:Logger.print("Optional Label - line 1");:} |
+  {:Logger.print("Optional Label - line 2");:} label COLON
 ;
 
 simple_statement ::=
-| assignment_statement
-| procedure_statement
-| goto_statement
+  {:Logger.print("Simple Statement - line 1");:} procedure_statement |
+  {:Logger.print("Simple Statement - line 2");:} assignment_statement |
+  {:Logger.print("Simple Statement - line 3");:} goto_statement |
+  {:Logger.print("Simple Statement - line 4");:}
 ;
 
 assignment_statement ::=
-  variable COLONEQUALS expression
-| function_identifier COLONEQUALS expression
+  {:Logger.print("Assignment Statement - line 1");:} variable COLONEQUALS expression |
+  {:Logger.print("Assignment Statement - line 2");:} function_identifier COLONEQUALS expression
 ;
 
-// TODO expression ::=
-
 procedure_statement ::=
-  procedure_identifier actual_parameter_list
-| procedure_identifier
+  {:Logger.print("Procedure statement");:} procedure_identifier actual_parameter_list
 ;
 
 goto_statement ::=
-  GOTO label
+  {:Logger.print("Go to statement");:} GOTO label
 ;
 
 structured_statement ::=
-  compound_statement
-| repetitive_statement
-| conditional_statement
-| with_statement
+  {:Logger.print("Structured statement - line 1");:} compound_statement |
+  {:Logger.print("Structured statement - line 2");:} repetitive_statement |
+  {:Logger.print("Structured statement - line 3");:} conditional_statement |
+  {:Logger.print("Structured statement - line 4");:} with_statement
 ;
 
 compound_statement ::=
-  BEGIN statement_sequence END
+  {:Logger.print("Compound statement");:} BEGIN statement_sequence END
 ;
 
 repetitive_statement ::=
-  while_statement
-| repeat_statement
-| for_statement
+  {:Logger.print("Repetitive Statment - line 1");:} while_statement |
+  {:Logger.print("Repetitive Statment - line 2");:} repeat_statement |
+  {:Logger.print("Repetitive Statment - line 3");:} for_statement
 ;
 
 while_statement ::=
-  WHILE expression DO statement
+  {:Logger.print("While statement Part");:} WHILE expression DO statement
 ;
 
 repeat_statement ::=
-  REPEAT statement_sequence UNTIL expression
+  {:Logger.print("Repeat statement");:} REPEAT statement_sequence UNTIL expression
 ;
 
 for_statement ::=
-  FOR variable_identifier COLONEQUALS initial_expression TO final_expression DO statement
-| FOR variable_identifier COLONEQUALS initial_expression DOWNTO final_expression DO statement
+  {:Logger.print("For Statement - line 1");:} FOR variable_identifier COLONEQUALS initial_expression TO final_expression DO statement |
+  {:Logger.print("For Statement - line 2");:} FOR variable_identifier COLONEQUALS initial_expression DOWNTO final_expression DO statement
 ;
 
 initial_expression ::=
-  expression
+  {:Logger.print("Initial Expression");:} expression
 ;
 
 final_expression ::=
-  expression
+  {:Logger.print("Final Expression");:} expression
 ;
 
 conditional_statement ::=
-  if_statement
-| case_statement
+  {:Logger.print("Conditional Statement - line 1");:} if_statement |
+  {:Logger.print("Conditional Statement - line 2");:} case_statement
 ;
 
 if_statement ::=
-  IF expression THEN statement
-| IF expression THEN statement ELSE statement
+  {:Logger.print("If Statement - line 1");:} IF expression THEN statement |
+  {:Logger.print("If Statement - line 2");:} IF expression THEN statement ELSE statement
 ;
 
 case_statement ::=
-  CASE expression OF case_limb case_limb_aux END
-| CASE expression OF case_limb case_limb_aux SEMICOLON END
+  {:Logger.print("Case Statement - line 1");:} CASE expression OF case_limb case_limb_aux END |
+  {:Logger.print("Case Statement - line 2");:} CASE expression OF case_limb case_limb_aux SEMICOLON END
 ;
 
 case_limb_aux ::=
-| SEMICOLON case_limb case_limb_aux
+  {:Logger.print("Case Limb Aux - line 1");:} |
+  {:Logger.print("Case Limb Aux - line 2");:} SEMICOLON case_limb case_limb_aux
 ;
 
 case_limb ::=
-  case_label_list COLON statement
+  {:Logger.print("Case Limb");:} case_label_list COLON statement
 ;
 
 case_label_list ::=
-  constant constant_aux
+  {:Logger.print("Case Label List");:} constant constant_aux
 ;
 
 with_statement ::=
-  WITH record_variable record_variable_aux DO statement
+  {:Logger.print("With Statement");:} WITH record_variable record_variable_aux DO statement
 ;
 
 record_variable_aux ::=
-| COLON record_variable record_variable_aux
+  {:Logger.print("Record Variable Aux - line 1");:} |
+  {:Logger.print("Record Variable Aux - line 2");:} COLON record_variable record_variable_aux
 ;
 
 constant_aux ::=
-| COLON constant constant_aux
+  {:Logger.print("Constant Aux - line 1");:} |
+  {:Logger.print("Constant Aux - line 2");:} COLON constant constant_aux
 ;
 
 label ::=
-  integer_number
+  {:Logger.print("Label");:} integer_number
 ;
 
-
-
 constant ::=
-	sign_optional constant_identifier
-	| sign_optional number
-	| string
+	{:Logger.print("Constant - line 1");:} sign_optional constant_identifier |
+  {:Logger.print("Constant - line 2");:} sign_optional number |
+  {:Logger.print("Constant - line 3");:} string
 ;
 
 constant_identifier ::=
-	IDENTIFIER
+  {:Logger.print("Constant Identifier");:} IDENTIFIER
 ;
 
 identifier_list ::=
-	| LPAREN identifier_list_aux RPAREN
+  {:Logger.print("Identifier List - line 1");:} |
+  {:Logger.print("Identifier List - line 2");:} LPAREN identifier_list_aux RPAREN
 ;
 
 identifier_list_aux ::=
-	| IDENTIFIER
-	| IDENTIFIER COMMA identifier_list_aux
+  {:Logger.print("Identifier List Aux - line 1");:} |
+  {:Logger.print("Identifier List Aux - line 2");:} IDENTIFIER |
+  {:Logger.print("Identifier List Aux - line 3");:} IDENTIFIER COMMA identifier_list_aux
 ;
 
 number ::=
-	integer_number | real_number
+  {:Logger.print("Number - line 1");:} integer_number |
+  {:Logger.print("Number - line 2");:} real_number
 ;
 
 integer_number ::=
-	digit_sequence
+  {:Logger.print("Integer Number" );:} digit_sequence
 ;
 
 digit_sequence ::=
-	sign_optional INTEGER_LITERAL
+  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL
 ;
 
-sign ::= PLUS | MINUS;
+sign ::=
+  {:Logger.print("Sign - line 1");:} PLUS |
+  {:Logger.print("Sign - line 2");:} MINUS
+;
 
 sign_optional ::=
-	| sign
+  {:Logger.print("Sign Optional - line 1");:} |
+  {:Logger.print("Sign Optional - line 2");:} sign
 ;
 
 type ::=
-	simple_type | structured_type | pointer_type | type_identifier
+  {:Logger.print("Type - line 1");:} simple_type |
+  {:Logger.print("Type - line 2");:} structured_type |
+  {:Logger.print("Type - line 3");:} pointer_type |
+  {:Logger.print("Type - line 4");:} type_identifier
 ;
 
+actual_parameter_list ::=
+  {:Logger.print("Actual Parameter List - line 1");:} LPAREN actual_parameter  actual_parameter_aux RPAREN |
+  {:Logger.print("Actual Parameter List - line 2");:}
+;
+
+actual_parameter ::=
+  {:Logger.print("Actual Parameter - line 1");:} actual_value |
+  {:Logger.print("Actual Parameter - line 2");:} actual_variable |
+  {:Logger.print("Actual Parameter - line 3");:} actual_procedure |
+  {:Logger.print("Actual Parameter - line 4");:} actual_function
+;
+
+actual_parameter_aux ::=
+  {:Logger.print("Actual Parameter Aux - line 1");:} |
+  {:Logger.print("Actual Parameter Aux - line 2");:} COMMA actual_parameter actual_parameter_aux
+;
+
+actual_value ::=
+  {:Logger.print("Actual Value");:} expression
+;
+
+actual_procedure ::=
+  {:Logger.print("Actual Procedure");:} procedure_identifier
+;
+
+actual_function ::=
+  {:Logger.print("Actual Function");:} function_identifier
+;
+
+formal_parameter_section ::=
+  {:Logger.print("Formal parameter section - line 1");:} value_parameter_section |
+  {:Logger.print("Formal parameter section - line 2");:} variable_parameter_section |
+  {:Logger.print("Formal parameter section - line 3");:} procedure_parameter_section |
+  {:Logger.print("Formal parameter section - line 4");:} function_parameter_section
+;
+
+value_parameter_section ::=
+  {:Logger.print("Value parameter section");:} identifier_list COLON parameter_type
+;
+
+variable_parameter_section ::=
+  {:Logger.print("Variable parameter section");:} VAR identifier_list COLON parameter_type
+;
+
+procedure_parameter_section ::=
+  {:Logger.print("Procedure parameter section");:} procedure_heading
+;
+
+function_parameter_section ::=
+  {:Logger.print("Function parameter section");:} function_heading
+;
+
+parameter_type ::=
+  {:Logger.print("Parameter type - line 1");:} type_identifier |
+  {:Logger.print("Parameter type - line 2");:} conformant_array_schema
+;
+
+conformant_array_schema ::=
+  {:Logger.print("Conformant array schema - line 1");:} packed_conformant_array_schema |
+  {:Logger.print("Conformant array schema - line 2");:} unpacked_conformant_array_schema
+;
+
+packed_conformant_array_schema ::=
+  {:Logger.print("Packed conformant array schema");:} PACKED ARRAY LBRACK bound_specification RBRACK OF type_identifier
+;
+
+unpacked_conformant_array_schema ::=
+  {:Logger.print("Unpacked conformant array schema - line 1");:} ARRAY LBRACK bound_specification bound_specification_aux RBRACK OF type_identifier |
+  {:Logger.print("Unpacked conformant array schema - line 2");:} ARRAY LBRACK bound_specification bound_specification_aux RBRACK OF conformant_array_schema
+;
+
+bound_specification_aux ::=
+  {:Logger.print("Bound specification aux - line 1");:} |
+  {:Logger.print("Bound specification aux - line 2");:} SEMICOLON bound_specification bound_specification_aux
+;
+
+bound_specification ::=
+  {:Logger.print("Bound Specification");:} IDENTIFIER DOTDOT IDENTIFIER COLON ordinal_type_identifier
+;
+
+ordinal_type_identifier ::=
+  {:Logger.print("Ordinal type identifier");:} type_identifier
+;
+
+expression ::=
+  {:Logger.print("Expression");:} simple_expression
+;
+
+expression_aux ::=
+  {:Logger.print("Expression Aux - line 2");:} relational_operator |
+  {:Logger.print("Expression Aux - line 3");:} simple_expression |
+  {:Logger.print("Expression Aux - line 1");:}
+;
+
+simple_expression ::=
+  {:Logger.print("Simple Expression");:} sign_optional term simple_expression_aux
+;
+
+simple_expression_aux ::=
+  {:Logger.print("Simple Expression Aux - line 1");:} addition_operator term simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - line 2");:}
+;
+
+term ::=
+  {:Logger.print("Term");:} factor term_aux
+;
+
+term_aux ::=
+  {:Logger.print("Term Aux - line 1");:} multiplication_operator factor term_aux |
+  {:Logger.print("Term Aux - line 2");:}
+;
+
+factor ::=
+  {:Logger.print("Factor - line 1");:} variable |
+  {:Logger.print("Factor - line 2");:} number |
+  {:Logger.print("Factor - line 3");:} string |
+  {:Logger.print("Factor - line 4");:} set |
+  {:Logger.print("Factor - line 5");:} NIL |
+  {:Logger.print("Factor - line 6");:} constant_identifier |
+  {:Logger.print("Factor - line 7");:} bound_identifier |
+  {:Logger.print("Factor - line 8");:} function_designator |
+  {:Logger.print("Factor - line 9");:} LPAREN expression RPAREN |
+  {:Logger.print("Factor - line 10");:} NOT factor
+;
+
+relational_operator ::=
+  {:Logger.print("Relational Operator - line 1");:} EQUALS |
+  {:Logger.print("Relational Operator - line 2");:} DIFFERENT |
+  {:Logger.print("Relational Operator - line 3");:} LESST |
+  {:Logger.print("Relational Operator - line 4");:} LESSTOE |
+  {:Logger.print("Relational Operator - line 5");:} GREATERT |
+  {:Logger.print("Relational Operator - line 6");:} GREATERTOE |
+  {:Logger.print("Relational Operator - line 7");:} IN
+;
+
+addition_operator ::=
+  {:Logger.print("Addition Operator - line 1");:} PLUS |
+  {:Logger.print("Addition Operator - line 2");:} MINUS |
+  {:Logger.print("Addition Operator - line 3");:} OR
+;
+
+multiplication_operator ::=
+  {:Logger.print("Multiplication Operator - line 1");:} MULT |
+  {:Logger.print("Multiplication Operator - line 2");:} DIV |
+  {:Logger.print("Multiplication Operator - line 3");:} DIVWORD |
+  {:Logger.print("Multiplication Operator - line 4");:} MOD |
+  {:Logger.print("Multiplication Operator - line 5");:} AND
+;
+
+variable ::=
+  {:Logger.print("Variable - line 1");:} entire_variable |
+  {:Logger.print("Variable - line 2");:} component_variable |
+  {:Logger.print("Variable - line 3");:} referenced_variable
+;
+
+entire_variable ::=
+  {:Logger.print("Entire Variable - line 1");:} variable_identifier |
+  {:Logger.print("Entire Variable - line 2");:} field_identifier
+;
+
+component_variable ::=
+  {:Logger.print("Component Variable - line 1");:} indexed_variable |
+  {:Logger.print("Component Variable - line 2");:} field_designator |
+  {:Logger.print("Component Variable - line 3");:} file_buffer
+;
+
+indexed_variable ::=
+  {:Logger.print("Indexed Variable");:} array_variable LBRACK expression_list RBRACK
+;
+
+field_designator ::=
+  {:Logger.print("Field Designator");:} record_variable DOT field_identifier
+;
+
+set ::=
+  {:Logger.print("Set");:} LBRACK element_list RBRACK
+;
+
+element_list ::=
+  {:Logger.print("Element List - line 1");:} expression element_list_aux |
+  {:Logger.print("Element List - line 2");:}
+;
+
+element_list_aux ::=
+  {:Logger.print("Element List Aux - line 1");:} COMMA expression element_list_aux |
+  {:Logger.print("Element List Aux - line 2");:}
+;
+
+function_designator ::=
+  {:Logger.print("Function Designator");:} function_identifier optional_actual_parameter_list
+;
+
+optional_actual_parameter_list ::=
+  {:Logger.print("Optional Actual Parameter List - line 1");:} actual_parameter_list |
+  {:Logger.print("Optional Actual Parameter List - line 2");:}
+;
+
+file_buffer ::=
+  {:Logger.print("File Bufffer");:} file_variable XOR
+;
+
+
+
+
+
+
+
 real_number ::=
+  {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL
 ;
 
 string ::=
+  {:Logger.print("String");:} STRING_LITERAL
 ;
 
 simple_type ::=
@@ -364,5 +585,5 @@ pointer_type ::=
 ;
 
 type_identifier ::=
-  IDENTIFIER
+  {:Logger.print("Type Identifier");:} IDENTIFIER
 ;
