@@ -1,4 +1,6 @@
 *.class
+*.out
+*.swp
 /bin
 /dist
 src/compiler/generated/
