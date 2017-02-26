@@ -21,7 +21,7 @@ terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LI
 DIV, DIVWORD, MOD, MULT, XOR;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
-non terminal declaration_part, declaration_part_optional, declaration_part_required, procedure_and_function_declaration_part;
+non terminal declaration_part, procedure_and_function_declaration_part;
 non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part, uses_definition_part;
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
 non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
