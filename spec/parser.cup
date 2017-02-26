@@ -20,7 +20,7 @@ terminal java.lang.String IDENTIFIER;
 terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LITERAL,  NOT, NIL, DIFFERENT, LESST, GREATERT, LESSTOE, GREATERTOE, IN, OR,
 DIV, DIVWORD, MOD, MULT, XOR;
 
-non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux;
+non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part;
 non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part, uses_definition_part;
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
@@ -475,10 +475,15 @@ entire_variable ::=
   {:Logger.print("Entire Variable - line 2");:} field_identifier
 ;
 
+//FIXME conflito
 component_variable ::=
-  {:Logger.print("Component Variable - line 1");:} indexed_variable |
-  {:Logger.print("Component Variable - line 2");:} field_designator |
-  {:Logger.print("Component Variable - line 3");:} file_buffer
+  {:Logger.print("Component Variable - line 1");:} variable component_variable_aux  // LBRACK expression_list RBRACK |
+;
+
+component_variable_aux ::=
+  LBRACK expression_list RBRACK
+| DOT field_identifier
+| XOR
 ;
 
 indexed_variable ::=
@@ -672,7 +677,7 @@ actual_variable ::=
 ;
 
 array_variable ::=
-  {:Logger.print("Array Variable");:} variable
+  {:Logger.print("Array Variable");:} variable_identifier
 ;
 
 field_identifier ::=
