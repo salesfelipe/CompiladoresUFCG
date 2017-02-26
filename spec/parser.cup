@@ -49,7 +49,7 @@ compilation_unit ::=
 
 program_heading ::=
   {:Logger.print("Program Heading - line 1");:} PROGRAM IDENTIFIER SEMICOLON |
-  {:Logger.print("Program Heading - line 2");:} PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON 
+  {:Logger.print("Program Heading - line 2");:} PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON
 
 ;
 
@@ -58,13 +58,8 @@ block ::=
 ;
 
 declaration_part ::=
-    {:Logger.print("Declaration Part - line 1");:}
-	| {:Logger.print("Declaration Part - line 2");:} label_declaration_part
-  | {:Logger.print("Declaration Part - line 3");:} uses_definition_part
-	| {:Logger.print("Declaration Part - line 4");:} constant_definition_part
-	| {:Logger.print("Declaration Part - line 5");:} type_definition_part
-	| {:Logger.print("Declaration Part - line 6");:} variable_declaration_part
-  | {:Logger.print("Declaration Part - line 7");:} procedure_and_function_declaration_part
+    {:Logger.print("Declaration Part");:}
+    label_declaration_part uses_definition_part constant_definition_part type_definition_part variable_declaration_part procedure_and_function_declaration_part
 ;
 
 procedure_and_function_declaration_part ::=
@@ -74,7 +69,8 @@ procedure_and_function_declaration_part ::=
 ;
 
 label_declaration_part ::=
-  {:Logger.print("Label Declaration Part");:} LABEL label label_optionals SEMICOLON
+  {:Logger.print("Label Declaration Part - line 1");:} LABEL label label_optionals SEMICOLON |
+  {:Logger.print("Label Declaration Part - line 2");:}
 ;
 
 label_optionals ::=
@@ -83,11 +79,12 @@ label_optionals ::=
 ;
 
 constant_definition_part ::=
-{:Logger.print("Constant definition part");:} CONST constant_definition SEMICOLON constant_definition_aux
+  {:Logger.print("Constant definition part - line 1");:} CONST constant_definition SEMICOLON constant_definition_aux |
+  {:Logger.print("Constant definition part - line 2");:}
 ;
 
 constant_definition ::=
-{:Logger.print("Constant Definition");:} IDENTIFIER EQUALS constant
+  {:Logger.print("Constant Definition");:} IDENTIFIER EQUALS constant
 ;
 
 constant_definition_aux ::=
@@ -97,7 +94,8 @@ constant_definition_aux ::=
 
 type_definition_part ::=
   {:Logger.print("Type definition part - line 1");:} TYPE type_definition SEMICOLON |
-  {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part
+  {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part |
+  {:Logger.print("Type definition part - line 3");:}
 ;
 
 type_definition ::=
@@ -105,12 +103,14 @@ type_definition ::=
 ;
 
 uses_definition_part ::=
-  {:Logger.print("Uses definition Part");:} USES IDENTIFIER SEMICOLON
+  {:Logger.print("Uses definition Part - line 1");:} USES IDENTIFIER SEMICOLON |
+  {:Logger.print("Uses definition Part - line 2");:}
 ;
 
 variable_declaration_part ::=
   {:Logger.print("Variable declaration part - line 1");:} VAR variable_declaration SEMICOLON |
-  {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part
+  {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part |
+  {:Logger.print("Variable declaration part - line 3");:}
 ;
 
 variable_declaration ::=
