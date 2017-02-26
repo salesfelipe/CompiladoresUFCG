@@ -1,4 +1,7 @@
 *.class
+/bin
+/dist
+src/compiler/generated/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
