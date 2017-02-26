@@ -759,9 +759,12 @@ string ::=
 ;
 
 constant ::=
-	{:Logger.print("Constant - line 1");:} sign_optional constant_identifier |
-  {:Logger.print("Constant - line 2");:} sign_optional number |
-  {:Logger.print("Constant - line 3");:} string
+	{:Logger.print("Constant - line 1");:} sign_optional constant_aux  |
+  {:Logger.print("Constant - line 2");:} string
+;
+
+constant_aux ::=
+  constant_identifier | number
 ;
 
 type_identifier ::=
