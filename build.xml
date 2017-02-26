@@ -58,4 +58,9 @@ Date:
     </jar>
   </target>
 
+	<target name="run" depends="jar">
+    <java jar="${jar.dist}" fork="true">
+		</java>
+  </target>
+
 </project>
