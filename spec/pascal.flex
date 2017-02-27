@@ -1,72 +1,63 @@
 /*
   Pascal language lexer specification
 */
-   
-/* --------------------------Codigo do usuario------------------------ */
-   
-import java_cup.runtime.*;
-      
-%%
-   
-/* -----------------Opcoes e declaracoes----------------- */
-  
-/* 
-   O nome da classe que o jflex vai criar eh PascalLexer
-   O codigo serah escrito no arquivo PascalLexer.java 
-*/
-%class PascalLexer
 
-/*
-  O numero da linha atual pode ser acessado atraves da variavel yyline
-  e o numero da coluna corrente com a variavel yycolumn.
-*/
+/* --------------------------Codigo do usuario------------------------ */
+
+package compiler.generated;
+import java_cup.runtime.*;
+
+%%
+
+/* -----------------Opcoes e declaracoes----------------- */
+
+%public
+%class Scanner
+%unicode
 %line
 %column
-    
-/* 
-   Coloca em modo de compatibilidade com o parser gerado pelo CUP.
-*/
 %cup
-   
+%cupdebug
+
 /*
   Declaracoes
-   
+
   O codigo entre %{ e %}, both of which must be at the beginning of a
   line, serah copiado para o codigo da classe gerada.
-  Aqui voce declara variaveis e metodos que sao usados dentro das acoes do scanner.  
+  Aqui voce declara variaveis e metodos que sao usados dentro das acoes do scanner.
 */
-%{   
-    /* Cria um novo java_cup.runtime.Symbol com informacoes sobre o token corrente. 
+%{
+    /* Cria um novo java_cup.runtime.Symbol com informacoes sobre o token corrente.
     Nesse caso o token nao possui valor. */
-    
+
     private Symbol symbol(int type) {
         return new Symbol(type, yyline, yycolumn);
     }
-    
+
     /* Cria um new java_cup.runtime.Symbol com informacoes sobre
        o token corrente, o token possui um valor*/
-       
+
     private Symbol symbol(int type, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
     }
-    
+
     public String current_lexeme(){
     	int l = yyline+1;
     	int c = yycolumn+1;
     	return " (line: "+l+" , column: "+c+" , lexeme: '"+yytext()+"')";
   	}
-  	
+
   	public int current_line() {
   		return yyline+1;
   	}
 %}
-   
+
 
 /*
   Declaracoes de Macros
-  
-  Essas declaracoes sao expressoes regulares que serao usadas posteriormente 
-  na secao de regras lexicas.  
+
+  Essas declaracoes sao expressoes regulares que serao usadas posteriormente
+  na secao de regras lexicas.
 */
 
 NQUOTE = [^']
@@ -111,21 +102,21 @@ W = [wW]
 X = [xX]
 Y = [yY]
 Z = [zZ]
-   
+
 %%
 /* ------------------------Regras Lexicas---------------------- */
-   
+
 /*
    Essa secao contem expressoes regulares e acoes, i. e. codigo Java,
-   que serah executado quando o scanner  
+   que serah executado quando o scanner
    This section contains regular expressions and actions, i.e. Java
    code, that will be executed when the scanner casar com a expressao
    regular associada. */
-   
+
    /* YYINITIAL is the state at which the lexer begins scanning.  So
    these regular expressions will only be matched if the scanner is in
    the start state YYINITIAL. */
-   
+
 <YYINITIAL> {
 
 	/* palavras chave pascal padrao */
@@ -171,7 +162,7 @@ Z = [zZ]
 	{W}{I}{T}{H}                                 { return symbol(sym.WITH); }
 	{X}{O}{R}                                    { return symbol(sym.XOR); }
 	{E}{X}{T}{E}{R}{N}{A}{L}                     { return symbol(sym.EXTERNAL); }
-	
+
 	/* tipos pre-definidos */
 	{I}{N}{T}{E}{G}{E}{R}                        { return symbol(sym.INTEGER); }
 	{B}{O}{O}{L}{E}{A}{N}                        { return symbol(sym.BOOLEAN); }
@@ -180,8 +171,8 @@ Z = [zZ]
 	{C}{H}{A}{R}                                 { return symbol(sym.CHAR); }
 	{T}{R}{U}{E}                                 { return symbol(sym.TRUE); }
 	{F}{A}{L}{S}{E}                              { return symbol(sym.FALSE); }
-	
-	
+
+
 	/* separadores */
     ";"                { return symbol(sym.SEMICOLON); }
     "."                { return symbol(sym.DOT); }
@@ -206,25 +197,25 @@ Z = [zZ]
 	"**"               { return symbol(sym.STARSTAR); }
 	"->"               { return symbol(sym.UPARROW); }
 	"^"                { return symbol(sym.UPARROW); }
-	
+
 	"{"				   {}
 	"}"                {}
-	
+
 	{CharacterString}  { return symbol(sym.CHARACTER_STRING, yytext()); }
-    
+
     {DigSeq}           { return symbol(sym.DIGSEQ, yytext()); }
-    
+
     {RealNumber}       { return symbol(sym.REALNUMBER, yytext()); }
-    
+
     {Identifier}       { return symbol(sym.IDENTIFIER, yytext()); }
-    
-    {WhiteSpace}       { /* faz nada */ }   
-    
+
+    {WhiteSpace}       { /* faz nada */ }
+
     {Comment}          {}
 }
 
 
 /* No token was found for the input so through an error.  Print out an
    Illegal character message with the illegal character that was found. */
-   
+
 [^]                    { throw new Error("Illegal character <"+yytext()+">"); }
