@@ -21,7 +21,7 @@ terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LI
 DIV, DIVWORD, MOD, MULT, XOR;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
-non terminal declaration_part, procedure_and_function_declaration_part;
+non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
 non terminal label_declaration_part, constant_definition_part, type_definition, type_definition_part, variable_declaration_part, uses_definition_part;
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
 non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
@@ -48,10 +48,14 @@ compilation_unit ::=
 ;
 
 program_heading ::=
-  {:Logger.print("Program Heading - line 1");:} PROGRAM IDENTIFIER SEMICOLON |
-  {:Logger.print("Program Heading - line 2");:} PROGRAM IDENTIFIER LPAREN identifier_list RPAREN SEMICOLON
-
+  {:Logger.print("Program Heading");:} PROGRAM IDENTIFIER program_heading_aux
 ;
+
+program_heading_aux ::=
+  {:Logger.print("Program Heading Aux- line 1");:} LPAREN identifier_list RPAREN SEMICOLON |
+  {:Logger.print("Program Heading Aux- line 2");:} SEMICOLON
+;
+
 
 block ::=
   {:Logger.print("Block");:} declaration_part statement_part
