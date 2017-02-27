@@ -1,15 +1,8 @@
-/*
-  Pascal language lexer specification
-*/
-
-/* --------------------------Codigo do usuario------------------------ */
-
 package compiler.generated;
 import java_cup.runtime.*;
+import compiler.core.*;
 
 %%
-
-/* -----------------Opcoes e declaracoes----------------- */
 
 %public
 %class Scanner
@@ -19,37 +12,16 @@ import java_cup.runtime.*;
 %cup
 %cupdebug
 
-/*
-  Declaracoes
-
-  O codigo entre %{ e %}, both of which must be at the beginning of a
-  line, serah copiado para o codigo da classe gerada.
-  Aqui voce declara variaveis e metodos que sao usados dentro das acoes do scanner.
-*/
 %{
-    /* Cria um novo java_cup.runtime.Symbol com informacoes sobre o token corrente.
-    Nesse caso o token nao possui valor. */
+  StringBuffer string = new StringBuffer();
 
-    private Symbol symbol(int type) {
-        return new Symbol(type, yyline, yycolumn);
-    }
+  private Symbol symbol(int type) {
+	  return new JavaSymbol(type, yyline+1, yycolumn+1);
+  }
 
-    /* Cria um new java_cup.runtime.Symbol com informacoes sobre
-       o token corrente, o token possui um valor*/
-
-    private Symbol symbol(int type, Object value) {
-        return new Symbol(type, yyline, yycolumn, value);
-    }
-
-    public String current_lexeme(){
-    	int l = yyline+1;
-    	int c = yycolumn+1;
-    	return " (line: "+l+" , column: "+c+" , lexeme: '"+yytext()+"')";
-  	}
-
-  	public int current_line() {
-  		return yyline+1;
-  	}
+  private Symbol symbol(int type, Object value) {
+	  return new JavaSymbol(type, yyline+1, yycolumn+1, value);
+  }
 %}
 
 

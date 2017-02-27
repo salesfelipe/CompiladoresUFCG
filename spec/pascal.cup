@@ -4,26 +4,22 @@
 
 /* ----------------------Preliminary Declarations Section--------------------*/
 
-import java_cup.runtime.*;
-import java.util.*;
-import symbTable.*;
-import type.*;
-import compiler.util.*;z
+import compiler.util.*;
 
 /* Parser code to change the way the parser reports errors (include
    line and column number of the error). */
 
-parser code  {:
- public void report_error(String message, Object info){
-   StringBuffer m = new StringBuffer("Error: " + message + "\n");
-   System.err.print(m);
- }
+ parser code  {:
+  public void report_error(String message, Object info){
+    StringBuffer m = new StringBuffer("Error: " + message + "\n");
+    System.err.print(m);
+  }
 
- public void report_fatal_error(String message, Object info) {
-   report_error(message, info);
-   throw new RuntimeException("Fatal Syntax Error");
- }
-:};
+  public void report_fatal_error(String message, Object info) {
+    report_error(message, info);
+    throw new RuntimeException("Fatal Syntax Error");
+  }
+ :};
 
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
 
