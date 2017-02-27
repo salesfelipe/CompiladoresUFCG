@@ -56,7 +56,6 @@ program_heading_aux ::=
   {:Logger.print("Program Heading Aux- line 2");:} SEMICOLON
 ;
 
-
 block ::=
   {:Logger.print("Block");:} declaration_part statement_part
 ;
@@ -64,12 +63,6 @@ block ::=
 declaration_part ::=
     {:Logger.print("Declaration Part");:}
     label_declaration_part uses_definition_part constant_definition_part type_definition_part variable_declaration_part procedure_and_function_declaration_part
-;
-
-procedure_and_function_declaration_part ::=
-    {:Logger.print("Procedure and function declaration part - line 1");:}
-	| {:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part
-	| {:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 label_declaration_part ::=
@@ -121,6 +114,12 @@ variable_declaration ::=
   {:Logger.print("Variable declaration");:} identifier_list COLON type
 ;
 
+procedure_and_function_declaration_part ::=
+    {:Logger.print("Procedure and function declaration part - line 1");:}
+	| {:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part
+	| {:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
+;
+
 procedure_declaration ::=
 	 {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_body |
 	 {:Logger.print("Procedure declaration - line 2");:} procedure_heading SEMICOLON directive |
@@ -148,10 +147,6 @@ directive ::=
 
 statement_part ::=
   {:Logger.print("Statement Part");:} BEGIN statement_sequence END
-;
-
-procedure_heading ::=
-  {:Logger.print("Procedure heading");:} PROCEDURE IDENTIFIER optional_formal_parameter_list
 ;
 
 optional_formal_parameter_list ::=
