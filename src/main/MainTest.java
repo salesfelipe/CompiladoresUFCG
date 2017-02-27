@@ -10,9 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class MainTest {
-	
+
 	public static void main(String[] args) throws IOException {
-		String filePath = "test/Test";
+		String filePath = "test/Test.pas";
 		Scanner scanner = null;
 		try {
 			scanner = new Scanner(new BufferedReader(new FileReader(filePath)));
@@ -27,6 +27,6 @@ public class MainTest {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 	}
 }
