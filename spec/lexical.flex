@@ -12,6 +12,7 @@ import compiler.core.*;
 %cup
 %cupdebug
 
+
 %{
   StringBuffer string = new StringBuffer();
 
@@ -24,139 +25,170 @@ import compiler.core.*;
   }
 %}
 
-/* White spaces*/
+
+/*
+  Declaracoes de Macros
+
+  Essas declaracoes sao expressoes regulares que serao usadas posteriormente
+  na secao de regras lexicas.
+*/
+
+NQUOTE = [^']
+
 LineTerminator = \r|\n|\r\n
-WhiteSpace     = {LineTerminator} | [ \t\f]
 
-/* Comments */
-Comment = "(*" ( [^*] | \*+ [^/*] )* "*)"
+WhiteSpace = {LineTerminator} | [ \t\f]
 
-/* Identifiers */
-Identifier = [:jletter:][:jletterdigit:]*
+Identifier = [a-zA-Z_][a-zA-Z_0-9]*
 
-/* Integer literals */
-DecimalLiteral = 0 | [1-9][0-9]*
+RealNumber = [0-9]+"."[0-9]+
 
-/* String and Character literals */
-StringCharacter = [^\r\n\'\\]
+DigSeq = [0-9]+
 
-/* Float literals */
-FloatLiteral  = ({Float1}|{Float2}|{Float3}) {Exponent}? [fF]?
-DoubleLiteral = ({Float1}|{Float2}|{Float3}) {Exponent}? [dD]
+CharacterString = '({NQUOTE}|'')+' | ''
 
-Float1    = [0-9]+ \. [0-9]*
-Float2    = \. [0-9]+
-Float3    = [0-9]+
-Exponent  = [eE] [+-]? [0-9]+
+Comment = "(*" [^*] ~"*)" | "{" [^*] ~"}"
 
-
-%state STRING
+A = [aA]
+B = [bB]
+C = [cC]
+D = [dD]
+E = [eE]
+F = [fF]
+G = [gG]
+H = [hH]
+I = [iI]
+J = [jJ]
+K = [kK]
+L = [lL]
+M = [mM]
+N = [nN]
+O = [oO]
+P = [pP]
+Q = [qQ]
+R = [rR]
+S = [sS]
+T = [tT]
+U = [uU]
+V = [vV]
+W = [wW]
+X = [xX]
+Y = [yY]
+Z = [zZ]
 
 %%
+/* ------------------------Regras Lexicas---------------------- */
+
+/*
+   Essa secao contem expressoes regulares e acoes, i. e. codigo Java,
+   que serah executado quando o scanner
+   This section contains regular expressions and actions, i.e. Java
+   code, that will be executed when the scanner casar com a expressao
+   regular associada. */
+
+   /* YYINITIAL is the state at which the lexer begins scanning.  So
+   these regular expressions will only be matched if the scanner is in
+   the start state YYINITIAL. */
 
 <YYINITIAL> {
 
-    /* Keywords Pascal*/
-    "program"                      	{ return symbol(sym.PROGRAM); }
-    "array"                      	  { return symbol(sym.ARRAY); }
-    "begin"                      	  { return symbol(sym.BEGIN); }
-    "end" 							            { return symbol(sym.END); }
-    "label"                       	{ return symbol(sym.LABEL); }
-    "const"						             	{ return symbol(sym.CONST); }
-    "type"							            { return symbol(sym.TYPE); }
-    "var"							              { return symbol(sym.VAR); }
-   	"forward"					            	{ return symbol(sym.FORWARD); }
-   	"procedure"					          	{ return symbol(sym.PROCEDURE); }
-   	"function"				          		{ return symbol(sym.FUNCTION); }
-    "uses"                	     		{ return symbol(sym.USES);}
-    "goto"                	     		{ return symbol(sym.GOTO);}
-    "while"               	     		{ return symbol(sym.WHILE);}
-    "with"               		       	{ return symbol(sym.WITH);}
-    "do"                  	     		{ return symbol(sym.DO);}
-    "until"                      		{ return symbol(sym.UNTIL);}
-    "repeat"             		        { return symbol(sym.REPEAT);}
-    "for"                  		     	{ return symbol(sym.FOR);}
-    "to"                   			    { return symbol(sym.TO);}
-    "downto"                   	    { return symbol(sym.DOWNTO);}
-    "if"                   			    { return symbol(sym.IF);}
-    "then"                   		    { return symbol(sym.THEN);}
-    "else"                   		    { return symbol(sym.ELSE);}
-    "case"                   		    { return symbol(sym.CASE);}
-    "of"                   			    { return symbol(sym.OF);}
-    "packed"                        { return symbol(sym.PACKED);}
-    "not"                           { return symbol(sym.NOT);}
-    "nil"                           { return symbol(sym.NIL);}
-    "record"                        { return symbol(sym.RECORD);}
-    "set"                           { return symbol(sym.SET);}
-    "file"                          { return symbol(sym.FILE);}
+	/* palavras chave pascal padrao */
+	{A}{N}{D}			                   		 { return symbol(sym.AND, yytext()); }
+	{A}{R}{R}{A}{Y}                        		 { return symbol(sym.ARRAY); }
+	{B}{E}{G}{I}{N}		                   		 { return symbol(sym.BEGIN); }
+	{C}{A}{S}{E}                           		 { return symbol(sym.CASE); }
+	{C}{O}{N}{S}{T}                        		 { return symbol(sym.CONST); }
+	{D}{I}{V}                              		 { return symbol(sym.DIV, yytext()); }
+	{D}{O}                                 		 { return symbol(sym.DO); }
+	{D}{O}{W}{N}{T}{O}                     		 { return symbol(sym.DOWNTO); }
+	{E}{L}{S}{E}                           		 { return symbol(sym.ELSE); }
+	{E}{N}{D}                              		 { return symbol(sym.END); }
+	{F}{I}{L}{E}                           		 { return symbol(sym.FILE); }
+	{F}{O}{R}                              		 { return symbol(sym.FOR); }
+	{F}{O}{R}{W}{A}{R}{D}                        { return symbol(sym.FORWARD); }
+	{F}{U}{N}{C}{T}{I}{O}{N}                     { return symbol(sym.FUNCTION); }
+	{G}{O}{T}{O}                                 { return symbol(sym.GOTO); }
+	{I}{F}                                       { return symbol(sym.IF); }
+	{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   { return symbol(sym.IMPLEMENTATION); }
+	{I}{N}                                       { return symbol(sym.IN); }
+	{I}{N}{T}{E}{R}{F}{A}{C}{E}                  { return symbol(sym.INTERFACE); }
+	{L}{A}{B}{E}{L}                 			 { return symbol(sym.LABEL); }
+	{M}{O}{D}                                    { return symbol(sym.MOD, yytext()); }
+	{N}{I}{L}                                    { return symbol(sym.NIL); }
+	{N}{O}{T}                                    { return symbol(sym.NOT, yytext()); }
+	{O}{F}                                       { return symbol(sym.OF); }
+	{O}{R}                                       { return symbol(sym.OR, yytext()); }
+	{P}{A}{C}{K}{E}{D}                           { return symbol(sym.PACKED); }
+	{P}{R}{O}{C}{E}{D}{U}{R}{E}                  { return symbol(sym.PROCEDURE); }
+	{P}{R}{O}{G}{R}{A}{M}                        { return symbol(sym.PROGRAM); }
+	{R}{E}{C}{O}{R}{D}                           { return symbol(sym.RECORD); }
+	{R}{E}{P}{E}{A}{T}                           { return symbol(sym.REPEAT); }
+	{S}{E}{T}                                    { return symbol(sym.SET); }
+	{T}{H}{E}{N}                                 { return symbol(sym.THEN); }
+	{T}{O}                                       { return symbol(sym.TO); }
+	{T}{Y}{P}{E}                                 { return symbol(sym.TYPE); }
+	{U}{N}{I}{T}                                 { return symbol(sym.UNIT); }
+	{U}{N}{T}{I}{L}                              { return symbol(sym.UNTIL); }
+	{U}{S}{E}{S}                                 { return symbol(sym.USES); }
+	{V}{A}{R}                                    { return symbol(sym.VAR); }
+	{W}{H}{I}{L}{E}                              { return symbol(sym.WHILE); }
+	{W}{I}{T}{H}                                 { return symbol(sym.WITH); }
+	{X}{O}{R}                                    { return symbol(sym.XOR); }
+	{E}{X}{T}{E}{R}{N}{A}{L}                     { return symbol(sym.EXTERNAL); }
 
-    /* Separators */
-    "("                             { return symbol(sym.LPAREN); }
-    ")"                             { return symbol(sym.RPAREN); }
-    "["                             { return symbol(sym.LBRACK); }
-    "]"                             { return symbol(sym.RBRACK); }
-    ";"                             { return symbol(sym.SEMICOLON); }
-    ","                             { return symbol(sym.COMMA); }
-    "."   		  				            { return symbol(sym.DOT); }
-    ".."   		  				            { return symbol(sym.DOTDOT); }
+	/* tipos pre-definidos */
+	{I}{N}{T}{E}{G}{E}{R}                        { return symbol(sym.INTEGER); }
+	{B}{O}{O}{L}{E}{A}{N}                        { return symbol(sym.BOOLEAN); }
+	{R}{E}{A}{L}                                 { return symbol(sym.REAL); }
+	{S}{T}{R}{I}{N}{G}                           { return symbol(sym.STRING); }
+	{C}{H}{A}{R}                                 { return symbol(sym.CHAR); }
+	{T}{R}{U}{E}                                 { return symbol(sym.TRUE); }
+	{F}{A}{L}{S}{E}                              { return symbol(sym.FALSE); }
 
-    /* String literal */
-    \'                              { yybegin(STRING); string.setLength(0); }
 
-    /* Operators */
-    ":"                             { return symbol(sym.COLON); }
-    "+"							              	{ return symbol(sym.PLUS); }
-    "-"								              { return symbol(sym.MINUS); }
-    "="								              { return symbol(sym.EQUALS); }
-    ":="              				      { return symbol(sym.COLONEQUALS); }
-    "<>"                            { return symbol(sym.DIFFERENT); }
-    "<"                             { return symbol(sym.LESST); }
-    ">"                             { return symbol(sym.GREATERT); }
-    "<="                            { return symbol(sym.LESSTOE); }
-    ">="                            { return symbol(sym.GREATERTOE); }
-    "in"                            { return symbol(sym.IN); }
-    "or"                            { return symbol(sym.OR); }
-    "*"								              { return symbol(sym.MULT); }
-    "/"							              	{ return symbol(sym.DIV); }
-    "mod"								            { return symbol(sym.MOD); }
-    "div"								            { return symbol(sym.DIVWORD); }
-    "and"               		        { return symbol(sym.AND); }
-    "^"								              { return symbol(sym.XOR); }
+	/* separadores */
+  ";"                { return symbol(sym.SEMICOLON); }
+  "."                { return symbol(sym.DOT); }
+  ":="               { return symbol(sym.ASSIGNMENT); }
+	":"                { return symbol(sym.COLON); }
+	","                { return symbol(sym.COMMA); }
+	".."               { return symbol(sym.DOTDOT); }
+	"="                { return symbol(sym.EQUAL); }
+	">="               { return symbol(sym.GE); }
+	">"                { return symbol(sym.GT); }
+	"["                { return symbol(sym.LBRAC); }
+	"<="               { return symbol(sym.LE); }
+	"("                { return symbol(sym.LPAREN); }
+	"<"                { return symbol(sym.LT); }
+	"-"                { return symbol(sym.MINUS, yytext()); }
+	"<>"               { return symbol(sym.NOTEQUAL); }
+	"+"                { return symbol(sym.PLUS, yytext()); }
+	"]"                { return symbol(sym.RBRAC); }
+	")"                { return symbol(sym.RPAREN); }
+	"/"                { return symbol(sym.SLASH, yytext()); }
+	"*"                { return symbol(sym.STAR, yytext()); }
+	"**"               { return symbol(sym.STARSTAR); }
+	"->"               { return symbol(sym.UPARROW); }
+	"^"                { return symbol(sym.UPARROW); }
 
-    /* Comments*/
-    {Comment}                       { /* just ignore it */ }
+	"{"				   {}
+	"}"                {}
 
-    /* White spaces */
-    {WhiteSpace}				            { /*just ignore it*/ }
+	{CharacterString}  { return symbol(sym.STRING_LITERAL, yytext()); }
 
-    /* Identifier*/
-    {Identifier} 					          { System.out.println("ID: " + yytext());
-                                      return symbol(sym.IDENTIFIER,yytext());}
+  {DigSeq}           { return symbol(sym.INTEGER_LITERAL, yytext()); }
 
-    {DecimalLiteral}                { return symbol(sym.INTEGER_LITERAL, new Integer(yytext()));}
+  {RealNumber}       { return symbol(sym.FLOATING_POINT_LITERAL, yytext()); }
 
-    {FloatLiteral}                  { return symbol(sym.FLOATING_POINT_LITERAL, new Float(yytext().substring(0,yylength()-1))); }
-    {DoubleLiteral}                 { return symbol(sym.FLOATING_POINT_LITERAL, new Double(yytext().substring(0,yylength()-1))); }
+  {Identifier}       { return symbol(sym.IDENTIFIER, yytext()); }
 
+  {WhiteSpace}       { /* faz nada */ }
+
+  {Comment}          {}
 }
 
-<STRING> {
-  \'                                { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString()); }
 
-  {StringCharacter}+                { string.append( yytext() ); }
+/* No token was found for the input so through an error.  Print out an
+   Illegal character message with the illegal character that was found. */
 
-  /* Escape sequences */
-  "\\b"                             { string.append( '\b' ); }
-  "\\t"                             { string.append( '\t' ); }
-  "\\n"                             { string.append( '\n' ); }
-  "\\f"                             { string.append( '\f' ); }
-  "\\r"                             { string.append( '\r' ); }
-  "\\\""                            { string.append( '\"' ); }
-  "\\'"                             { string.append( '\'' ); }
-  "\\\\"                            { string.append( '\\' ); }
-
-  /* Error cases */
-  \\.                               { throw new RuntimeException("ERROR: Illegal escape sequence \""+yytext()+"\""); }
-  {LineTerminator}                  { throw new RuntimeException("ERROR: Unterminated string at end of line"); }
-
-}
+[^]                    { throw new Error("Illegal character <"+yytext()+">"); }

@@ -15,10 +15,10 @@ parser code  {:
 terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED,
 RECORD, SET, FILE;
 terminal UNTIL, REPEAT, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, WITH;
-terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, COLONEQUALS, LBRACK, RBRACK, DOTDOT;
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, ASSIGNMENT, LBRAC, RBRAC, DOTDOT;
 terminal java.lang.String IDENTIFIER;
-terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LITERAL,  NOT, NIL, DIFFERENT, LESST, GREATERT, LESSTOE, GREATERTOE, IN, OR,
-DIV, DIVWORD, MOD, MULT, XOR;
+terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LITERAL,  NOT, NIL, NOTEQUAL, LT, GREATERT, LE, GE, IN, OR,
+DIV, MOD, STAR, UPARRAOW, SLASH, INTEGER, BOOLEAN, IMPLEMENTATION, INTERFACE, EXTERNAL,FALSE, TRUE, UNIT, REAL, CHAR, XOR, STARSTAR, UPARROW, GT, EQUAL, STRING;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -218,8 +218,8 @@ simple_statement ::=
 ;
 
 assignment_statement ::=
-  {:Logger.print("Assignment Statement - line 1");:} variable COLONEQUALS expression |
-  {:Logger.print("Assignment Statement - line 2");:} function_identifier COLONEQUALS expression
+  {:Logger.print("Assignment Statement - line 1");:} variable ASSIGNMENT expression |
+  {:Logger.print("Assignment Statement - line 2");:} function_identifier ASSIGNMENT expression
 ;
 
 procedure_statement ::=
@@ -256,8 +256,8 @@ repeat_statement ::=
 ;
 
 for_statement ::=
-  {:Logger.print("For Statement - line 1");:} FOR variable_identifier COLONEQUALS initial_expression TO final_expression DO statement |
-  {:Logger.print("For Statement - line 2");:} FOR variable_identifier COLONEQUALS initial_expression DOWNTO final_expression DO statement
+  {:Logger.print("For Statement - line 1");:} FOR variable_identifier ASSIGNMENT initial_expression TO final_expression DO statement |
+  {:Logger.print("For Statement - line 2");:} FOR variable_identifier ASSIGNMENT initial_expression DOWNTO final_expression DO statement
 ;
 
 initial_expression ::=
@@ -377,12 +377,12 @@ conformant_array_schema ::=
 ;
 
 packed_conformant_array_schema ::=
-  {:Logger.print("Packed conformant array schema");:} PACKED ARRAY LBRACK bound_specification RBRACK OF type_identifier
+  {:Logger.print("Packed conformant array schema");:} PACKED ARRAY LBRAC bound_specification RBRAC OF type_identifier
 ;
 
 unpacked_conformant_array_schema ::=
-  {:Logger.print("Unpacked conformant array schema - line 1");:} ARRAY LBRACK bound_specification bound_specification_aux RBRACK OF type_identifier |
-  {:Logger.print("Unpacked conformant array schema - line 2");:} ARRAY LBRACK bound_specification bound_specification_aux RBRACK OF conformant_array_schema
+  {:Logger.print("Unpacked conformant array schema - line 1");:} ARRAY LBRAC bound_specification bound_specification_aux RBRAC OF type_identifier |
+  {:Logger.print("Unpacked conformant array schema - line 2");:} ARRAY LBRAC bound_specification bound_specification_aux RBRAC OF conformant_array_schema
 ;
 
 bound_specification_aux ::=
@@ -441,11 +441,11 @@ factor ::=
 
 relational_operator ::=
   {:Logger.print("Relational Operator - line 1");:} EQUALS |
-  {:Logger.print("Relational Operator - line 2");:} DIFFERENT |
-  {:Logger.print("Relational Operator - line 3");:} LESST |
-  {:Logger.print("Relational Operator - line 4");:} LESSTOE |
+  {:Logger.print("Relational Operator - line 2");:} NOTEQUAL |
+  {:Logger.print("Relational Operator - line 3");:} LT |
+  {:Logger.print("Relational Operator - line 4");:} LE |
   {:Logger.print("Relational Operator - line 5");:} GREATERT |
-  {:Logger.print("Relational Operator - line 6");:} GREATERTOE |
+  {:Logger.print("Relational Operator - line 6");:} GE |
   {:Logger.print("Relational Operator - line 7");:} IN
 ;
 
@@ -456,9 +456,9 @@ addition_operator ::=
 ;
 
 multiplication_operator ::=
-  {:Logger.print("Multiplication Operator - line 1");:} MULT |
+  {:Logger.print("Multiplication Operator - line 1");:} STAR |
   {:Logger.print("Multiplication Operator - line 2");:} DIV |
-  {:Logger.print("Multiplication Operator - line 3");:} DIVWORD |
+  {:Logger.print("Multiplication Operator - line 3");:} SLASH |
   {:Logger.print("Multiplication Operator - line 4");:} MOD |
   {:Logger.print("Multiplication Operator - line 5");:} AND
 ;
@@ -476,17 +476,17 @@ entire_variable ::=
 
 //FIXME conflito
 component_variable ::=
-  {:Logger.print("Component Variable - line 1");:} variable component_variable_aux  // LBRACK expression_list RBRACK |
+  {:Logger.print("Component Variable - line 1");:} variable component_variable_aux  // LBRAC expression_list RBRAC |
 ;
 
 component_variable_aux ::=
-  LBRACK expression_list RBRACK
+  LBRAC expression_list RBRAC
 | DOT field_identifier
-| XOR
+| UPARRAOW
 ;
 
 indexed_variable ::=
-  {:Logger.print("Indexed Variable");:} array_variable LBRACK expression_list RBRACK
+  {:Logger.print("Indexed Variable");:} array_variable LBRAC expression_list RBRAC
 ;
 
 field_designator ::=
@@ -494,7 +494,7 @@ field_designator ::=
 ;
 
 set ::=
-  {:Logger.print("Set");:} LBRACK element_list RBRACK
+  {:Logger.print("Set");:} LBRAC element_list RBRAC
 ;
 
 element_list ::=
@@ -517,7 +517,7 @@ optional_actual_parameter_list ::=
 ;
 
 file_buffer ::=
-  {:Logger.print("File Bufffer");:} file_variable XOR
+  {:Logger.print("File Bufffer");:} file_variable UPARRAOW
 ;
 
 
@@ -564,7 +564,7 @@ unpacked_structured_type ::=
 ;
 
 array_type ::=
-  {:Logger.print("Array Type");:} ARRAY LBRACK index_type array_type_aux RBRACK OF element_type
+  {:Logger.print("Array Type");:} ARRAY LBRAC index_type array_type_aux RBRAC OF element_type
 ;
 
 array_type_aux ::=
@@ -601,7 +601,7 @@ file_component_type ::=
 ;
 
 pointer_type ::=
-  {:Logger.print("Pointer Type");:} XOR type_identifier
+  {:Logger.print("Pointer Type");:} UPARRAOW type_identifier
 ;
 
 // Record Fields
@@ -660,7 +660,7 @@ file_variable ::=
 ;
 
 referenced_variable ::=
-  {:Logger.print("Referenced Variable");:} pointer_variable XOR
+  {:Logger.print("Referenced Variable");:} pointer_variable UPARRAOW
 ;
 
 record_variable ::=
