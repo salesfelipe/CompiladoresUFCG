@@ -58,7 +58,12 @@ Date:
     </jar>
   </target>
 
-	<target name="run" depends="jar">
+  <target name="runAndComp" depends="jar">
+    <java jar="${jar.dist}" fork="true">
+		</java>
+  </target>
+
+	<target name="run">
     <java jar="${jar.dist}" fork="true">
 		</java>
   </target>

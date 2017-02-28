@@ -39,7 +39,7 @@ element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
 non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
-non terminal pointer_variable, variable_list, expression_list_aux;
+non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux;
 
 start with compilation_unit;
 
@@ -52,8 +52,8 @@ program_heading ::=
 ;
 
 program_heading_aux ::=
-  {:Logger.print("Program Heading Aux- line 1");:} LPAREN identifier_list RPAREN SEMICOLON |
-  {:Logger.print("Program Heading Aux- line 2");:} SEMICOLON
+  {:Logger.print("Program Heading Aux - line 1");:} LPAREN identifier_list RPAREN SEMICOLON |
+  {:Logger.print("Program Heading Aux - line 2");:} SEMICOLON
 ;
 
 block ::=
@@ -65,19 +65,23 @@ declaration_part ::=
     label_declaration_part uses_definition_part constant_definition_part type_definition_part variable_declaration_part procedure_and_function_declaration_part
 ;
 
+statement_part ::=
+  {:Logger.print("Statement Part");:} BEGIN statement_sequence END
+;
+
 label_declaration_part ::=
-  {:Logger.print("Label Declaration Part - line 1");:} LABEL label label_optionals SEMICOLON |
-  {:Logger.print("Label Declaration Part - line 2");:}
+  {:Logger.print("Label Declaration Part - line 1");:} |
+  {:Logger.print("Label Declaration Part - line 2");:} LABEL label label_optionals SEMICOLON
 ;
 
 label_optionals ::=
-    {:Logger.print("Label optionals - line 1");:}
-	| {:Logger.print("Label optionals - line 2");:} COMMA label label_optionals
+    {:Logger.print("Label optionals - line 1");:} |
+    {:Logger.print("Label optionals - line 2");:} COMMA label label_optionals
 ;
 
 constant_definition_part ::=
-  {:Logger.print("Constant definition part - line 1");:} CONST constant_definition SEMICOLON constant_definition_aux |
-  {:Logger.print("Constant definition part - line 2");:}
+  {:Logger.print("Constant definition part - line 1");:} |
+  {:Logger.print("Constant definition part - line 2");:} CONST constant_definition SEMICOLON constant_definition_aux
 ;
 
 constant_definition ::=
@@ -85,14 +89,14 @@ constant_definition ::=
 ;
 
 constant_definition_aux ::=
-    {:Logger.print("Constant Definition aux - line 1");:}
-	| {:Logger.print("Constant Definition aux - line 2");:} constant_definition SEMICOLON constant_definition_aux
+    {:Logger.print("Constant Definition aux - line 1");:} |
+    {:Logger.print("Constant Definition aux - line 2");:} constant_definition SEMICOLON constant_definition_aux
 ;
 
 type_definition_part ::=
-  {:Logger.print("Type definition part - line 1");:} TYPE type_definition SEMICOLON |
+  {:Logger.print("Type definition part - line 1");:} |
   {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part |
-  {:Logger.print("Type definition part - line 3");:}
+  {:Logger.print("Type definition part - line 3");:} TYPE type_definition SEMICOLON
 ;
 
 type_definition ::=
@@ -100,14 +104,14 @@ type_definition ::=
 ;
 
 uses_definition_part ::=
-  {:Logger.print("Uses definition Part - line 1");:} USES IDENTIFIER SEMICOLON |
-  {:Logger.print("Uses definition Part - line 2");:}
+  {:Logger.print("Uses definition Part - line 1");:} |
+  {:Logger.print("Uses definition Part - line 2");:} USES IDENTIFIER SEMICOLON
 ;
 
 variable_declaration_part ::=
-  {:Logger.print("Variable declaration part - line 1");:} VAR variable_declaration SEMICOLON |
+  {:Logger.print("Variable declaration part - line 1");:} |
   {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part |
-  {:Logger.print("Variable declaration part - line 3");:}
+  {:Logger.print("Variable declaration part - line 3");:} VAR variable_declaration SEMICOLON
 ;
 
 variable_declaration ::=
@@ -125,6 +129,7 @@ procedure_declaration ::=
 	 {:Logger.print("Procedure declaration - line 2");:} procedure_heading SEMICOLON directive |
 	 {:Logger.print("Procedure declaration - line 3");:} procedure_identification SEMICOLON procedure_body
 ;
+
 
 procedure_body ::=
   {:Logger.print("Procedure body");:} block
@@ -211,19 +216,22 @@ optional_label ::=
 ;
 
 simple_statement ::=
-  {:Logger.print("Simple Statement - line 1");:} procedure_statement |
-  {:Logger.print("Simple Statement - line 2");:} assignment_statement |
-  {:Logger.print("Simple Statement - line 3");:} goto_statement |
-  {:Logger.print("Simple Statement - line 4");:}
+  {:Logger.print("Simple Statement - line 1");:} |
+  {:Logger.print("Simple Statement - line 2");:} IDENTIFIER simple_statement_aux |
+  {:Logger.print("Simple Statement - line 3");:} goto_statement
+;
+
+simple_statement_aux ::=
+  {:Logger.print("Simple Statement Aux - line 1");:} procedure_statement |
+  {:Logger.print("Simple Statement Aux - line 2");:} assignment_statement
 ;
 
 assignment_statement ::=
-  {:Logger.print("Assignment Statement - line 1");:} variable ASSIGNMENT expression |
-  {:Logger.print("Assignment Statement - line 2");:} function_identifier ASSIGNMENT expression
+  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression
 ;
 
 procedure_statement ::=
-  {:Logger.print("Procedure statement");:} procedure_identifier actual_parameter_list
+  {:Logger.print("Procedure statement");:} actual_parameter_list
 ;
 
 goto_statement ::=
@@ -315,8 +323,8 @@ label ::=
 ;
 
 actual_parameter_list ::=
-  {:Logger.print("Actual Parameter List - line 1");:} LPAREN actual_parameter  actual_parameter_aux RPAREN |
-  {:Logger.print("Actual Parameter List - line 2");:}
+  {:Logger.print("Actual Parameter List - line 1");:} |
+  {:Logger.print("Actual Parameter List - line 2");:} LPAREN actual_parameter  actual_parameter_aux RPAREN
 ;
 
 actual_parameter ::=
@@ -403,9 +411,9 @@ expression ::=
 ;
 
 expression_aux ::=
-  {:Logger.print("Expression Aux - line 2");:} relational_operator |
+  {:Logger.print("Expression Aux - line 2");:} |
   {:Logger.print("Expression Aux - line 3");:} simple_expression |
-  {:Logger.print("Expression Aux - line 1");:}
+  {:Logger.print("Expression Aux - line 1");:} relational_operator
 ;
 
 simple_expression ::=
@@ -413,8 +421,8 @@ simple_expression ::=
 ;
 
 simple_expression_aux ::=
-  {:Logger.print("Simple Expression Aux - line 1");:} addition_operator term simple_expression_aux |
-  {:Logger.print("Simple Expression Aux - line 2");:}
+  {:Logger.print("Simple Expression Aux - line 1");:} |
+  {:Logger.print("Simple Expression Aux - line 2");:} addition_operator term simple_expression_aux
 ;
 
 term ::=
@@ -422,8 +430,8 @@ term ::=
 ;
 
 term_aux ::=
-  {:Logger.print("Term Aux - line 1");:} multiplication_operator factor term_aux |
-  {:Logger.print("Term Aux - line 2");:}
+  {:Logger.print("Term Aux - line 1");:} |
+  {:Logger.print("Term Aux - line 2");:} multiplication_operator factor term_aux
 ;
 
 factor ::=
@@ -464,9 +472,8 @@ multiplication_operator ::=
 ;
 
 variable ::=
-  {:Logger.print("Variable - line 1");:} entire_variable |
-  {:Logger.print("Variable - line 2");:} component_variable |
-  {:Logger.print("Variable - line 3");:} referenced_variable
+  {:Logger.print("Variable - line 1");:} variable_identifier |
+  {:Logger.print("Variable - line 2");:} component_variable
 ;
 
 entire_variable ::=
@@ -474,9 +481,9 @@ entire_variable ::=
   {:Logger.print("Entire Variable - line 2");:} field_identifier
 ;
 
-//FIXME conflito
+
 component_variable ::=
-  {:Logger.print("Component Variable - line 1");:} variable component_variable_aux  // LBRAC expression_list RBRAC |
+  {:Logger.print("Component Variable - line 1");:} variable_identifier component_variable_aux  // LBRAC expression_list RBRAC |
 ;
 
 component_variable_aux ::=
@@ -498,13 +505,13 @@ set ::=
 ;
 
 element_list ::=
-  {:Logger.print("Element List - line 1");:} expression element_list_aux |
-  {:Logger.print("Element List - line 2");:}
+  {:Logger.print("Element List - line 1");:} |
+  {:Logger.print("Element List - line 2");:} expression element_list_aux
 ;
 
 element_list_aux ::=
-  {:Logger.print("Element List Aux - line 1");:} COMMA expression element_list_aux |
-  {:Logger.print("Element List Aux - line 2");:}
+  {:Logger.print("Element List Aux - line 1");:} |
+  {:Logger.print("Element List Aux - line 2");:} COMMA expression element_list_aux
 ;
 
 function_designator ::=
@@ -512,8 +519,8 @@ function_designator ::=
 ;
 
 optional_actual_parameter_list ::=
-  {:Logger.print("Optional Actual Parameter List - line 1");:} actual_parameter_list |
-  {:Logger.print("Optional Actual Parameter List - line 2");:}
+  {:Logger.print("Optional Actual Parameter List - line 1");:} |
+  {:Logger.print("Optional Actual Parameter List - line 2");:} actual_parameter_list
 ;
 
 file_buffer ::=
@@ -568,8 +575,8 @@ array_type ::=
 ;
 
 array_type_aux ::=
-  {:Logger.print("Array Type Aux - line 1");:} COMMA index_type array_type_aux |
-  {:Logger.print("Array Type Aux - line 2");:}
+  {:Logger.print("Array Type Aux - line 1");:} |
+  {:Logger.print("Array Type Aux - line 2");:} COMMA index_type array_type_aux
 ;
 
 index_type ::=
@@ -607,9 +614,9 @@ pointer_type ::=
 // Record Fields
 
 field_list ::=
-  {:Logger.print("Field List - line 1");:} field_list_aux SEMICOLON|
+  {:Logger.print("Field List - line 1");:} |
   {:Logger.print("Field List - line 2");:} field_list_aux |
-  {:Logger.print("Field List - line 3");:}
+  {:Logger.print("Field List - line 3");:} field_list_aux SEMICOLON
 ;
 
 field_list_aux ::=
@@ -623,8 +630,8 @@ fixed_part ::=
 ;
 
 fixed_part_aux ::=
-  {:Logger.print("Fixed Part Aux - line 1");:} SEMICOLON record_section fixed_part_aux |
-  {:Logger.print("Fixed Part Aux - line 2");:}
+  {:Logger.print("Fixed Part Aux - line 1");:} |
+  {:Logger.print("Fixed Part Aux - line 2");:} SEMICOLON record_section fixed_part_aux
 ;
 
 record_section ::=
@@ -636,13 +643,13 @@ variant_part ::=
 ;
 
 variant_part_aux ::=
-  {:Logger.print("Variant Part Aux - line 1");:} SEMICOLON variant |
-  {:Logger.print("Variant Part Aux - line 2");:}
+  {:Logger.print("Variant Part Aux - line 1");:} |
+  {:Logger.print("Variant Part Aux - line 2");:} SEMICOLON variant
 ;
 
 tag_field ::=
-  {:Logger.print("Tag Field - line 1");:} IDENTIFIER COLON |
-  {:Logger.print("Tag Field - line 2");:}
+  {:Logger.print("Tag Field - line 1");:} |
+  {:Logger.print("Tag Field - line 2");:} IDENTIFIER COLON
 ;
 
 variant ::=
@@ -718,8 +725,8 @@ identifier_list ::=
 ;
 
 identifier_list_aux ::=
-  {:Logger.print("Identifier List Aux - line 1");:} COMMA IDENTIFIER identifier_list_aux |
-  {:Logger.print("Identifier List Aux - line 2");:}
+  {:Logger.print("Identifier List Aux - line 1");:} |
+  {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER identifier_list_aux
 ;
 
 expression_list ::=
@@ -727,8 +734,8 @@ expression_list ::=
 ;
 
 expression_list_aux ::=
-  {:Logger.print("Expression List Aux - line 1");:} COMMA expression expression_list_aux |
-  {:Logger.print("Expression List Aux - line 2");:}
+  {:Logger.print("Expression List Aux - line 1");:} |
+  {:Logger.print("Expression List Aux - line 2");:} COMMA expression expression_list_aux
 ;
 
 number ::=
@@ -760,11 +767,6 @@ sign_optional ::=
 
 string ::=
   {:Logger.print("String");:} STRING_LITERAL
-;
-
-constant ::=
-	{:Logger.print("Constant - line 1");:} sign_optional constant_aux  |
-  {:Logger.print("Constant - line 2");:} string
 ;
 
 constant_aux ::=
