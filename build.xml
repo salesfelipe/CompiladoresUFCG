@@ -35,18 +35,18 @@ Date:
 	</java>
   </target>
 
-  <target name="generate" depends="jflex, clean, cup">
+  <target name="generate" depends="clean, jflex, cup  ">
     <echo message="Executed JFlex and CUP tasks"/>
   </target>
 
   <target name="compile" depends="generate">
     <javac srcdir="${src}" destdir="${bin}" includeantruntime="false">
-	  <classpath>
-	    <fileset dir="${libs}">
-		  <include name="**/*.jar"/>
-		</fileset>
-	  </classpath>
-	</javac>
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="**/*.jar"/>
+  		  </fileset>
+  	  </classpath>
+    </javac>
   </target>
 
   <target name="jar" depends="compile">
@@ -72,6 +72,14 @@ Date:
 
     <java jar="${jar.dist}" fork="true">
       <arg value="test/radius.pas"/>
+		</java>
+
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/for.pas"/>
+		</java>
+
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/nestedifelse.pas"/>
 		</java>
   </target>
 
