@@ -23,13 +23,46 @@ parser code  {:
   }
 :};
 
-terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED,
-RECORD, SET, FILE;
-terminal UNTIL, REPEAT, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, WITH;
-terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, ASSIGNMENT, LBRAC, RBRAC, DOTDOT;
-terminal java.lang.String IDENTIFIER;
-terminal INTEGER_LITERAL, FLOATING_POINT_LITERAL, PLUS, MINUS, EQUALS, STRING_LITERAL,  NOT, NIL, NOTEQUAL, LT, GREATERT, LE, GE, IN, OR,
-DIV, MOD, STAR, UPARRAOW, SLASH, INTEGER, BOOLEAN, IMPLEMENTATION, INTERFACE, EXTERNAL,FALSE, TRUE, UNIT, REAL, CHAR, XOR, STARSTAR, UPARROW, GT, EQUAL, STRING;
+
+//---------------------------TERMINALS------------------------------------------
+
+// PALAVRAS RESERVADAS
+terminal PROGRAM, BEGIN, END, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD,
+PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED, RECORD, SET, FILE,
+IMPLEMENTATION, INTERFACE, EXTERNAL, IN, UNTIL, REPEAT, FOR, TO, DOWNTO,
+IF, THEN, ELSE, CASE, OF, WITH, UNIT;
+
+// TIPOS
+terminal INTEGER, BOOLEAN, REAL, STRING, CHAR;
+
+// VALUES
+terminal java.lang.String IDENTIFIER, NIL, STRING_LITERAL, INTEGER_LITERAL,
+FLOATING_POINT_LITERAL, TRUE, FALSE;
+
+// SEPARADORES
+terminal DOT, LPAREN, RPAREN, COMMA, SEMICOLON, COLON, ASSIGNMENT, LBRAC,
+RBRAC, DOTDOT;
+
+// RELATIONAL OPERATORS
+terminal LT, LE, GE, GT, EQUAL, NOTEQUAL;
+
+// BOOLEAN OPERATORS
+terminal AND, NOT, OR, ORELSE, ANDTHEN;
+
+// ARITHMETIC OPERATORS
+terminal PLUS, MINUS, SLASH, STAR, MOD, STARSTAR, DIV;
+
+// BIT OPERATORS
+terminal  XOR, SHL, SHR;
+
+// OTHERS
+terminal UPARROW;
+
+//---------------------------NON TERMINALS--------------------------------------
+
+
+// EXPRESSION
+non terminal arithmetic_operator, boolean_operator;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -52,6 +85,8 @@ non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
 non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux, variable_declaration_part_aux, primary_type;
 non terminal factor_aux;
+
+//-------------------------------GRAMMAR----------------------------------------
 
 start with compilation_unit;
 
@@ -97,7 +132,7 @@ constant_definition_part ::=
 ;
 
 constant_definition ::=
-  {:Logger.print("Constant Definition");:} IDENTIFIER EQUALS constant
+  {:Logger.print("Constant Definition");:} IDENTIFIER EQUAL constant
 ;
 
 constant_definition_aux ::=
@@ -112,7 +147,7 @@ type_definition_part ::=
 ;
 
 type_definition ::=
-  {:Logger.print("Type definition");:} IDENTIFIER EQUALS type
+  {:Logger.print("Type definition");:} IDENTIFIER EQUAL type
 ;
 
 uses_definition_part ::=
@@ -424,8 +459,7 @@ expression ::=
 
 expression_aux ::=
   {:Logger.print("Expression Aux - line 1");:} |
-  {:Logger.print("Expression Aux - line 2");:} simple_expression |
-  {:Logger.print("Expression Aux - line 3");:} relational_operator
+  {:Logger.print("Expression Aux - RELOP exp");:} relational_operator simple_expression
 ;
 
 simple_expression ::=
@@ -433,12 +467,14 @@ simple_expression ::=
 ;
 
 simple_expression_aux ::=
-  {:Logger.print("Simple Expression Aux - line 1");:} |
-  {:Logger.print("Simple Expression Aux - line 2");:} addition_operator term simple_expression_aux
+  {:Logger.print("Simple Expression Aux - ");:} |
+  {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator term simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator term simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator    term simple_expression_aux
 ;
 
 term ::=
-  {:Logger.print("Term");:} factor term_aux
+  {:Logger.print("Term");:} factor
 ;
 
 term_aux ::=
@@ -462,19 +498,28 @@ factor_aux ::=
 ;
 
 relational_operator ::=
-  {:Logger.print("Relational Operator - line 1");:} EQUALS |
-  {:Logger.print("Relational Operator - line 2");:} NOTEQUAL |
-  {:Logger.print("Relational Operator - line 3");:} LT |
-  {:Logger.print("Relational Operator - line 4");:} LE |
-  {:Logger.print("Relational Operator - line 5");:} GREATERT |
-  {:Logger.print("Relational Operator - line 6");:} GE |
-  {:Logger.print("Relational Operator - line 7");:} IN
+  {:Logger.print("Relational Operator - =");:} EQUAL |
+  {:Logger.print("Relational Operator - <>");:} NOTEQUAL |
+  {:Logger.print("Relational Operator - <");:} LT |
+  {:Logger.print("Relational Operator - <=");:} LE |
+  {:Logger.print("Relational Operator - >=");:} GE |
+  {:Logger.print("Relational Operator - >");:} GT
 ;
 
-addition_operator ::=
-  {:Logger.print("Addition Operator - line 1");:} PLUS |
-  {:Logger.print("Addition Operator - line 2");:} MINUS |
-  {:Logger.print("Addition Operator - line 3");:} OR
+arithmetic_operator ::=
+  {:Logger.print("Arithmetic Operator : +");:} PLUS |
+  {:Logger.print("Arithmetic Operator : -");:} MINUS |
+  {:Logger.print("Arithmetic Operator : *");:} STAR |
+  {:Logger.print("Arithmetic Operator : /");:} SLASH |
+  {:Logger.print("Arithmetic Operator : %");:} MOD
+;
+
+boolean_operator ::=
+  {:Logger.print("Boolean Operator - ");:} AND |
+  {:Logger.print("Boolean Operator - ");:} NOT |
+  {:Logger.print("Boolean Operator - ");:} OR |
+  {:Logger.print("Boolean Operator - ");:} ORELSE |
+  {:Logger.print("Boolean Operator - ");:} ANDTHEN
 ;
 
 multiplication_operator ::=
@@ -497,7 +542,7 @@ component_variable ::=
 component_variable_aux ::=
   {:Logger.print("Component Variable Aux - [ exp_list ]");:} LBRAC expression_list RBRAC
 | {:Logger.print("Component Variable Aux - .field_identifier");:} DOT field_identifier
-| {:Logger.print("Component Variable Aux - UPARROW");:} UPARRAOW
+| {:Logger.print("Component Variable Aux - UPARROW");:} UPARROW
 ;
 
 indexed_variable ::=
@@ -532,7 +577,7 @@ optional_actual_parameter_list ::=
 ;
 
 file_buffer ::=
-  {:Logger.print("File Bufffer");:} file_variable UPARRAOW
+  {:Logger.print("File Bufffer");:} file_variable UPARROW
 ;
 
 // Types
@@ -625,7 +670,7 @@ file_component_type ::=
 ;
 
 pointer_type ::=
-  {:Logger.print("Pointer Type");:} UPARRAOW type_identifier
+  {:Logger.print("Pointer Type");:} UPARROW type_identifier
 ;
 
 // Record Fields
@@ -684,7 +729,7 @@ file_variable ::=
 ;
 
 referenced_variable ::=
-  {:Logger.print("Referenced Variable");:} pointer_variable UPARRAOW
+  {:Logger.print("Referenced Variable");:} pointer_variable UPARROW
 ;
 
 record_variable ::=
