@@ -3,6 +3,7 @@ import compiler.util.*;
 parser code  {:
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_CYAN = "\u001B[36m";
   public void report_error(String message, Object info){
    StringBuffer m = new StringBuffer(ANSI_RED + "Error on: \n");
 
@@ -94,11 +95,12 @@ non terminal factor_aux;
 start with compilation_unit;
 
 compilation_unit ::=
+  {:Logger.print( "\u001B[36m" );:}
 	program_heading block DOT
 ;
 
 program_heading ::=
-  {:Logger.print("Program Heading");:} PROGRAM IDENTIFIER program_heading_aux
+   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:}program_heading_aux
 ;
 
 program_heading_aux ::=
