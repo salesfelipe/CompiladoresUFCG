@@ -1,7 +1,7 @@
 <!--
 Java Compiler Project
 Date:
-    2016-Ago-29
+    2017-Mar-03
 -->
 <project name="projetoCompiladores" basedir="." default="jar">
 
@@ -74,12 +74,23 @@ Date:
       <arg value="test/radius.pas"/>
 		</java>
 
+    <!-- Conditional Statements -->
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/nestedifelse.pas"/>
+		</java>
+
+    <!-- Loops -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/for.pas"/>
 		</java>
-
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/nestedifelse.pas"/>
+      <arg value="test/whiledoloop.pas"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/repeat.pas"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/nestedloop.pas"/>
 		</java>
   </target>
 
