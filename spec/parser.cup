@@ -344,10 +344,7 @@ actual_parameter_list ::=
 ;
 
 actual_parameter ::=
-  {:Logger.print("Actual Parameter - line 1");:} actual_value |
-  {:Logger.print("Actual Parameter - line 2");:} actual_variable |
-  {:Logger.print("Actual Parameter - line 3");:} actual_procedure |
-  {:Logger.print("Actual Parameter - line 4");:} actual_function
+  {:Logger.print("Actual Parameter - line 1");:} expression
 ;
 
 actual_parameter_aux ::=
@@ -426,9 +423,9 @@ expression ::=
 ;
 
 expression_aux ::=
-  {:Logger.print("Expression Aux - line 2");:} |
-  {:Logger.print("Expression Aux - line 3");:} simple_expression |
-  {:Logger.print("Expression Aux - line 1");:} relational_operator
+  {:Logger.print("Expression Aux - line 1");:} |
+  {:Logger.print("Expression Aux - line 2");:} simple_expression |
+  {:Logger.print("Expression Aux - line 3");:} relational_operator
 ;
 
 simple_expression ::=
@@ -450,18 +447,18 @@ term_aux ::=
 ;
 
 factor ::=
-  {:Logger.print("Factor - line 2");:} number |
-  {:Logger.print("Factor - line 3");:} string |
-  {:Logger.print("Factor - line 4");:} set |
-  {:Logger.print("Factor - line 5");:} NIL |
-  {:Logger.print("Factor - line 9");:} LPAREN expression RPAREN |
-  {:Logger.print("Factor - line 10");:} NOT factor |
-  {:Logger.print("Factor - line 8");:} factor_aux
+  {:Logger.print("Factor - number");:} number |
+  {:Logger.print("Factor - string");:} string |
+  {:Logger.print("Factor - set");:} set |
+  {:Logger.print("Factor - NIL");:} NIL |
+  {:Logger.print("Factor - ( expression )");:} LPAREN expression RPAREN |
+  {:Logger.print("Factor - not factor");:} NOT factor |
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER factor_aux
 ;
 
 factor_aux ::=
-  {:Logger.print("Factor Aux - line 1");:} variable |
-  {:Logger.print("Factor Aux - line 2");:} function_designator
+  {:Logger.print("Factor Aux - variable");:} component_variable |
+  {:Logger.print("Factor Aux - function");:} function_designator
 ;
 
 relational_operator ::=
@@ -489,18 +486,18 @@ multiplication_operator ::=
 ;
 
 variable ::=
-  {:Logger.print("Variable - line 1");:} variable_identifier |
-  {:Logger.print("Variable - line 2");:} component_variable
+  {:Logger.print("Variable - line 1");:} variable_identifier component_variable
 ;
 
 component_variable ::=
-  {:Logger.print("Component Variable - line 1");:} variable_identifier component_variable_aux  // LBRAC expression_list RBRAC |
+  {:Logger.print("Component Variable - vazio");:} |
+  {:Logger.print("Component Variable - line 2");:} component_variable_aux  // LBRAC expression_list RBRAC |
 ;
 
 component_variable_aux ::=
-  {:Logger.print("Component Variable Aux - line 1");:} LBRAC expression_list RBRAC
-| {:Logger.print("Component Variable Aux - line 2");:} DOT field_identifier
-| {:Logger.print("Component Variable Aux - line 3");:} UPARRAOW
+  {:Logger.print("Component Variable Aux - [ exp_list ]");:} LBRAC expression_list RBRAC
+| {:Logger.print("Component Variable Aux - .field_identifier");:} DOT field_identifier
+| {:Logger.print("Component Variable Aux - UPARROW");:} UPARRAOW
 ;
 
 indexed_variable ::=
@@ -526,7 +523,7 @@ element_list_aux ::=
 ;
 
 function_designator ::=
-  {:Logger.print("Function Designator");:} function_identifier optional_actual_parameter_list
+  {:Logger.print("Function Designator");:} optional_actual_parameter_list
 ;
 
 optional_actual_parameter_list ::=
