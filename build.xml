@@ -58,13 +58,20 @@ Date:
     </jar>
   </target>
 
-  <target name="runAndComp" depends="jar">
-    <java jar="${jar.dist}" fork="true">
-		</java>
+  <target name="compt" depends="jar, test">
   </target>
 
-	<target name="run">
+	<target name="test">
     <java jar="${jar.dist}" fork="true">
+      <arg value="test/helloworld.pas"/>
+		</java>
+
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/lesson1.pas"/>
+		</java>
+
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/test.pas"/>
 		</java>
   </target>
 

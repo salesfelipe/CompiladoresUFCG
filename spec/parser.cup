@@ -1,15 +1,17 @@
 import compiler.util.*;
 
 parser code  {:
- public void report_error(String message, Object info){
-   StringBuffer m = new StringBuffer("Error: " + message + "\n");
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public void report_error(String message, Object info){
+   StringBuffer m = new StringBuffer(ANSI_RED + " Error: " + message + "\n" + ANSI_RESET);
    System.err.print(m);
- }
+  }
 
- public void report_fatal_error(String message, Object info) {
+  public void report_fatal_error(String message, Object info) {
    report_error(message, info);
-   throw new RuntimeException("Fatal Syntax Error");
- }
+   throw new RuntimeException(ANSI_RED + "Fatal Syntax Error" + ANSI_RESET);
+  }
 :};
 
 terminal PROGRAM, BEGIN, END, AND, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD, PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED,
@@ -39,7 +41,7 @@ element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
 non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
-non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux;
+non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux, variable_declaration_part_aux, primary_type;
 
 start with compilation_unit;
 
@@ -110,8 +112,12 @@ uses_definition_part ::=
 
 variable_declaration_part ::=
   {:Logger.print("Variable declaration part - line 1");:} |
-  {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part |
-  {:Logger.print("Variable declaration part - line 3");:} VAR variable_declaration SEMICOLON
+  {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part_aux
+;
+
+variable_declaration_part_aux ::=
+  {:Logger.print("Variable declaration part Aux - line 1");:} |
+  {:Logger.print("Variable declaration part Aux - line 2");:} variable_declaration_part
 ;
 
 variable_declaration ::=
@@ -487,9 +493,9 @@ component_variable ::=
 ;
 
 component_variable_aux ::=
-  LBRAC expression_list RBRAC
-| DOT field_identifier
-| UPARRAOW
+  {:Logger.print("Component Variable Aux - line 1");:} LBRAC expression_list RBRAC
+| {:Logger.print("Component Variable Aux - line 2");:} DOT field_identifier
+| {:Logger.print("Component Variable Aux - line 3");:} UPARRAOW
 ;
 
 indexed_variable ::=
@@ -534,8 +540,18 @@ type ::=
   {:Logger.print("Type - line 1");:} simple_type |
   {:Logger.print("Type - line 2");:} structured_type |
   {:Logger.print("Type - line 3");:} pointer_type |
-  {:Logger.print("Type - line 4");:} type_identifier
+  {:Logger.print("Type - line 4");:} primary_type
 ;
+
+primary_type ::=
+  {:Logger.print("Primary Type - STRING");:} STRING |
+  {:Logger.print("Primary Type - INTEGER");:} INTEGER |
+  {:Logger.print("Primary Type - CHAR");:} CHAR |
+  {:Logger.print("Primary Type - REAL");:} REAL |
+  {:Logger.print("Primary Type - BOOLEAN");:} BOOLEAN |
+  {:Logger.print("Primary Type - ID");:}type_identifier
+;
+
 
 simple_type ::=
   {:Logger.print("Simple Type - line 1");:} subrange_type |
