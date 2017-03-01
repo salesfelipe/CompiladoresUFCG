@@ -802,11 +802,13 @@ public class Scanner implements java_cup.runtime.Scanner {
             }
           case 80: break;
           case 3: 
-            { return symbol(sym.IDENTIFIER, yytext());
+            { System.out.println("ID: " + yytext());
+                          return symbol(sym.IDENTIFIER, yytext());
             }
           case 81: break;
           case 4: 
-            { return symbol(sym.INTEGER_LITERAL, yytext());
+            { System.out.println("INTEGER : " + yytext());
+                          return symbol(sym.INTEGER_LITERAL, yytext());
             }
           case 82: break;
           case 5: 
@@ -878,7 +880,8 @@ public class Scanner implements java_cup.runtime.Scanner {
             }
           case 99: break;
           case 22: 
-            { return symbol(sym.STRING_LITERAL, yytext());
+            { System.out.println("STRING : " + yytext());
+                          return symbol(sym.STRING_LITERAL, yytext());
             }
           case 100: break;
           case 23: 
@@ -930,7 +933,8 @@ public class Scanner implements java_cup.runtime.Scanner {
             }
           case 112: break;
           case 35: 
-            { return symbol(sym.FLOATING_POINT_LITERAL, yytext());
+            { System.out.println("REAL: " + yytext());
+                          return symbol(sym.FLOATING_POINT_LITERAL, yytext());
             }
           case 113: break;
           case 36: 

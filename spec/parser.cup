@@ -4,8 +4,17 @@ parser code  {:
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
   public void report_error(String message, Object info){
-   StringBuffer m = new StringBuffer(ANSI_RED + " Error: " + message + "\n" + ANSI_RESET);
-   System.err.print(m);
+   StringBuffer m = new StringBuffer(ANSI_RED + "Error on: \n");
+
+   if (info instanceof compiler.core.JavaSymbol) {
+      compiler.core.JavaSymbol s = ((compiler.core.JavaSymbol) info);
+
+      m.append( s.toString()  + "\n");
+   }
+
+   m.append("Message : " + message  + "\n" + ANSI_RESET);
+
+   System.out.println(m);
   }
 
   public void report_fatal_error(String message, Object info) {
@@ -191,7 +200,7 @@ function_heading ::=
 ;
 
 result_type ::=
-  {:Logger.print("Result type");:} type_identifier
+  {:Logger.print("Result type");:} type
 ;
 
 function_identification ::=
@@ -381,8 +390,7 @@ function_parameter_section ::=
 ;
 
 parameter_type ::=
-  {:Logger.print("Parameter type - line 1");:} type_identifier |
-  {:Logger.print("Parameter type - line 2");:} conformant_array_schema
+  {:Logger.print("Parameter type - line 1");:} type
 ;
 
 conformant_array_schema ::=

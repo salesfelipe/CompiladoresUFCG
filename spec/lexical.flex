@@ -174,13 +174,17 @@ Z = [zZ]
 	"{"				   {}
 	"}"                {}
 
-	{CharacterString}  { return symbol(sym.STRING_LITERAL, yytext()); }
+	{CharacterString}  {    System.out.println("STRING : " + yytext());
+                          return symbol(sym.STRING_LITERAL, yytext());}
 
-  {DigSeq}           { return symbol(sym.INTEGER_LITERAL, yytext()); }
+  {DigSeq}           {    System.out.println("INTEGER : " + yytext());
+                          return symbol(sym.INTEGER_LITERAL, yytext());}
 
-  {RealNumber}       { return symbol(sym.FLOATING_POINT_LITERAL, yytext()); }
+  {RealNumber}       {    System.out.println("REAL: " + yytext());
+                          return symbol(sym.FLOATING_POINT_LITERAL, yytext());}
 
-  {Identifier}       { return symbol(sym.IDENTIFIER, yytext()); }
+  {Identifier}       {    System.out.println("ID: " + yytext());
+                          return symbol(sym.IDENTIFIER, yytext());}
 
   {WhiteSpace}       { /* faz nada */ }
 

@@ -71,7 +71,7 @@ Date:
 		</java>
 
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/test.pas"/>
+      <arg value="test/radius.pas"/>
 		</java>
   </target>
 
