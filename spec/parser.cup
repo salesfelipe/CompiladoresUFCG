@@ -29,8 +29,10 @@ parser code  {:
 // PALAVRAS RESERVADAS
 terminal PROGRAM, BEGIN, END, ARRAY, LABEL, CONST, TYPE, VAR, FORWARD,
 PROCEDURE, FUNCTION, USES, GOTO, WHILE, DO, PACKED, RECORD, SET, FILE,
-IMPLEMENTATION, INTERFACE, EXTERNAL, IN, UNTIL, REPEAT, FOR, TO, DOWNTO,
-IF, THEN, ELSE, CASE, OF, WITH, UNIT;
+UNTIL, REPEAT, FOR, TO, DOWNTO,
+IF, THEN, ELSE, CASE, OF, WITH ;
+// INTERFACE,IMPLEMENTATION,EXTERNAL,IN,UNIT
+
 
 // TIPOS
 terminal INTEGER, BOOLEAN, REAL, STRING, CHAR;
@@ -50,10 +52,11 @@ terminal LT, LE, GE, GT, EQUAL, NOTEQUAL;
 terminal AND, NOT, OR, ORELSE, ANDTHEN;
 
 // ARITHMETIC OPERATORS
-terminal PLUS, MINUS, SLASH, STAR, MOD, STARSTAR, DIV;
+terminal PLUS, MINUS, SLASH, STAR, MOD, DIV;
+// STARSTAR,
 
 // BIT OPERATORS
-terminal  XOR, SHL, SHR;
+//terminal  XOR, SHL, SHR;
 
 // OTHERS
 terminal UPARROW;
@@ -76,8 +79,8 @@ non terminal type_identifier, constant_identifier, number, string, real_number, 
 actual_parameter, actual_value, actual_variable, actual_function, actual_procedure, actual_parameter_aux;
 non terminal value_parameter_section, variable_parameter_section, procedure_parameter_section, function_parameter_section, parameter_type,
 conformant_array_schema, packed_conformant_array_schema, unpacked_conformant_array_schema, bound_specification, bound_specification_aux;
-non terminal ordinal_type_identifier, simple_expression, expression_aux, relational_operator, term, simple_expression_aux, addition_operator,
-factor, term_aux, multiplication_operator, set, bound_identifier, function_designator, entire_variable, component_variable;
+non terminal ordinal_type_identifier, simple_expression, expression_aux, relational_operator, term, simple_expression_aux,
+factor, term_aux, multiplication_operator, set, bound_identifier, function_designator, component_variable;
 non terminal referenced_variable, field_identifier, indexed_variable, field_designator, file_buffer, array_variable, expression_list,
 element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
@@ -387,7 +390,7 @@ actual_parameter_aux ::=
   {:Logger.print("Actual Parameter Aux - line 2");:} COMMA actual_parameter actual_parameter_aux
 ;
 
-actual_value ::=
+/*actual_value ::=
   {:Logger.print("Actual Value");:} expression
 ;
 
@@ -397,7 +400,7 @@ actual_procedure ::=
 
 actual_function ::=
   {:Logger.print("Actual Function");:} function_identifier
-;
+;*/
 
 formal_parameter_section ::=
   {:Logger.print("Formal parameter section - line 1");:} value_parameter_section |
@@ -477,10 +480,10 @@ term ::=
   {:Logger.print("Term");:} factor
 ;
 
-term_aux ::=
+/*term_aux ::=
   {:Logger.print("Term Aux - line 1");:} |
   {:Logger.print("Term Aux - line 2");:} multiplication_operator factor term_aux
-;
+;*/
 
 factor ::=
   {:Logger.print("Factor - number");:} number |
@@ -772,15 +775,15 @@ function_identifier ::=
   {:Logger.print("Function Identifier");:} IDENTIFIER
 ;
 
-bound_identifier ::=
+/*bound_identifier ::=
   {:Logger.print("Bound Identifier");:} IDENTIFIER
-;
+;*/
 
 // Low Level Definitions
 
-variable_list ::=
+/*variable_list ::=
  // WTF?
-;
+;*/
 
 identifier_list ::=
   {:Logger.print("Identifier List");:} IDENTIFIER identifier_list_aux

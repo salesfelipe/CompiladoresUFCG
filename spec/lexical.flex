@@ -72,7 +72,7 @@ T = [tT]
 U = [uU]
 V = [vV]
 W = [wW]
-X = [xX]
+/*X = [xX]*/
 Y = [yY]
 /*Z = [zZ]*/
 
@@ -108,9 +108,9 @@ Y = [yY]
 	{F}{U}{N}{C}{T}{I}{O}{N}                     { return symbol(sym.FUNCTION); }
 	{G}{O}{T}{O}                                 { return symbol(sym.GOTO); }
 	{I}{F}                                       { return symbol(sym.IF); }
-	{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   { return symbol(sym.IMPLEMENTATION); }
-	{I}{N}                                       { return symbol(sym.IN); }
-	{I}{N}{T}{E}{R}{F}{A}{C}{E}                  { return symbol(sym.INTERFACE); }
+	/*{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   { return symbol(sym.IMPLEMENTATION); }*/
+	/*{I}{N}                                       { return symbol(sym.IN); }*/
+	/*{I}{N}{T}{E}{R}{F}{A}{C}{E}                  { return symbol(sym.INTERFACE); }*/
 	{L}{A}{B}{E}{L}                 			       { return symbol(sym.LABEL); }
 	{M}{O}{D}                                    { return symbol(sym.MOD, yytext()); }
 	{N}{I}{L}                                    { return symbol(sym.NIL); }
@@ -124,13 +124,13 @@ Y = [yY]
 	{T}{H}{E}{N}                                 { return symbol(sym.THEN); }
 	{T}{O}                                       { return symbol(sym.TO); }
 	{T}{Y}{P}{E}                                 { return symbol(sym.TYPE); }
-	{U}{N}{I}{T}                                 { return symbol(sym.UNIT); }
+	/*{U}{N}{I}{T}                                 { return symbol(sym.UNIT); }*/
 	{U}{N}{T}{I}{L}                              { return symbol(sym.UNTIL); }
 	{U}{S}{E}{S}                                 { return symbol(sym.USES); }
 	{V}{A}{R}                                    { return symbol(sym.VAR); }
 	{W}{H}{I}{L}{E}                              { return symbol(sym.WHILE); }
 	{W}{I}{T}{H}                                 { return symbol(sym.WITH); }
-	{E}{X}{T}{E}{R}{N}{A}{L}                     { return symbol(sym.EXTERNAL); }
+	/* {E}{X}{T}{E}{R}{N}{A}{L}                     { return symbol(sym.EXTERNAL); } */
 
 	/* Tipos Pre-definidos */
 	{I}{N}{T}{E}{G}{E}{R}                        { return symbol(sym.INTEGER); }
@@ -173,7 +173,7 @@ Y = [yY]
 	"/"                                          { return symbol(sym.SLASH, yytext()); }
 	"*"                                          { return symbol(sym.STAR, yytext()); }
   "%"                                          { return symbol(sym.MOD, yytext());}
-	"**"                                         { return symbol(sym.STARSTAR); }
+	/* "**"                                         { return symbol(sym.STARSTAR); } */
 
   /* Boolean Operators */
   {A}{N}{D}			                   		         { return symbol(sym.AND, yytext()); }
@@ -183,9 +183,9 @@ Y = [yY]
   {N}{O}{T}                                    { return symbol(sym.NOT, yytext()); }
 
   /* Bit Operators */
-  {X}{O}{R}                                    { return symbol(sym.XOR); }
-  {S}{H}{L}                                    { return symbol(sym.SHL); }
-  {S}{H}{R}                                    { return symbol(sym.SHR); }
+/*  {X}{O}{R}                                    { return symbol(sym.XOR); } */
+/*  {S}{H}{L}                                    { return symbol(sym.SHL); } */
+/*  {S}{H}{R}                                    { return symbol(sym.SHR); } */
 
 	"->"                                         { return symbol(sym.UPARROW); }
 	"^"                                          { return symbol(sym.UPARROW); }
