@@ -158,13 +158,15 @@ Z = [zZ]
 	">"                { return symbol(sym.GT); }
 	"["                { return symbol(sym.LBRAC); }
 	"<="               { return symbol(sym.LE); }
-	"("                { return symbol(sym.LPAREN); }
+	"("                {  System.out.println("LPAREN : " + yytext());
+                        return symbol(sym.LPAREN); }
 	"<"                { return symbol(sym.LT); }
 	"-"                { return symbol(sym.MINUS, yytext()); }
 	"<>"               { return symbol(sym.NOTEQUAL); }
 	"+"                { return symbol(sym.PLUS, yytext()); }
 	"]"                { return symbol(sym.RBRAC); }
-	")"                { return symbol(sym.RPAREN); }
+	")"                {  System.out.println("RPAREN : " + yytext());
+                        return symbol(sym.RPAREN); }
 	"/"                { return symbol(sym.SLASH, yytext()); }
 	"*"                { return symbol(sym.STAR, yytext()); }
 	"**"               { return symbol(sym.STARSTAR); }

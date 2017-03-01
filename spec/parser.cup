@@ -51,6 +51,7 @@ non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_se
 non terminal subrange_type, enumerated_type, lower_bound, upper_bound, unpacked_structured_type, array_type, record_type, set_type,
 file_type, index_type, array_type_aux, element_type, field_list, base_type, file_component_type;
 non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux, variable_declaration_part_aux, primary_type;
+non terminal factor_aux;
 
 start with compilation_unit;
 
@@ -449,16 +450,18 @@ term_aux ::=
 ;
 
 factor ::=
-  {:Logger.print("Factor - line 1");:} variable |
   {:Logger.print("Factor - line 2");:} number |
   {:Logger.print("Factor - line 3");:} string |
   {:Logger.print("Factor - line 4");:} set |
   {:Logger.print("Factor - line 5");:} NIL |
-  {:Logger.print("Factor - line 6");:} constant_identifier |
-  {:Logger.print("Factor - line 7");:} bound_identifier |
-  {:Logger.print("Factor - line 8");:} function_designator |
   {:Logger.print("Factor - line 9");:} LPAREN expression RPAREN |
-  {:Logger.print("Factor - line 10");:} NOT factor
+  {:Logger.print("Factor - line 10");:} NOT factor |
+  {:Logger.print("Factor - line 8");:} factor_aux
+;
+
+factor_aux ::=
+  {:Logger.print("Factor Aux - line 1");:} variable |
+  {:Logger.print("Factor Aux - line 2");:} function_designator
 ;
 
 relational_operator ::=
@@ -489,12 +492,6 @@ variable ::=
   {:Logger.print("Variable - line 1");:} variable_identifier |
   {:Logger.print("Variable - line 2");:} component_variable
 ;
-
-entire_variable ::=
-  {:Logger.print("Entire Variable - line 1");:} variable_identifier |
-  {:Logger.print("Entire Variable - line 2");:} field_identifier
-;
-
 
 component_variable ::=
   {:Logger.print("Component Variable - line 1");:} variable_identifier component_variable_aux  // LBRAC expression_list RBRAC |
@@ -540,7 +537,6 @@ optional_actual_parameter_list ::=
 file_buffer ::=
   {:Logger.print("File Bufffer");:} file_variable UPARRAOW
 ;
-
 
 // Types
 
