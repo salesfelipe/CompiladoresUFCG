@@ -253,12 +253,12 @@ compiler_defined_directives ::=
 ;
 
 statement_sequence ::=
-  {:Logger.print("Statement sequence");:} statement SEMICOLON aux_statement_sequence
+  {:Logger.print("Statement sequence");:} statement aux_statement_sequence
 ;
 
 aux_statement_sequence ::=
   {:Logger.print("Aux statement sequence - line 1 -> ");:} |
-  {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:} statement SEMICOLON aux_statement_sequence
+  {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:}  SEMICOLON statement aux_statement_sequence
 ;
 
 statement ::=
@@ -278,8 +278,8 @@ simple_statement ::=
 ;
 
 simple_statement_aux ::=
-  {:Logger.print("Simple Statement Aux - line 1");:} procedure_statement |
-  {:Logger.print("Simple Statement Aux - line 2");:} assignment_statement
+  {:Logger.print("Simple Statement Aux - procedure");:} procedure_statement |
+  {:Logger.print("Simple Statement Aux - assignment");:} assignment_statement
 ;
 
 assignment_statement ::=
