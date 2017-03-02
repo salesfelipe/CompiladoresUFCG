@@ -47,7 +47,7 @@ DigSeq = [0-9]+
 
 CharacterString = '({NQUOTE}|'')+' | ''
 
-Comment = "(*" [^*] ~"*)" | "{" [^*] ~"}"
+Comment = "(*" [^*] ~"*)" | "{" [^*] ~"}" |  "{*" [^*] ~"*}"
 
 A = [aA]
 B = [bB]
@@ -156,8 +156,6 @@ Y = [yY]
                                                   return symbol(sym.LPAREN); }
   ")"                                          {  System.out.println("RPAREN : " + yytext());
                                                   return symbol(sym.RPAREN); }
-  "{"				                                   {}
-  "}"                                          {}
 
   /* Relational Operators */
   "="                                          { return symbol(sym.EQUAL); }
