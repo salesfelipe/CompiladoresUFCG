@@ -95,12 +95,12 @@ non terminal factor_aux;
 start with compilation_unit;
 
 compilation_unit ::=
-  {:Logger.print( "\u001B[36m" );:}
-	program_heading block DOT
+  {:Logger.print( "\u001B[35m" );:}
+	program_heading block DOT{:Logger.print( "\u001B[0m" );:}
 ;
 
 program_heading ::=
-   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:}program_heading_aux
+   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:} {:Logger.print("\u001B[34m");:}program_heading_aux
 ;
 
 program_heading_aux ::=

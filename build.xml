@@ -92,6 +92,12 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/nestedloop.pas"/>
 		</java>
+
+    <!-- Boolean exp -->
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/booleanexp.pas"/>
+		</java>
+
   </target>
 
 </project>
