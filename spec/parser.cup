@@ -66,7 +66,8 @@ terminal UPARROW;
 
 
 // EXPRESSION
-non terminal arithmetic_operator, boolean_operator;
+non terminal arithmetic_operator, boolean_operator, boolean;
+non terminal if_statement_aux;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -96,11 +97,11 @@ start with compilation_unit;
 
 compilation_unit ::=
   {:Logger.print( "\u001B[35m" );:}
-	program_heading block DOT{:Logger.print( "\u001B[0m" );:}
+	program_heading block DOT{:Logger.print( "\u001B[0m \u001B[0m" );:}
 ;
 
 program_heading ::=
-   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:} {:Logger.print("\u001B[34m");:}program_heading_aux
+   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:} {:Logger.print(" \u001B[47m \u001B[34m ");:}program_heading_aux
 ;
 
 program_heading_aux ::=
@@ -338,8 +339,12 @@ conditional_statement ::=
 ;
 
 if_statement ::=
-  {:Logger.print("If Statement - line 1");:} IF expression THEN statement |
-  {:Logger.print("If Statement - line 2");:} IF expression THEN statement ELSE statement
+  {:Logger.print("If Statement - line 1");:} IF expression THEN statement if_statement_aux
+;
+
+if_statement_aux ::=
+  {:Logger.print("If Statement Aux- ELSE");:} ELSE statement |
+  {:Logger.print("If Statement Aux- ");:} 
 ;
 
 case_statement ::=
@@ -494,7 +499,8 @@ factor ::=
   {:Logger.print("Factor - NIL");:} NIL |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression RPAREN |
   {:Logger.print("Factor - not factor");:} NOT factor |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER factor_aux
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER factor_aux |
+  {:Logger.print("Factor - boolean");:} boolean
 ;
 
 factor_aux ::=
@@ -834,6 +840,11 @@ sign_optional ::=
 
 string ::=
   {:Logger.print("String");:} STRING_LITERAL
+;
+
+boolean ::=
+  {:Logger.print("True");:} TRUE |
+  {:Logger.print("False");:} FALSE
 ;
 
 constant_aux ::=
