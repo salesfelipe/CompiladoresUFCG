@@ -62,10 +62,9 @@ Date:
   </target>
 
 	<target name="test">
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/helloworld.pas"/>
-		</java>
 
+
+    <!-- Avulsos -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/lesson1.pas"/>
 		</java>
@@ -74,28 +73,34 @@ Date:
       <arg value="test/radius.pas"/>
 		</java>
 
-    <!-- Conditional Statements -->
+    <!--  Tutorials Point-->
+
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/nestedifelse.pas"/>
+      <arg value="test/TutorialsPoint/helloworld.pas"/>
+    </java>
+
+    <!--    - Conditional Statements -->
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/TutorialsPoint/nestedifelse.pas"/>
 		</java>
 
-    <!-- Loops -->
+    <!--    - Loops -->
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/for.pas"/>
+      <arg value="test/TutorialsPoint/for.pas"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/whiledoloop.pas"/>
+      <arg value="test/TutorialsPoint/whiledoloop.pas"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/repeat.pas"/>
+      <arg value="test/TutorialsPoint/repeat.pas"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/nestedloop.pas"/>
+      <arg value="test/TutorialsPoint/nestedloop.pas"/>
 		</java>
 
     <!-- Boolean exp -->
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/booleanexp.pas"/>
+      <arg value="test/TutorialsPoint/booleanexp.pas"/>
 		</java>
 
   </target>
