@@ -65,6 +65,7 @@ terminal UPARROW;
 // EXPRESSION
 non terminal arithmetic_operator, boolean_operator, boolean;
 non terminal if_statement_aux;
+non terminal procedure_declaration_aux;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -178,11 +179,14 @@ procedure_and_function_declaration_part ::=
 ;
 
 procedure_declaration ::=
-	 {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_body |
-	 {:Logger.print("Procedure declaration - line 2");:} procedure_heading SEMICOLON directive |
-	 {:Logger.print("Procedure declaration - line 3");:} procedure_identification SEMICOLON procedure_body
+	 {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_declaration_aux
+	 {:Logger.print("Procedure declaration - line 2");:} procedure_identification SEMICOLON procedure_body
 ;
 
+procedure_declaration_aux ::=
+   {:Logger.print("Procedure declaration aux - line 1");:} procedure_body |
+   {:Logger.print("Procedure declaration aux - line 2");:} directive
+;
 
 procedure_body ::=
   {:Logger.print("Procedure body");:} block
@@ -235,6 +239,10 @@ function_identifier ::=
 
 function_heading ::=
   {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER optional_formal_parameter_list COLON result_type
+;
+
+procedure_heading ::=
+  {:Logger.print("Procedure Heading");:} PROCEDURE IDENTIFIER optional_formal_parameter_list
 ;
 
 result_type ::=

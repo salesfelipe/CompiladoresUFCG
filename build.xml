@@ -212,7 +212,7 @@ Date:
 		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/procedure.pas"/>
-      <arg value="false"/>
+      <arg value="true"/>
 		</java>
 
 
