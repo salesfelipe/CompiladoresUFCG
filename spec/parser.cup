@@ -1,11 +1,8 @@
 import compiler.util.*;
 
 parser code  {:
-  public static final String ANSI_RESET = "\u001B[0m";
-  public static final String ANSI_RED = "\u001B[31m";
-  public static final String ANSI_CYAN = "\u001B[36m";
   public void report_error(String message, Object info){
-   StringBuffer m = new StringBuffer(ANSI_RED + "Error on: \n");
+   StringBuffer m = new StringBuffer("Error on: \n");
 
    if (info instanceof compiler.core.JavaSymbol) {
       compiler.core.JavaSymbol s = ((compiler.core.JavaSymbol) info);
@@ -13,14 +10,14 @@ parser code  {:
       m.append( s.toString()  + "\n");
    }
 
-   m.append("Message : " + message  + "\n" + ANSI_RESET);
+   m.append("Message : " + message  + "\n");
 
    System.out.println(m);
   }
 
   public void report_fatal_error(String message, Object info) {
    report_error(message, info);
-   throw new RuntimeException(ANSI_RED + "Fatal Syntax Error" + ANSI_RESET);
+   throw new RuntimeException("Fatal Syntax Error");
   }
 :};
 
@@ -96,12 +93,11 @@ non terminal factor_aux;
 start with compilation_unit;
 
 compilation_unit ::=
-  {:Logger.print( "\u001B[35m" );:}
-	program_heading block DOT{:Logger.print( "\u001B[0m \u001B[0m" );:}
+	program_heading block DOT
 ;
 
 program_heading ::=
-   PROGRAM IDENTIFIER {:Logger.print( "\u001B[0m" );:} {:Logger.print(" \u001B[47m \u001B[34m ");:}program_heading_aux
+   PROGRAM IDENTIFIER program_heading_aux
 ;
 
 program_heading_aux ::=
@@ -344,7 +340,7 @@ if_statement ::=
 
 if_statement_aux ::=
   {:Logger.print("If Statement Aux- ELSE");:} ELSE statement |
-  {:Logger.print("If Statement Aux- ");:} 
+  {:Logger.print("If Statement Aux- ");:}
 ;
 
 case_statement ::=

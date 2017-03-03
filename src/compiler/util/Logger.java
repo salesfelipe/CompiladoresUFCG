@@ -1,9 +1,12 @@
 package compiler.util;
 
 public class Logger {
-	
-	public static void print(String value) {
-		System.out.println(value);
-	}
 
+	private static boolean debugging = true;
+
+	public static void print(String value) {
+		if(debugging) {
+			System.out.println(value);
+		}
+	}
 }

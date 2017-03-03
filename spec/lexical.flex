@@ -1,6 +1,7 @@
 package compiler.generated;
 import java_cup.runtime.*;
 import compiler.core.*;
+import compiler.util.*;
 
 %%
 
@@ -152,9 +153,9 @@ Y = [yY]
 	".."                                         { return symbol(sym.DOTDOT); }
   "["                                          { return symbol(sym.LBRAC); }
   "]"                                          { return symbol(sym.RBRAC); }
-  "("                                          {  System.out.println("LPAREN : " + yytext());
+  "("                                          {  Logger.print("LPAREN : " + yytext());
                                                   return symbol(sym.LPAREN); }
-  ")"                                          {  System.out.println("RPAREN : " + yytext());
+  ")"                                          {  Logger.print("RPAREN : " + yytext());
                                                   return symbol(sym.RPAREN); }
 
   /* Relational Operators */
@@ -188,16 +189,16 @@ Y = [yY]
 	"->"                                         { return symbol(sym.UPARROW); }
 	"^"                                          { return symbol(sym.UPARROW); }
 
-	{CharacterString}                            { System.out.println("STRING : " + yytext());
+	{CharacterString}                            { Logger.print("STRING : " + yytext());
                                                  return symbol(sym.STRING_LITERAL, yytext());}
 
-  {DigSeq}                                     { System.out.println("INTEGER : " + yytext());
+  {DigSeq}                                     { Logger.print("INTEGER : " + yytext());
                                                  return symbol(sym.INTEGER_LITERAL, yytext());}
 
-  {RealNumber}                                 { System.out.println("REAL: " + yytext());
+  {RealNumber}                                 { Logger.print("REAL: " + yytext());
                                                  return symbol(sym.FLOATING_POINT_LITERAL, yytext());}
 
-  {Identifier}                                 { System.out.println("ID: " + yytext());
+  {Identifier}                                 { Logger.print("ID: " + yytext());
                                                  return symbol(sym.IDENTIFIER, yytext());}
 
   {WhiteSpace}                                 { /* faz nada */ }
