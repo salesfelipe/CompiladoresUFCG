@@ -86,11 +86,6 @@ Date:
       <arg value="test/TutorialsPoint/constant.pas"/>
       <arg value="false"/>
 		</java>
-<!--
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/TutorialsPoint/obj.pas"/>
-      <arg value="false"/>
-		</java> -->
 
     <!--    - Conditional Statements -->
     <java jar="${jar.dist}" fork="true">
@@ -188,14 +183,14 @@ Date:
       <arg value="test/TutorialsPoint/sets.pas"/>
       <arg value="false"/>
 		</java> -->
-    <!-- <java jar="${jar.dist}" fork="true">
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/string.pas"/>
       <arg value="false"/>
-		</java> -->
-    <!-- <java jar="${jar.dist}" fork="true">
+		</java>
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/subrange-types.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/type.pas"/>
       <arg value="false"/>
