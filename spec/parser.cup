@@ -64,7 +64,7 @@ terminal UPARROW;
 
 // EXPRESSION
 non terminal arithmetic_operator, boolean_operator, boolean;
-non terminal if_statement_aux;
+non terminal if_statement_aux, const_aux2;
 non terminal procedure_declaration_aux;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
@@ -859,4 +859,14 @@ constant_aux ::=
 
 type_identifier ::=
   {:Logger.print("Type Identifier");:} IDENTIFIER
+;
+
+constant ::=
+  sign_optional const_aux2 |
+  string
+;
+
+const_aux2 ::=
+  constant_identifier |
+  number
 ;

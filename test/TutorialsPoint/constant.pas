@@ -11,5 +11,5 @@ begin
 
    d := 2 * r;
    c :=  PI * d;
-   writeln('The circumference of the circle is ',c:7:2);
+   writeln('The circumference of the circle is ',c);
 end.
