@@ -115,10 +115,10 @@ Date:
 		</java>
 
     <!--    - Operations -->
-    <!-- <java jar="${jar.dist}" fork="true">
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/arithmetic_op.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/op-precedence.pas"/>
       <arg value="false"/>
@@ -214,7 +214,6 @@ Date:
       <arg value="test/TutorialsPoint/procedure.pas"/>
       <arg value="false"/>
 		</java>
-
 
   </target>
 

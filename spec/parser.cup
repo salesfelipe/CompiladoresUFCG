@@ -168,7 +168,7 @@ variable_declaration_part ::=
 
 variable_declaration_part_aux ::=
   {:Logger.print("Variable declaration part Aux - Vazio");:} |
-  {:Logger.print("Variable declaration part Aux - line 2");:} variable_declaration_part
+  {:Logger.print("Variable declaration part Aux - line 2");:} variable_declaration SEMICOLON variable_declaration_part_aux
 ;
 
 variable_declaration ::=

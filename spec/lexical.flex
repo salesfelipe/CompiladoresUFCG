@@ -98,7 +98,7 @@ Y = [yY]
 	{B}{E}{G}{I}{N}		                   		     { return symbol(sym.BEGIN); }
 	{C}{A}{S}{E}                           		   { return symbol(sym.CASE); }
 	{C}{O}{N}{S}{T}                        		   { return symbol(sym.CONST); }
-	{D}{I}{V}                              		   { return symbol(sym.DIV, yytext()); }
+	{D}{I}{V}                              		   { return symbol(sym.SLASH, yytext()); }
 	{D}{O}                                 		   { return symbol(sym.DO); }
 	{D}{O}{W}{N}{T}{O}                     		   { return symbol(sym.DOWNTO); }
 	{E}{L}{S}{E}                           		   { return symbol(sym.ELSE); }
@@ -211,4 +211,4 @@ Y = [yY]
 /* No token was found for the input so through an error.  Print out an
    Illegal character message with the illegal character that was found. */
 
-[^]                                             { throw new Error("Illegal character <"+yytext()+">"); }
+[^]                                             { throw new Error("Lexical Error: Illegal character <"+yytext()+">"); }
