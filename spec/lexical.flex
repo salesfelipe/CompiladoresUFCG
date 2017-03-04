@@ -145,12 +145,12 @@ Y = [yY]
 
 
 	/* Separadores */
-  ";"                                          { Logger.print(" ; ");
+  ";"                                          { Logger.print("INPUT: ; ");
                                                 return symbol(sym.SEMICOLON); }
   "."                                          { return symbol(sym.DOT); }
   ":="                                         { return symbol(sym.ASSIGNMENT); }
 	":"                                          { return symbol(sym.COLON); }
-	","                                          { return symbol(sym.COMMA); }
+	","                                          {Logger.print("INPUT:  , "); return symbol(sym.COMMA); }
 	".."                                         { return symbol(sym.DOTDOT); }
   "["                                          { return symbol(sym.LBRAC); }
   "]"                                          { return symbol(sym.RBRAC); }

@@ -86,11 +86,11 @@ Date:
       <arg value="test/TutorialsPoint/constant.pas"/>
       <arg value="false"/>
 		</java>
-
+<!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/obj.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!--    - Conditional Statements -->
     <java jar="${jar.dist}" fork="true">
@@ -115,32 +115,32 @@ Date:
 		</java>
 
     <!--    - Operations -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/arithmetic_op.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/op-precedence.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/relational-op.pas"/>
       <arg value="false"/>
 		</java>
 
     <!--    - Arrays -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/2darray.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/array.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/packed-array.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
 
     <!--    - Loops -->
@@ -160,10 +160,10 @@ Date:
       <arg value="test/TutorialsPoint/nestedloop.pas"/>
       <arg value="false"/>
 		</java>
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/goto.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/repeat-continue.pas"/>
       <arg value="false"/>
@@ -184,22 +184,22 @@ Date:
       <arg value="test/TutorialsPoint/enumered-types.pas"/>
       <arg value="false"/>
 		</java>
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/sets.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/string.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/subrange-types.pas"/>
       <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
+		</java> -->
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/type.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/variable-types.pas"/>
       <arg value="false"/>
@@ -212,9 +212,8 @@ Date:
 		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/procedure.pas"/>
-      <arg value="true"/>
+      <arg value="false"/>
 		</java>
-
 
 
   </target>

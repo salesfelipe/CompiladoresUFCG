@@ -64,8 +64,8 @@ terminal UPARROW;
 
 // EXPRESSION
 non terminal arithmetic_operator, boolean_operator, boolean;
-non terminal if_statement_aux, const_aux2;
-non terminal procedure_declaration_aux;
+non terminal if_statement_aux, const_aux;
+non terminal procedure_declaration_aux, case_limbs;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -73,7 +73,7 @@ non terminal label_declaration_part, constant_definition_part, type_definition, 
 non terminal label, label_optionals, formal_parameter_section, aux_formal_parameter_section, procedure_identifier;
 non terminal constant_definition, constant_definition_aux, constant, optional_formal_parameter_list, formal_parameter_list;
 non terminal statement_part, procedure_identification, function_heading, function_identification, function_body, function_identifier;
-non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type, statement, aux_statement_sequence, optional_label, simple_statement, structured_statement, assignment_statement, procedure_statement, goto_statement, variable, expression, actual_parameter_list, compound_statement, repetitive_statement, conditional_statement, with_statement, while_statement, repeat_statement, for_statement, variable_identifier, initial_expression, final_expression, if_statement, case_statement, case_limb, case_limb_aux, case_label_list, constant_aux, record_variable, record_variable_aux;
+non terminal sign, sign_optional, digit_sequence, integer_number, compiler_defined_directives, statement_sequence, result_type, statement, aux_statement_sequence, optional_label, simple_statement, structured_statement, assignment_statement, procedure_statement, goto_statement, variable, expression, actual_parameter_list, compound_statement, repetitive_statement, conditional_statement, with_statement, while_statement, repeat_statement, for_statement, variable_identifier, initial_expression, final_expression, if_statement, case_statement, case_limb, case_limb_aux, case_label_list, case_label_list_aux, record_variable, record_variable_aux;
 non terminal type, variable_declaration, procedure_declaration, function_declaration, procedure_heading, procedure_body, directive;
 non terminal type_identifier, constant_identifier, number, string, real_number, simple_type, structured_type, pointer_type,
 actual_parameter, actual_value, actual_variable, actual_function, actual_procedure, actual_parameter_aux;
@@ -89,9 +89,11 @@ file_type, index_type, array_type_aux, element_type, field_list, base_type, file
 non terminal pointer_variable, variable_list, expression_list_aux, simple_statement_aux, variable_declaration_part_aux, primary_type;
 non terminal factor_aux;
 
+
 //-------------------------------GRAMMAR----------------------------------------
 
 start with compilation_unit;
+
 
 compilation_unit ::=
   {:Logger.print("Compilation UNIT");:}
@@ -273,12 +275,12 @@ statement ::=
 ;
 
 optional_label ::=
-  {:Logger.print("Optional Label - line 1");:} |
+  {:Logger.print("Optional Label - Vazio");:} |
   {:Logger.print("Optional Label - line 2");:} label COLON
 ;
 
 simple_statement ::=
-  {:Logger.print("Simple Statement - line 1");:} |
+  {:Logger.print("Simple Statement - Vazio");:} |
   {:Logger.print("Simple Statement - line 2");:} IDENTIFIER simple_statement_aux |
   {:Logger.print("Simple Statement - line 3");:} goto_statement
 ;
@@ -353,21 +355,29 @@ if_statement_aux ::=
 ;
 
 case_statement ::=
-  {:Logger.print("Case Statement - line 1");:} CASE expression OF case_limb case_limb_aux END |
-  {:Logger.print("Case Statement - line 2");:} CASE expression OF case_limb case_limb_aux SEMICOLON END
+  {:Logger.print("Case Statement - line 1");:} CASE expression OF case_limbs END
 ;
 
-case_limb_aux ::=
-  {:Logger.print("Case Limb Aux - line 1");:} |
-  {:Logger.print("Case Limb Aux - line 2");:} SEMICOLON case_limb case_limb_aux
+case_limbs ::=
+  {:Logger.print("Case Limbs");:} case_limb SEMICOLON case_limb_aux
 ;
 
 case_limb ::=
   {:Logger.print("Case Limb");:} case_label_list COLON statement
 ;
 
+case_limb_aux ::=
+  {:Logger.print("Case Limb Aux - Vazio");:} |
+  {:Logger.print("Case Limb Aux - line 1");:} case_limb SEMICOLON case_limb_aux
+;
+
 case_label_list ::=
-  {:Logger.print("Case Label List");:} constant constant_aux
+  {:Logger.print("Case Label List");:} constant case_label_list_aux
+;
+
+case_label_list_aux ::=
+  {:Logger.print("Case label list AUX - Vazio");:} |
+  {:Logger.print("Case label list AUX -  , constant case_label_list_aux");:} COMMA constant case_label_list_aux
 ;
 
 with_statement ::=
@@ -379,10 +389,6 @@ record_variable_aux ::=
   {:Logger.print("Record Variable Aux - line 2");:} COLON record_variable record_variable_aux
 ;
 
-constant_aux ::=
-  {:Logger.print("Constant Aux - line 1");:} |
-  {:Logger.print("Constant Aux - line 2");:} COLON constant constant_aux
-;
 
 label ::=
   {:Logger.print("Label");:} integer_number
@@ -853,20 +859,16 @@ boolean ::=
   {:Logger.print("False");:} FALSE
 ;
 
-constant_aux ::=
-  constant_identifier | number
-;
-
 type_identifier ::=
   {:Logger.print("Type Identifier");:} IDENTIFIER
 ;
 
 constant ::=
-  sign_optional const_aux2 |
-  string
+  {:Logger.print("Contant - [sign] const_aux");:}  sign_optional const_aux |
+  {:Logger.print("Contant - String");:} string
 ;
 
-const_aux2 ::=
-  constant_identifier |
-  number
+const_aux ::=
+  {:Logger.print("Contant Aux - ID");:}  constant_identifier |
+  {:Logger.print("Contant Aux - Number");:} number
 ;
