@@ -589,7 +589,7 @@ function_designator ::=
 ;
 
 optional_actual_parameter_list ::=
-  {:Logger.print("Optional Actual Parameter List - line 1");:} |
+  {:Logger.print("Optional Actual Parameter List - Vazio");:} |
   {:Logger.print("Optional Actual Parameter List - line 2");:} actual_parameter_list
 ;
 
@@ -600,10 +600,10 @@ file_buffer ::=
 // Types
 
 type ::=
-  {:Logger.print("Type - line 1");:} simple_type |
-  {:Logger.print("Type - line 2");:} structured_type |
-  {:Logger.print("Type - line 3");:} pointer_type |
-  {:Logger.print("Type - line 4");:} primary_type
+  {:Logger.print("Type - line 1");:} primary_type |
+  {:Logger.print("Type - line 2");:} simple_type |
+  {:Logger.print("Type - line 3");:} structured_type |
+  {:Logger.print("Type - line 4");:} pointer_type
 ;
 
 primary_type ::=
@@ -612,7 +612,7 @@ primary_type ::=
   {:Logger.print("Primary Type - CHAR");:} CHAR |
   {:Logger.print("Primary Type - REAL");:} REAL |
   {:Logger.print("Primary Type - BOOLEAN");:} BOOLEAN |
-  {:Logger.print("Primary Type - ID");:}type_identifier
+  {:Logger.print("Primary Type - ID");:} type_identifier
 ;
 
 
