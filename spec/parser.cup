@@ -281,7 +281,7 @@ optional_label ::=
 
 simple_statement ::=
   {:Logger.print("Simple Statement - Vazio");:} |
-  {:Logger.print("Simple Statement - line 2");:} IDENTIFIER simple_statement_aux |
+  {:Logger.print("Simple Statement - line 2");:} variable simple_statement_aux |
   {:Logger.print("Simple Statement - line 3");:} goto_statement
 ;
 
@@ -568,9 +568,9 @@ component_variable_aux ::=
 | {:Logger.print("Component Variable Aux - UPARROW");:} UPARROW
 ;
 
-indexed_variable ::=
+/*indexed_variable ::=
   {:Logger.print("Indexed Variable");:} array_variable LBRAC expression_list RBRAC
-;
+;*/
 
 field_designator ::=
   {:Logger.print("Field Designator");:} record_variable DOT field_identifier

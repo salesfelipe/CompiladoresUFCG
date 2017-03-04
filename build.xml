@@ -129,18 +129,18 @@ Date:
 		</java>
 
     <!--    - Arrays -->
-    <!-- <java jar="${jar.dist}" fork="true">
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/2darray.pas"/>
       <arg value="false"/>
-		</java> -->
-    <!-- <java jar="${jar.dist}" fork="true">
+		</java>
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/array.pas"/>
       <arg value="false"/>
-		</java> -->
-    <!-- <java jar="${jar.dist}" fork="true">
+		</java>
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/packed-array.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
 
 
     <!--    - Loops -->
@@ -214,6 +214,7 @@ Date:
       <arg value="test/TutorialsPoint/procedure.pas"/>
       <arg value="false"/>
 		</java>
+
 
   </target>
 
