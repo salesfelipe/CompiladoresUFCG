@@ -94,6 +94,7 @@ non terminal factor_aux;
 start with compilation_unit;
 
 compilation_unit ::=
+  {:Logger.print("Compilation UNIT");:}
 	program_heading block DOT
 ;
 
@@ -120,7 +121,7 @@ statement_part ::=
 ;
 
 label_declaration_part ::=
-  {:Logger.print("Label Declaration Part - line 1");:} |
+  {:Logger.print("Label Declaration Part - Vazio");:} |
   {:Logger.print("Label Declaration Part - line 2");:} LABEL label label_optionals SEMICOLON
 ;
 
@@ -130,7 +131,7 @@ label_optionals ::=
 ;
 
 constant_definition_part ::=
-  {:Logger.print("Constant definition part - line 1");:} |
+  {:Logger.print("Constant definition part - Vazio");:} |
   {:Logger.print("Constant definition part - line 2");:} CONST constant_definition SEMICOLON constant_definition_aux
 ;
 
@@ -144,7 +145,7 @@ constant_definition_aux ::=
 ;
 
 type_definition_part ::=
-  {:Logger.print("Type definition part - line 1");:} |
+  {:Logger.print("Type definition part - Vazio");:} |
   {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part |
   {:Logger.print("Type definition part - line 3");:} TYPE type_definition SEMICOLON
 ;
@@ -154,17 +155,17 @@ type_definition ::=
 ;
 
 uses_definition_part ::=
-  {:Logger.print("Uses definition Part - line 1");:} |
+  {:Logger.print("Uses definition Part - Vazio");:} |
   {:Logger.print("Uses definition Part - line 2");:} USES IDENTIFIER SEMICOLON
 ;
 
 variable_declaration_part ::=
-  {:Logger.print("Variable declaration part - line 1");:} |
+  {:Logger.print("Variable declaration part - Vazio");:} |
   {:Logger.print("Variable declaration part - line 2");:} VAR variable_declaration SEMICOLON variable_declaration_part_aux
 ;
 
 variable_declaration_part_aux ::=
-  {:Logger.print("Variable declaration part Aux - line 1");:} |
+  {:Logger.print("Variable declaration part Aux - Vazio");:} |
   {:Logger.print("Variable declaration part Aux - line 2");:} variable_declaration_part
 ;
 
@@ -173,14 +174,14 @@ variable_declaration ::=
 ;
 
 procedure_and_function_declaration_part ::=
-    {:Logger.print("Procedure and function declaration part - line 1");:}
-	| {:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part
-	| {:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
+  {:Logger.print("Procedure and function declaration part - Vazio");:} |
+	{:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part |
+	{:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 procedure_declaration ::=
-	 {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_declaration_aux
-	 {:Logger.print("Procedure declaration - line 2");:} procedure_identification SEMICOLON procedure_body
+  {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_declaration_aux |
+  {:Logger.print("Procedure declaration - line 2");:} procedure_identification SEMICOLON procedure_body
 ;
 
 procedure_declaration_aux ::=
@@ -212,7 +213,7 @@ statement_part ::=
 ;
 
 optional_formal_parameter_list ::=
-  {:Logger.print("Optional formal parameter list - line 1");:} |
+  {:Logger.print("Optional formal parameter list - Vazio");:} |
   {:Logger.print("Optional formal parameter list - line 2");:} formal_parameter_list
 ;
 
@@ -221,7 +222,7 @@ formal_parameter_list ::=
 ;
 
 aux_formal_parameter_section ::=
-  {:Logger.print("Aux formal parameter section - line 1");:} |
+  {:Logger.print("Aux formal parameter section - Vazio");:} |
   {:Logger.print("Aux formal parameter section - line 2");:} SEMICOLON formal_parameter_section aux_formal_parameter_section
 ;
 
@@ -262,7 +263,7 @@ statement_sequence ::=
 ;
 
 aux_statement_sequence ::=
-  {:Logger.print("Aux statement sequence - line 1 -> ");:} |
+  {:Logger.print("Aux statement sequence - Vazio -> ");:} |
   {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:}  SEMICOLON statement aux_statement_sequence
 ;
 
@@ -348,7 +349,7 @@ if_statement ::=
 
 if_statement_aux ::=
   {:Logger.print("If Statement Aux- ELSE");:} ELSE statement |
-  {:Logger.print("If Statement Aux- ");:}
+  {:Logger.print("If Statement Aux -  Vazio");:}
 ;
 
 case_statement ::=
@@ -417,7 +418,8 @@ formal_parameter_section ::=
   {:Logger.print("Formal parameter section - line 1");:} value_parameter_section |
   {:Logger.print("Formal parameter section - line 2");:} variable_parameter_section |
   {:Logger.print("Formal parameter section - line 3");:} procedure_parameter_section |
-  {:Logger.print("Formal parameter section - line 4");:} function_parameter_section
+  {:Logger.print("Formal parameter section - line 4");:} function_parameter_section |
+  {:Logger.print("Formal parameter section - Vazio");:}
 ;
 
 value_parameter_section ::=
@@ -481,7 +483,7 @@ simple_expression ::=
 ;
 
 simple_expression_aux ::=
-  {:Logger.print("Simple Expression Aux - ");:} |
+  {:Logger.print("Simple Expression Aux - Vazio");:} |
   {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator term simple_expression_aux |
   {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator term simple_expression_aux |
   {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator    term simple_expression_aux

@@ -145,7 +145,8 @@ Y = [yY]
 
 
 	/* Separadores */
-  ";"                                          { return symbol(sym.SEMICOLON); }
+  ";"                                          { Logger.print(" ; ");
+                                                return symbol(sym.SEMICOLON); }
   "."                                          { return symbol(sym.DOT); }
   ":="                                         { return symbol(sym.ASSIGNMENT); }
 	":"                                          { return symbol(sym.COLON); }
