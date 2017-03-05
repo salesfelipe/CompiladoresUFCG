@@ -154,10 +154,10 @@ Date:
       <arg value="test/TutorialsPoint/nestedloop.pas"/>
       <arg value="false"/>
 		</java>
-    <!-- <java jar="${jar.dist}" fork="true">
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/goto.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/repeat-continue.pas"/>
       <arg value="false"/>
