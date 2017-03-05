@@ -65,7 +65,7 @@ terminal UPARROW;
 // EXPRESSION
 non terminal arithmetic_operator, boolean_operator, boolean;
 non terminal if_statement_aux, const_aux;
-non terminal procedure_declaration_aux, case_limbs;
+non terminal procedure_declaration_aux, case_limbs, statement_aux;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
 non terminal declaration_part, procedure_and_function_declaration_part, program_heading_aux;
@@ -270,8 +270,12 @@ aux_statement_sequence ::=
 ;
 
 statement ::=
-  {:Logger.print("Statement - line 1");:} optional_label simple_statement |
-  {:Logger.print("Statement - line 2");:} optional_label structured_statement
+  {:Logger.print("Statement - line 1");:} optional_label statement_aux
+;
+
+statement_aux ::=
+  {:Logger.print("Statement Aux - line 1");:} simple_statement |
+  {:Logger.print("Statement Aux - line 2");:} structured_statement
 ;
 
 optional_label ::=
@@ -841,12 +845,12 @@ real_number ::=
 ;
 
 sign ::=
-  {:Logger.print("Sign - line 1");:} PLUS |
-  {:Logger.print("Sign - line 2");:} MINUS
+  {:Logger.print("Sign: +");:} PLUS |
+  {:Logger.print("Sign: -");:} MINUS
 ;
 
 sign_optional ::=
-  {:Logger.print("Sign Optional - line 1");:} |
+  {:Logger.print("Sign Optional - Vazio");:} |
   {:Logger.print("Sign Optional - line 2");:} sign
 ;
 
