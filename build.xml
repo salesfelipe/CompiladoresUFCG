@@ -178,7 +178,6 @@ Date:
       <arg value="test/TutorialsPoint/enumered-types.pas"/>
       <arg value="false"/>
 		</java>
-
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/string.pas"/>
       <arg value="false"/>
@@ -187,10 +186,6 @@ Date:
       <arg value="test/TutorialsPoint/subrange-types.pas"/>
       <arg value="false"/>
 		</java>
-    <!-- <java jar="${jar.dist}" fork="true">
-      <arg value="test/TutorialsPoint/type.pas"/>
-      <arg value="false"/>
-		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/variable-types.pas"/>
       <arg value="false"/>

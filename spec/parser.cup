@@ -64,7 +64,7 @@ terminal UPARROW;
 
 // EXPRESSION
 non terminal arithmetic_operator, boolean_operator, boolean;
-non terminal if_statement_aux, const_aux;
+non terminal if_statement_aux, const_aux, type_definition_part_aux;
 non terminal procedure_declaration_aux, case_limbs, statement_aux;
 
 non terminal compilation_unit, program_heading, block, identifier_list, identifier_list_aux, component_variable_aux;
@@ -128,7 +128,7 @@ label_declaration_part ::=
 ;
 
 label_optionals ::=
-    {:Logger.print("Label optionals - line 1");:} |
+    {:Logger.print("Label optionals - Vazio");:} |
     {:Logger.print("Label optionals - line 2");:} COMMA label label_optionals
 ;
 
@@ -142,14 +142,18 @@ constant_definition ::=
 ;
 
 constant_definition_aux ::=
-    {:Logger.print("Constant Definition aux - line 1");:} |
+    {:Logger.print("Constant Definition aux - Vazio");:} |
     {:Logger.print("Constant Definition aux - line 2");:} constant_definition SEMICOLON constant_definition_aux
 ;
 
 type_definition_part ::=
   {:Logger.print("Type definition part - Vazio");:} |
-  {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part |
-  {:Logger.print("Type definition part - line 3");:} TYPE type_definition SEMICOLON
+  {:Logger.print("Type definition part - line 2");:} TYPE type_definition SEMICOLON type_definition_part_aux
+;
+
+type_definition_part_aux ::=
+  {:Logger.print("Type definition part Aux - Vazio");:} |
+  {:Logger.print("Type definition part Aux - line 2");:} type_definition SEMICOLON type_definition_part_aux
 ;
 
 type_definition ::=
