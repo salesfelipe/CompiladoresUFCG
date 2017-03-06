@@ -269,7 +269,7 @@ statement_sequence ::=
 ;
 
 aux_statement_sequence ::=
-  {:Logger.print("Aux statement sequence - Vazio -> ");:} |
+  {:Logger.print("Aux statement sequence - Vazio");:} |
   {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:}  SEMICOLON statement aux_statement_sequence
 ;
 
@@ -393,7 +393,7 @@ with_statement ::=
 ;
 
 record_variable_aux ::=
-  {:Logger.print("Record Variable Aux - line 1");:} |
+  {:Logger.print("Record Variable Aux - Vazio");:} |
   {:Logger.print("Record Variable Aux - line 2");:} COLON record_variable record_variable_aux
 ;
 
@@ -403,7 +403,7 @@ label ::=
 ;
 
 actual_parameter_list ::=
-  {:Logger.print("Actual Parameter List - line 1");:} |
+  {:Logger.print("Actual Parameter List - Vazio");:} |
   {:Logger.print("Actual Parameter List - line 2");:} LPAREN actual_parameter  actual_parameter_aux RPAREN
 ;
 
@@ -412,7 +412,7 @@ actual_parameter ::=
 ;
 
 actual_parameter_aux ::=
-  {:Logger.print("Actual Parameter Aux - line 1");:} |
+  {:Logger.print("Actual Parameter Aux - Vazio");:} |
   {:Logger.print("Actual Parameter Aux - line 2");:} COMMA actual_parameter actual_parameter_aux
 ;
 
@@ -471,7 +471,7 @@ unpacked_conformant_array_schema ::=
 ;
 
 bound_specification_aux ::=
-  {:Logger.print("Bound specification aux - line 1");:} |
+  {:Logger.print("Bound specification aux - Vazio");:} |
   {:Logger.print("Bound specification aux - line 2");:} SEMICOLON bound_specification bound_specification_aux
 ;
 
@@ -488,7 +488,7 @@ expression ::=
 ;
 
 expression_aux ::=
-  {:Logger.print("Expression Aux - line 1");:} |
+  {:Logger.print("Expression Aux - Vazio");:} |
   {:Logger.print("Expression Aux - RELOP exp");:} relational_operator simple_expression
 ;
 
@@ -566,7 +566,7 @@ variable ::=
 ;
 
 component_variable ::=
-  {:Logger.print("Component Variable - vazio");:} |
+  {:Logger.print("Component Variable - Vazio");:} |
   {:Logger.print("Component Variable - line 2");:} component_variable_aux  // LBRAC expression_list RBRAC |
 ;
 
@@ -589,12 +589,12 @@ set ::=
 ;
 
 element_list ::=
-  {:Logger.print("Element List - line 1");:} |
+  {:Logger.print("Element List - Vazio");:} |
   {:Logger.print("Element List - line 2");:} expression element_list_aux
 ;
 
 element_list_aux ::=
-  {:Logger.print("Element List Aux - line 1");:} |
+  {:Logger.print("Element List Aux - Vazio");:} |
   {:Logger.print("Element List Aux - line 2");:} COMMA expression element_list_aux
 ;
 
@@ -668,7 +668,7 @@ array_type ::=
 ;
 
 array_type_aux ::=
-  {:Logger.print("Array Type Aux - line 1");:} |
+  {:Logger.print("Array Type Aux - Vazio");:} |
   {:Logger.print("Array Type Aux - line 2");:} COMMA index_type array_type_aux
 ;
 
@@ -707,7 +707,7 @@ pointer_type ::=
 // Record Fields
 
 field_list ::=
-  {:Logger.print("Field List - line 1");:} |
+  {:Logger.print("Field List - Vazio");:} |
   {:Logger.print("Field List - line 2");:} field_list_aux |
   {:Logger.print("Field List - line 3");:} field_list_aux SEMICOLON
 ;
@@ -723,7 +723,7 @@ fixed_part ::=
 ;
 
 fixed_part_aux ::=
-  {:Logger.print("Fixed Part Aux - line 1");:} |
+  {:Logger.print("Fixed Part Aux - Vazio");:} |
   {:Logger.print("Fixed Part Aux - line 2");:} SEMICOLON record_section fixed_part_aux
 ;
 
@@ -736,12 +736,12 @@ variant_part ::=
 ;
 
 variant_part_aux ::=
-  {:Logger.print("Variant Part Aux - line 1");:} |
+  {:Logger.print("Variant Part Aux - Vazio");:} |
   {:Logger.print("Variant Part Aux - line 2");:} SEMICOLON variant
 ;
 
 tag_field ::=
-  {:Logger.print("Tag Field - line 1");:} |
+  {:Logger.print("Tag Field - Vazio");:} |
   {:Logger.print("Tag Field - line 2");:} IDENTIFIER COLON
 ;
 
@@ -818,7 +818,7 @@ identifier_list ::=
 ;
 
 identifier_list_aux ::=
-  {:Logger.print("Identifier List Aux - line 1");:} |
+  {:Logger.print("Identifier List Aux - Vazio");:} |
   {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER identifier_list_aux
 ;
 
@@ -827,7 +827,7 @@ expression_list ::=
 ;
 
 expression_list_aux ::=
-  {:Logger.print("Expression List Aux - line 1");:} |
+  {:Logger.print("Expression List Aux - Vazio");:} |
   {:Logger.print("Expression List Aux - line 2");:} COMMA expression expression_list_aux
 ;
 
