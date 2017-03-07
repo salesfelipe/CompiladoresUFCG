@@ -1,9 +1,6 @@
 package compiler.analysis;
 
-import compiler.core.Function;
-import compiler.core.ScopedEntity;
-import compiler.core.Type;
-import compiler.core.Variable;
+import compiler.core.*;
 import compiler.exceptions.InvalidVariableException;
 
 import java.util.ArrayList;
@@ -42,26 +39,11 @@ public class SemanticImpl {
         return scopeStack.peek();
     }
 
-    public void addVariableToGlobalScope(Variable variable) throws InvalidVariableException {
-
-        if(globalVariables.containsKey(variable.getIdentifier())){
-            throw new InvalidVariableException("Eagle Given!!");
-        }
-
-        globalVariables.put(variable.getIdentifier(), variable);
-    }
-
-    public static void createVariables(ArrayList<String> ids, String type) throws InvalidVariableException {
-        System.out.println("PRINTTTT" + type + ids.toString());
-        for(int i = 0; i < ids.size() ; i++) {
-            singleton.addVariableToGlobalScope(new Variable(new Type(type), ids.get(i), false));
-        }
-    }
-
     public void addVariablesFromTempList(Type type) throws Exception {
         for (Variable variable : tempVariables) {
             variable.setType(type);
             addVariable(variable);
+
         }
 
         tempVariables = new ArrayList<Variable>();

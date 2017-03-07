@@ -40,4 +40,8 @@ public class Variable {
     public void setIsConstant(Boolean isConstant) {
         this.isConstant = isConstant;
     }
+
+    public Boolean getIsConstant() {
+        return isConstant;
+    }
 }

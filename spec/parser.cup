@@ -137,12 +137,12 @@ label_optionals ::=
 ;
 
 constant_definition_part ::=
-  {:Logger.print("Constant definition part - Vazio");:} |
+  {:Logger.print("Constant definition part - Vazio");:} {: SemanticImpl.getInstance().addVariablesFromTempList(new Type(null)); :} |
   {:Logger.print("Constant definition part - line 2");:} CONST constant_definition SEMICOLON constant_definition_aux
 ;
 
 constant_definition ::=
-  {:Logger.print("Constant Definition");:} IDENTIFIER EQUAL constant
+  {:Logger.print("Constant Definition");:} IDENTIFIER:i EQUAL constant {: SemanticImpl.getInstance().addVariableToTempList(new Variable(null, i, true)); :}
 ;
 
 constant_definition_aux ::=
@@ -788,7 +788,7 @@ field_identifier ::=
 ;
 
 constant_identifier ::=
-  {:Logger.print("Constant Identifier");:} IDENTIFIER
+  {:Logger.print("Constant Identifier");:} IDENTIFIER:id {:RESULT=id;:}
 ;
 
 variable_identifier ::=
@@ -863,7 +863,7 @@ sign_optional ::=
 ;
 
 string ::=
-  {:Logger.print("String");:} STRING_LITERAL
+  {:Logger.print("String");:} STRING_LITERAL:s {:RESULT=s;:}
 ;
 
 boolean ::=
@@ -876,11 +876,11 @@ type_identifier ::=
 ;
 
 constant ::=
-  {:Logger.print("Contant - [sign] const_aux");:}  sign_optional const_aux |
-  {:Logger.print("Contant - String");:} string
+  {:Logger.print("Contant - [sign] const_aux");:}  sign_optional const_aux:ca {:RESULT=ca;:} |
+  {:Logger.print("Contant - String");:} string:s {:RESULT=s;:}
 ;
 
 const_aux ::=
-  {:Logger.print("Contant Aux - ID");:}  constant_identifier |
-  {:Logger.print("Contant Aux - Number");:} number
+  {:Logger.print("Contant Aux - ID");:}  constant_identifier:ci {:RESULT=ci;:}|
+  {:Logger.print("Contant Aux - Number");:} number:n {:RESULT=n;:}
 ;
