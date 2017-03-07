@@ -23,6 +23,7 @@ public class Function extends ScopedEntity{
     public boolean isReturnValid(){
         return this.declaredReturnType.equals(this.returnType);
     }
+
     public Type getDeclaredReturnType() {
         return declaredReturnType;
     }
