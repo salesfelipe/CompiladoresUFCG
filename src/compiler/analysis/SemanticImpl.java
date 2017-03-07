@@ -16,7 +16,8 @@ public class SemanticImpl {
     private static ArrayList<ScopedEntity> functionsAndProcedures;
     private static List<Variable> tempVariables;
     private static HashMap<String, String> globalIdentifiers;
-
+    private static List<String> tempIdList;
+    private static List<Parameter> tempParameters;
 
     private static void initCollections() {
         globalVariables = new HashMap<String, Variable>();
@@ -24,6 +25,23 @@ public class SemanticImpl {
         scopeStack = new Stack<ScopedEntity>();
         functionsAndProcedures = new ArrayList<>();
         globalIdentifiers = new HashMap<>();
+        tempIdList = new ArrayList<String>();
+        tempParameters = new ArrayList<Parameter>();
+    }
+
+    public void addIdToTempList(String id) {
+        tempIdList.add(id);
+    }
+    public void clearIdTempList() {
+        tempIdList.clear();
+    }
+
+    public void createParameters(Type type) {
+        for (int i = 0; i < tempIdList.size(); i++) {
+            tempParameters.add(new DeclarationParameter(type,tempIdList.get(i)));
+        }
+        tempIdList.clear();
+        prinTempParameterList();
     }
 
     public static SemanticImpl getInstance() {
@@ -63,7 +81,11 @@ public class SemanticImpl {
     }
 
     public void printTempList() {
-        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempVariables.toArray()));
+        System.out.println("!!!!!!!!!!!!!!!!!" + Arrays.toString(tempVariables.toArray()));
+    }
+
+    public void prinTempParameterList() {
+        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempParameters.toArray()));
     }
 
     public boolean checkVariableExistenceGlobal(String variableName) {
