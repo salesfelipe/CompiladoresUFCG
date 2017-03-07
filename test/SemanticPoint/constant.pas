@@ -3,7 +3,7 @@ const
 PI = 3.141592654;
 
 var
-r, d, c : real;   {variable declaration: radius, dia, circumference}
+PI, r, d, c : real;   {variable declaration: radius, dia, circumference}
 
 begin
    writeln('Enter the radius of the circle');

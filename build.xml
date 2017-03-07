@@ -63,7 +63,7 @@ Date:
 
 	<target name="semantico" depends="jar">
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/TutorialsPoint/constant.pas"/>
+      <arg value="test/SemanticPoint/constant.pas"/>
       <arg value="true"/>
 		</java>
   </target>
