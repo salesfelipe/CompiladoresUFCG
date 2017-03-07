@@ -1,4 +1,8 @@
+import java_cup.runtime.*;
+import compiler.core.*;
+import compiler.analysis.*;
 import compiler.util.*;
+import java.util.ArrayList;
 
 parser code  {:
   public void report_error(String message, Object info){
@@ -176,7 +180,7 @@ variable_declaration_part_aux ::=
 ;
 
 variable_declaration ::=
-  {:Logger.print("Variable declaration");:} identifier_list COLON type
+  {:Logger.print("Variable declaration");:} identifier_list COLON type:t {: SemanticImpl.getInstance().addVariablesFromTempList(new Type((String)t)); :}
 ;
 
 procedure_and_function_declaration_part ::=
@@ -614,19 +618,19 @@ file_buffer ::=
 // Types
 
 type ::=
-  {:Logger.print("Type - line 1");:} primary_type |
-  {:Logger.print("Type - line 2");:} simple_type |
-  {:Logger.print("Type - line 3");:} structured_type |
-  {:Logger.print("Type - line 4");:} pointer_type
+  {:Logger.print("Type - line 1");:} primary_type:t {: RESULT = t; :} |
+  {:Logger.print("Type - line 2");:} simple_type:t {: RESULT = t; :} |
+  {:Logger.print("Type - line 3");:} structured_type:t {: RESULT = t; :} |
+  {:Logger.print("Type - line 4");:} pointer_type:t {: RESULT = t; :}
 ;
 
 primary_type ::=
-  {:Logger.print("Primary Type - STRING");:} STRING |
-  {:Logger.print("Primary Type - INTEGER");:} INTEGER |
-  {:Logger.print("Primary Type - CHAR");:} CHAR |
-  {:Logger.print("Primary Type - REAL");:} REAL |
-  {:Logger.print("Primary Type - BOOLEAN");:} BOOLEAN |
-  {:Logger.print("Primary Type - ID");:} type_identifier
+  {:Logger.print("Primary Type - STRING");:} STRING {: RESULT = "String"; :}|
+  {:Logger.print("Primary Type - INTEGER");:} INTEGER {: RESULT = "Integer"; :}|
+  {:Logger.print("Primary Type - CHAR");:} CHAR {: RESULT = "Char"; :}|
+  {:Logger.print("Primary Type - REAL");:} REAL {: RESULT = "Real"; :}|
+  {:Logger.print("Primary Type - BOOLEAN");:} BOOLEAN {: RESULT = "Boolean"; :}|
+  {:Logger.print("Primary Type - ID");:} type_identifier:id {: RESULT = id;  :}
 ;
 
 
@@ -792,7 +796,7 @@ variable_identifier ::=
 ;
 
 type_identifier ::=
-  {:Logger.print("Type Identifier");:} IDENTIFIER
+  {:Logger.print("Type Identifier");:} IDENTIFIER:id {: RESULT = id; :}
 ;
 
 procedure_identifier ::=
@@ -814,12 +818,12 @@ function_identifier ::=
 ;*/
 
 identifier_list ::=
-  {:Logger.print("Identifier List");:} IDENTIFIER identifier_list_aux
+  {:Logger.print("Identifier List");:} IDENTIFIER:id identifier_list_aux {: SemanticImpl.getInstance().addVariableToTempList(new Variable(null, id, false)); :}
 ;
 
 identifier_list_aux ::=
-  {:Logger.print("Identifier List Aux - Vazio");:} |
-  {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER identifier_list_aux
+  {:Logger.print("Identifier List Aux - Vazio"); :} |
+  {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER:id identifier_list_aux{: SemanticImpl.getInstance().addVariableToTempList(new Variable(null, id, false)); :}
 ;
 
 expression_list ::=

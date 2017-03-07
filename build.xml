@@ -61,6 +61,14 @@ Date:
   <target name="compt" depends="jar, test">
   </target>
 
+	<target name="semantico" depends="jar">
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/TutorialsPoint/constant.pas"/>
+      <arg value="true"/>
+		</java>
+  </target>
+
+
 	<target name="test">
 
     <!-- Avulsos -->
