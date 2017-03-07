@@ -185,13 +185,13 @@ variable_declaration ::=
 
 procedure_and_function_declaration_part ::=
   {:Logger.print("Procedure and function declaration part - Vazio");:} |
-	{:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON procedure_and_function_declaration_part |
+	{:Logger.print("Procedure and function declaration part - line 2");:}  procedure_declaration SEMICOLON procedure_and_function_declaration_part |
 	{:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 procedure_declaration ::=
-  {:Logger.print("Procedure declaration - line 1");:} procedure_heading SEMICOLON procedure_declaration_aux |
-  {:Logger.print("Procedure declaration - line 2");:} procedure_identification SEMICOLON procedure_body
+  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
+  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id SEMICOLON procedure_body {:RESULT=id;:}
 ;
 
 procedure_declaration_aux ::=
@@ -237,11 +237,11 @@ aux_formal_parameter_section ::=
 ;
 
 procedure_identification ::=
-  {:Logger.print("Procedure Identification");:} PROCEDURE procedure_identifier
+  {:Logger.print("Procedure Identification");:} PROCEDURE procedure_identifier:id {:RESULT=id;:}
 ;
 
 procedure_identifier ::=
-  {:Logger.print("Procedure identifier");:} IDENTIFIER
+  {:Logger.print("Procedure identifier");:} IDENTIFIER:id {:RESULT=id;:}
 ;
 
 function_identifier ::=
@@ -249,11 +249,11 @@ function_identifier ::=
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
+  {:Logger.print("Function Heading");:} FUNCTION {: SemanticImpl.getInstance().cleanTempList();:} IDENTIFIER:id optional_formal_parameter_list COLON result_type {:SemanticImpl.getInstance().printTempList(); RESULT=id;:}
 ;
 
 procedure_heading ::=
-  {:Logger.print("Procedure Heading");:} PROCEDURE IDENTIFIER optional_formal_parameter_list
+  {:Logger.print("Procedure Heading");:} PROCEDURE IDENTIFIER:id {:RESULT=id;:} optional_formal_parameter_list
 ;
 
 result_type ::=

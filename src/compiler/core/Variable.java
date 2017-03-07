@@ -44,4 +44,11 @@ public class Variable {
     public Boolean getIsConstant() {
         return isConstant;
     }
+
+    @Override
+    public String toString() {
+        return "Variable{" +
+                "identifier='" + identifier + '\'' +
+                '}';
+    }
 }

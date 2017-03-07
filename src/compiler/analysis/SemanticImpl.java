@@ -5,21 +5,17 @@ import compiler.exceptions.InvalidFunctionException;
 import compiler.exceptions.InvalidParameterException;
 import compiler.exceptions.InvalidVariableException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class SemanticImpl {
 
     private static Stack<ScopedEntity> scopeStack;
+
     private static SemanticImpl singleton;
     private static HashMap<String, Variable> globalVariables;
-    private static List<Variable> tempVariables;
     private static ArrayList<ScopedEntity> functionsAndProcedures;
-
+    private static List<Variable> tempVariables;
     private static HashMap<String, String> globalIdentifiers;
-
 
 
     private static void initCollections() {
@@ -59,6 +55,15 @@ public class SemanticImpl {
 
     public void addVariableToTempList(Variable var) {
         tempVariables.add(var);
+//        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempVariables.toArray()));
+    }
+
+    public void cleanTempList() {
+        tempVariables.clear();
+    }
+
+    public void printTempList() {
+        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempVariables.toArray()));
     }
 
     public boolean checkVariableExistenceGlobal(String variableName) {

@@ -3,7 +3,7 @@ var
    a, b, ret : integer;
 
 (*function definition *)
-function ret(num1, num2: integer): integer;
+function ret(num1, num2: integer; s1, s2, s3: string): integer;
 var
    (* local variable declaration *)
    result: integer;
