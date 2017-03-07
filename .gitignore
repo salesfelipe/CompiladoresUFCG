@@ -3,7 +3,6 @@
 *.out
 *.swp
 /bin
-/dist
 src/compiler/generated/
 .DS_Store
 ._.DS_Store
