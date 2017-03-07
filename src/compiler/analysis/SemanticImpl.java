@@ -1,6 +1,8 @@
 package compiler.analysis;
 
 import compiler.core.*;
+import compiler.exceptions.InvalidFunctionException;
+import compiler.exceptions.InvalidParameterException;
 import compiler.exceptions.InvalidVariableException;
 
 import java.util.ArrayList;
@@ -14,12 +16,18 @@ public class SemanticImpl {
     private static SemanticImpl singleton;
     private static HashMap<String, Variable> globalVariables;
     private static List<Variable> tempVariables;
+    private static ArrayList<ScopedEntity> functionsAndProcedures;
+
+    private static HashMap<String, String> globalIdentifiers;
+
 
 
     private static void initCollections() {
         globalVariables = new HashMap<String, Variable>();
         tempVariables = new ArrayList<Variable>();
         scopeStack = new Stack<ScopedEntity>();
+        functionsAndProcedures = new ArrayList<>();
+        globalIdentifiers = new HashMap<>();
     }
 
     public static SemanticImpl getInstance() {
@@ -57,6 +65,10 @@ public class SemanticImpl {
         return globalVariables.get(variableName) != null ? true : false;
     }
 
+    public boolean checkIdentifierExistenceGlobal(String variableName) {
+        return globalIdentifiers.get(variableName) != null ? true : false;
+    }
+
     private void validateVariableGlobal(Variable variable) throws Exception {
         if (checkVariableExistenceGlobal(variable.getIdentifier())) {
             throw new InvalidVariableException("Name already exists");
@@ -71,6 +83,7 @@ public class SemanticImpl {
             validateVariableGlobal(variable);
 
             globalVariables.put(variable.getIdentifier(), variable);
+            globalIdentifiers.put(variable.getIdentifier(), variable.getIdentifier());
         } else {
 //            validateVariable(variable);
             getCurrentScope().addVariable(variable);
@@ -80,5 +93,37 @@ public class SemanticImpl {
 //            checkVariableAttribution(variable.getIdentifier(),
 //                    variable.getValue());
 //        }
+    }
+
+    public void checkIdentifierExistence(String id) throws InvalidFunctionException {
+        if (checkIdentifierExistenceGlobal(id)) {
+            throw new InvalidFunctionException("ERROR: The function name '" + id + "' is already being used!");
+        }
+    }
+
+    public void validateFunction(String functionName, ArrayList<Parameter> params, Type declaredType) throws InvalidFunctionException, InvalidParameterException {
+//        if (declaredType == null) {
+//            throw new InvalidFunctionException(
+//                    "The function "
+//                            + functionName
+//                            + " is missing either a declared return type or a return statement in the end of it");
+//        }
+        Function temp = new Function(functionName, params);
+        checkIdentifierExistence(temp.getName());
+
+//        if (params != null) {
+//            for (Parameter p : params) {
+//                variables.put(p.getIdentifier(), (Variable) p);
+//            }
+////            checkExistingParameter(params);
+//        }
+//        temp.setDeclaredReturnedType(declaredType);
+        addFunctionAndNewScope(temp);
+    }
+
+    public void addFunctionAndNewScope(Function f) {
+        functionsAndProcedures.add(f);
+        globalIdentifiers.put(f.getName(), f.getName());
+        createNewScope(f);
     }
 }

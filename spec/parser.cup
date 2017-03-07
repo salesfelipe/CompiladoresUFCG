@@ -204,9 +204,9 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading SEMICOLON function_body |
-	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive |
-	{:Logger.print("Function declaration - line 3");:} function_identification SEMICOLON function_body
+  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body {:SemanticImpl.getInstance().validateFunction((String)id,null,null);:} |
+	{:Logger.print("Function declaration - line 2");:} function_heading:id SEMICOLON directive {:SemanticImpl.getInstance().validateFunction((String)id,null,null);:} |
+	{:Logger.print("Function declaration - line 3");:} function_identification:id SEMICOLON function_body {:SemanticImpl.getInstance().validateFunction((String)id,null,null);:}
 ;
 
 function_body ::=
@@ -245,11 +245,11 @@ procedure_identifier ::=
 ;
 
 function_identifier ::=
-  {:Logger.print("Function Identifier");:} IDENTIFIER
+  {:Logger.print("Function Identifier");:} IDENTIFIER:id {:RESULT=id;:}
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER optional_formal_parameter_list COLON result_type
+  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
 ;
 
 procedure_heading ::=

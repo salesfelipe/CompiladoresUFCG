@@ -64,6 +64,10 @@ Date:
 	<target name="semantico" depends="jar">
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/constant.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function.pas"/>
       <arg value="true"/>
 		</java>
   </target>
