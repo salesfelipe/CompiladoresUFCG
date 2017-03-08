@@ -14,6 +14,7 @@ src/compiler/generated/
 *.DS_Store
 **/.DS_Store
 .idea/
+.*/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
