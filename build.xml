@@ -70,6 +70,10 @@ Date:
       <arg value="test/SemanticPoint/function.pas"/>
       <arg value="false"/>
 		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure.pas"/>
+      <arg value="false"/>
+		</java>
   </target>
 
 
