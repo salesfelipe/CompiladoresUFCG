@@ -20,7 +20,7 @@ public class ScopedEntity extends  NamedEntity {
         functionsAndProcedures = new HashMap<String, ScopedEntity>();
     }
 
-    public Map<String, Variable> getVariable() {
+    public Map<String, Variable> getVariables() {
         return variables;
     }
 
@@ -47,5 +47,13 @@ public class ScopedEntity extends  NamedEntity {
 
     public Map<String, Type> getTypes() {
         return types;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ScopedEntity{" +
+                "variables=" + variables + " id " + getName() +
+                '}';
     }
 }

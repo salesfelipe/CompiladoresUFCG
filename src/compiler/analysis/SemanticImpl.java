@@ -14,7 +14,7 @@ public class SemanticImpl {
 
     private static SemanticImpl singleton;
     private static HashMap<String, Variable> globalVariables;
-    private static ArrayList<ScopedEntity> functionsAndProcedures;
+    private static HashMap<String, ScopedEntity> functionsAndProcedures;
     private static Set<String> globalIdentifiers;
     private static List<String> tempIdList;
     private static List<Parameter> tempParameters;
@@ -22,7 +22,7 @@ public class SemanticImpl {
     private static void initCollections() {
         globalVariables = new HashMap<String, Variable>();
         scopeStack = new Stack<ScopedEntity>();
-        functionsAndProcedures = new ArrayList<>();
+        functionsAndProcedures = new HashMap<String, ScopedEntity>();
         globalIdentifiers = new HashSet<String>();
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
@@ -31,6 +31,7 @@ public class SemanticImpl {
     public void addIdToTempList(String id) {
         tempIdList.add(id);
     }
+
     public void clearIdTempList() {
         tempIdList.clear();
     }
@@ -38,13 +39,13 @@ public class SemanticImpl {
     public void createParameters(Type type) {
         tempParameters.clear();
         for (int i = 0; i < tempIdList.size(); i++) {
-            tempParameters.add(new DeclarationParameter(type,tempIdList.get(i)));
+            tempParameters.add(new DeclarationParameter(type, tempIdList.get(i)));
         }
         tempIdList.clear();
     }
-    
-    public ArrayList<Parameter> getParameters(){
-    	return (ArrayList<Parameter>) tempParameters;
+
+    public ArrayList<Parameter> getParameters() {
+        return (ArrayList<Parameter>) tempParameters;
     }
 
     public static SemanticImpl getInstance() {
@@ -65,7 +66,7 @@ public class SemanticImpl {
     }
 
     public void addVariablesFromTempList(Type type) throws Exception {
-        for (String identifier: tempIdList) {
+        for (String identifier : tempIdList) {
             addVariable(new Variable(type, identifier, false));
         }
         tempIdList.clear();
@@ -82,26 +83,55 @@ public class SemanticImpl {
 
     }
 
+    public void validateFunction(Expression e, String id) throws InvalidFunctionException {
+        ((Function) functionsAndProcedures.get(id)).validateReturnedType(e.getType());
+        if (!scopeStack.isEmpty()) {
+        exitCurrentScope();
+        }
+    }
+
+    public void setReturnType(String id, Type type) {
+        ((Function) functionsAndProcedures.get(id)).setDeclaredReturnedType(type);
+    }
+
+    public Expression getTypeByID(String id) throws InvalidVariableException {
+        Type result;
+        if (globalVariables.containsKey(id)) {
+            result = globalVariables.get(id).getType();
+        }
+        else if (functionsAndProcedures.containsKey(id)) {
+            result = ((Function) functionsAndProcedures.get(id)).getDeclaredReturnType();
+        }
+        else if (scopeStack.peek().getVariables().containsKey(id)) {
+            result = scopeStack.peek().getVariables().get(id).getType();
+        }
+        else {
+            throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
+        }
+        return new Expression(result, null);
+    }
+
     private void addIdentifier(String id) throws InvalidNameException {
         if (globalIdentifiers.contains(id)) {
-            throw new InvalidNameException("Id "+id+ " ja esta em uso.");
+            throw new InvalidNameException("Id " + id + " ja esta em uso.");
         }
         globalIdentifiers.add(id);
     }
 
     public void addFunctionProcedureAndNewScope(ScopedEntity f) throws InvalidNameException {
-        if(scopeStack.isEmpty()){
-        	addIdentifier(f.getName());
-        	functionsAndProcedures.add(f);
+        if (scopeStack.isEmpty()) {
+            addIdentifier(f.getName());
+            functionsAndProcedures.put(f.getName(), f);
         } else {
-        	scopeStack.peek().addFunctionOrProcedure(f);
+            scopeStack.peek().addFunctionOrProcedure(f);
         }
-        
+
         createNewScope(f);
     }
-    
-    public void exitScope() {
-    	scopeStack.pop();
+
+    public void exitCurrentScope() {
+        if (!scopeStack.isEmpty())
+            scopeStack.pop();
     }
-    
+
 }

@@ -114,7 +114,7 @@ program_heading_aux ::=
 ;
 
 block ::=
-  {:Logger.print("Block");:} declaration_part statement_part
+  {:Logger.print("Block");:} declaration_part statement_part:exp {:RESULT=exp;:}
 ;
 
 declaration_part ::=
@@ -123,7 +123,7 @@ declaration_part ::=
 ;
 
 statement_part ::=
-  {:Logger.print("Statement Part");:} BEGIN statement_sequence END
+  {:Logger.print("Statement Part");:} BEGIN statement_sequence:exp END {:RESULT=exp;:}
 ;
 
 label_declaration_part ::=
@@ -185,8 +185,8 @@ variable_declaration ::=
 
 procedure_and_function_declaration_part ::=
   {:Logger.print("Procedure and function declaration part - Vazio");:} |
-	{:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON {: SemanticImpl.getInstance().exitScope(); :} procedure_and_function_declaration_part |
-	{:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON {: SemanticImpl.getInstance().exitScope(); :} procedure_and_function_declaration_part
+	{:Logger.print("Procedure and function declaration part - line 2");:} procedure_declaration SEMICOLON {: SemanticImpl.getInstance().exitCurrentScope(); :} procedure_and_function_declaration_part |
+	{:Logger.print("Procedure and function declaration part - line 3");:} function_declaration SEMICOLON procedure_and_function_declaration_part
 ;
 
 procedure_declaration ::=
@@ -204,13 +204,15 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:}  SEMICOLON function_body |
-	{:Logger.print("Function declaration - line 2");:} function_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON directive  |
-	{:Logger.print("Function declaration - line 3");:} function_identification:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON function_body
+  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body:exp {:
+    System.out.println("BIRLSSSSSSSSSSS : " + exp);
+
+    SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);:} |
+	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive
 ;
 
 function_body ::=
-  {:Logger.print("Function Body");:} block
+  {:Logger.print("Function Body");:} block:exp {:RESULT = exp;:}
 ;
 
 directive ::=
@@ -219,7 +221,7 @@ directive ::=
 ;
 
 statement_part ::=
-  {:Logger.print("Statement Part");:} BEGIN statement_sequence END
+  {:Logger.print("Statement Part");:} BEGIN statement_sequence:exp END {:RESULT=exp;:}
 ;
 
 optional_formal_parameter_list ::=
@@ -249,7 +251,10 @@ function_identifier ::=
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
+  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type:rt {:
+    SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));
+    SemanticImpl.getInstance().setReturnType(id, new Type((String)rt)); RESULT=id;
+  :}
 ;
 
 procedure_heading ::=
@@ -257,7 +262,7 @@ procedure_heading ::=
 ;
 
 result_type ::=
-  {:Logger.print("Result type");:} type
+  {:Logger.print("Result type");:} type:t {:RESULT = t;:}
 ;
 
 function_identification ::=
@@ -269,20 +274,20 @@ compiler_defined_directives ::=
 ;
 
 statement_sequence ::=
-  {:Logger.print("Statement sequence");:} statement aux_statement_sequence
+  {:Logger.print("Statement sequence");:} statement:exp1 aux_statement_sequence:exp2 {:if(exp2==null) {RESULT=exp1;} else {RESULT=exp2;};:}
 ;
 
 aux_statement_sequence ::=
   {:Logger.print("Aux statement sequence - Vazio");:} |
-  {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:}  SEMICOLON statement aux_statement_sequence
+  {:Logger.print("Aux statement sequence - line 2 -> statement ; aux_statement_sequence");:} SEMICOLON statement:exp1 aux_statement_sequence:exp2 {:if(exp2==null) {RESULT=exp1;} else {RESULT=exp2;};:}
 ;
 
 statement ::=
-  {:Logger.print("Statement - line 1");:} optional_label statement_aux
+  {:Logger.print("Statement - line 1");:} optional_label statement_aux:exp {:RESULT=exp;:}
 ;
 
 statement_aux ::=
-  {:Logger.print("Statement Aux - line 1");:} simple_statement |
+  {:Logger.print("Statement Aux - line 1");:} simple_statement:exp {:RESULT=exp;:} |
   {:Logger.print("Statement Aux - line 2");:} structured_statement
 ;
 
@@ -293,7 +298,7 @@ optional_label ::=
 
 simple_statement ::=
   {:Logger.print("Simple Statement - Vazio");:} |
-  {:Logger.print("Simple Statement - line 2");:} variable simple_statement_aux |
+  {:Logger.print("Simple Statement - line 2");:} variable:id simple_statement_aux {:System.out.println(id);RESULT=SemanticImpl.getInstance().getTypeByID((String)id);:} |
   {:Logger.print("Simple Statement - line 3");:} goto_statement
 ;
 
@@ -566,7 +571,7 @@ multiplication_operator ::=
 ;
 
 variable ::=
-  {:Logger.print("Variable - line 1");:} variable_identifier component_variable
+  {:Logger.print("Variable - line 1");:} variable_identifier:id component_variable {:RESULT=id;:}
 ;
 
 component_variable ::=
@@ -792,7 +797,7 @@ constant_identifier ::=
 ;
 
 variable_identifier ::=
-  {:Logger.print("Variable Identifier");:} IDENTIFIER
+  {:Logger.print("Variable Identifier");:} IDENTIFIER:id {:RESULT=id;:}
 ;
 
 type_identifier ::=

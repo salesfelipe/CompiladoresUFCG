@@ -10,7 +10,6 @@ import java.util.List;
 public class Function extends ScopedEntity{
 
     private Type declaredReturnType;
-    private Type returnType;
     private List<Parameter> params;
 
     public Function(String name, ArrayList<Parameter> params) throws InvalidNameException {
@@ -29,16 +28,8 @@ public class Function extends ScopedEntity{
 		}
     }
     
-    public boolean isReturnValid(){
-        return this.declaredReturnType.equals(this.returnType);
-    }
-
     public Type getDeclaredReturnType() {
         return declaredReturnType;
-    }
-
-    public Type getReturnType(){
-        return returnType;
     }
 
     public List<Parameter> getParams() {
@@ -49,9 +40,12 @@ public class Function extends ScopedEntity{
         this.declaredReturnType = type;
     }
 
-    public void validateReturnedType() throws InvalidFunctionException { // Checks if the function returned what it was supposed to..
+    public void validateReturnedType(Type returnType) throws InvalidFunctionException { // Checks if the function returned what it was supposed to..
+        System.out.println(returnType.getName());
+        System.out.println(declaredReturnType.getName());
         if (!returnType.equals(declaredReturnType))
             throw new InvalidFunctionException("Function " + getName() + " was supposed to return " + declaredReturnType);
+        System.out.println("o erro esta em outro castelo");
     }
 
 
