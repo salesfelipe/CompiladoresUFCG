@@ -3,13 +3,14 @@ package compiler.core;
 import compiler.exceptions.InvalidFunctionException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Function extends ScopedEntity{
 
-    Type declaredReturnType;
-    Type returnType;
-    List<Parameter> params;
+    private Type declaredReturnType;
+    private Type returnType;
+    private List<Parameter> params;
 
     public Function(String name, ArrayList<Parameter> params){
         super(name);
@@ -18,8 +19,17 @@ public class Function extends ScopedEntity{
         }else{
             this.params = new ArrayList<Parameter>();
         }
+        
+        initialize();
     }
-
+    
+    private void initialize() {
+    	for (int i = 0; i < params.size(); i++) {
+			addIdentifier(params.get(i).getIdentifier());
+			addVariable(new Variable(params.get(i).getType() ,params.get(i).getIdentifier(), false));
+		}
+    }
+    
     public boolean isReturnValid(){
         return this.declaredReturnType.equals(this.returnType);
     }

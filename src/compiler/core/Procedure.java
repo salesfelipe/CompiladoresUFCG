@@ -1,18 +1,34 @@
 package compiler.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import java.util.*;
+
 
 public class Procedure extends ScopedEntity{
     private List<Parameter> params;
+    private HashMap<String, String> identifiers;
+    private static HashMap<String, Variable> variables;
 
     public Procedure(String name, ArrayList<Parameter> params){
         super(name);
         if(params != null){
             this.params = params;
+            
         }else{
             this.params = new ArrayList<Parameter>();
         }
+        
+        initialize();
+    }
+    
+    private void initialize() {
+    	for (int i = 0; i < params.size(); i++) {
+			addIdentifier(params.get(i).getIdentifier());
+			addVariable(new Variable(params.get(i).getType() ,params.get(i).getIdentifier(), false));
+		}
     }
 
     public void setParams(List<Parameter> params) { this.params = params; }

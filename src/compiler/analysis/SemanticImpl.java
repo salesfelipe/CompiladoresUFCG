@@ -41,7 +41,10 @@ public class SemanticImpl {
             tempParameters.add(new DeclarationParameter(type,tempIdList.get(i)));
         }
         tempIdList.clear();
-        prinTempParameterList();
+    }
+    
+    public ArrayList<Parameter> getParameters(){
+    	return (ArrayList<Parameter>) tempParameters;
     }
 
     public static SemanticImpl getInstance() {
@@ -81,11 +84,11 @@ public class SemanticImpl {
     }
 
     public void printTempList() {
-        System.out.println("!!!!!!!!!!!!!!!!!" + Arrays.toString(tempVariables.toArray()));
+       // System.out.println("!!!!!!!!!!!!!!!!!" + Arrays.toString(tempVariables.toArray()));
     }
 
     public void prinTempParameterList() {
-        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempParameters.toArray()));
+        //System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempParameters.toArray()));
     }
 
     public boolean checkVariableExistenceGlobal(String variableName) {
@@ -145,12 +148,23 @@ public class SemanticImpl {
 ////            checkExistingParameter(params);
 //        }
 //        temp.setDeclaredReturnedType(declaredType);
-        addFunctionAndNewScope(temp);
+        addFunctionProcedureAndNewScope(temp);
     }
 
-    public void addFunctionAndNewScope(Function f) {
-        functionsAndProcedures.add(f);
-        globalIdentifiers.put(f.getName(), f.getName());
+    public void addFunctionProcedureAndNewScope(ScopedEntity f) {
+        if(scopeStack.isEmpty()){
+        	globalIdentifiers.put(f.getName(), f.getName());
+        	functionsAndProcedures.add(f);
+        } else {
+        	scopeStack.peek().addIdentifier(f.getName());
+        	scopeStack.peek().addFunctionOrProcedure(f);
+        }
+        
         createNewScope(f);
     }
+    
+    public void exitScope() {
+    	scopeStack.pop();
+    }
+    
 }
