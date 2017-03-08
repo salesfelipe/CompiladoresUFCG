@@ -20,8 +20,6 @@ public class Function extends ScopedEntity{
         }else{
             this.params = new ArrayList<Parameter>();
         }
-
-        System.out.printf("!!!!!!!!!!!!!!!!!!!!!!!!!!"+Arrays.toString(params.toArray()));
         initialize();
     }
     

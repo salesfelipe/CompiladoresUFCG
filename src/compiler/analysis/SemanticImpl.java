@@ -15,17 +15,15 @@ public class SemanticImpl {
     private static SemanticImpl singleton;
     private static HashMap<String, Variable> globalVariables;
     private static ArrayList<ScopedEntity> functionsAndProcedures;
-    private static List<Variable> tempVariables;
-    private static HashMap<String, String> globalIdentifiers;
+    private static Set<String> globalIdentifiers;
     private static List<String> tempIdList;
     private static List<Parameter> tempParameters;
 
     private static void initCollections() {
         globalVariables = new HashMap<String, Variable>();
-        tempVariables = new ArrayList<Variable>();
         scopeStack = new Stack<ScopedEntity>();
         functionsAndProcedures = new ArrayList<>();
-        globalIdentifiers = new HashMap<>();
+        globalIdentifiers = new HashSet<String>();
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
     }
@@ -34,7 +32,6 @@ public class SemanticImpl {
         tempIdList.add(id);
     }
     public void clearIdTempList() {
-        System.out.println("CLEARRRRRR!!!!111");
         tempIdList.clear();
     }
 
@@ -74,56 +71,22 @@ public class SemanticImpl {
         tempIdList.clear();
     }
 
-    public void addVariableToTempList(Variable var) {
-        tempVariables.add(var);
-//        System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempVariables.toArray()));
-    }
-
-    public void cleanTempList() {
-        tempVariables.clear();
-    }
-
-
-    public boolean checkIdentifierExistenceGlobal(String variableName) {
-        return globalIdentifiers.get(variableName) != null ? true : false;
-    }
-
-    private void validateVariableGlobal(Variable variable) throws Exception {
-        if (checkIdentifierExistenceGlobal(variable.getIdentifier())) {
-            throw new InvalidVariableException("Name already exists");
-        }
-    }
-
-    private void addVariable(Variable variable) throws Exception {
+    public void addVariable(Variable variable) throws InvalidNameException {
         if (scopeStack.isEmpty()) {
-            validateVariableGlobal(variable);
-
+            addIdentifier(variable.getIdentifier());
             globalVariables.put(variable.getIdentifier(), variable);
-            globalIdentifiers.put(variable.getIdentifier(), variable.getIdentifier());
+
         } else {
             getCurrentScope().addVariable(variable);
         }
 
     }
 
-    public void addIdentifier(String id) throws InvalidNameException {
-        if (globalIdentifiers.containsKey(id)) {
+    private void addIdentifier(String id) throws InvalidNameException {
+        if (globalIdentifiers.contains(id)) {
             throw new InvalidNameException("Id "+id+ " ja esta em uso.");
         }
-        globalIdentifiers.put(id, id);
-    }
-
-    public void checkIdentifierExistence(String id) throws InvalidFunctionException {
-        if (checkIdentifierExistenceGlobal(id)) {
-            throw new InvalidFunctionException("ERROR: The function name '" + id + "' is already being used!");
-        }
-    }
-
-    public void validateFunction(String functionName, ArrayList<Parameter> params, Type declaredType) throws InvalidFunctionException, InvalidParameterException, InvalidNameException {
-        Function temp = new Function(functionName, params);
-        checkIdentifierExistence(temp.getName());
-
-        addFunctionProcedureAndNewScope(temp);
+        globalIdentifiers.add(id);
     }
 
     public void addFunctionProcedureAndNewScope(ScopedEntity f) throws InvalidNameException {

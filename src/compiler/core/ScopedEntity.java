@@ -35,7 +35,6 @@ public class ScopedEntity extends  NamedEntity {
     }
 
     public void addIdentifier(String id) throws InvalidNameException {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+id);
         if(this.identifiers.containsKey(id)){
             throw new InvalidNameException("O nome: " + id + " Ja esta em uso no escopo atual!");
         }

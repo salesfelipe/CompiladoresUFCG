@@ -142,7 +142,7 @@ constant_definition_part ::=
 ;
 
 constant_definition ::=
-  {:Logger.print("Constant Definition");:} IDENTIFIER:i EQUAL constant
+  {:Logger.print("Constant Definition");:} IDENTIFIER:id EQUAL constant {: SemanticImpl.getInstance().addVariable(new Variable(null, id, true));:}
 ;
 
 constant_definition_aux ::=
@@ -249,7 +249,7 @@ function_identifier ::=
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION {: SemanticImpl.getInstance().cleanTempList();:} IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
+  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
 ;
 
 procedure_heading ::=
