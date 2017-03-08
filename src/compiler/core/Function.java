@@ -1,6 +1,7 @@
 package compiler.core;
 
 import compiler.exceptions.InvalidFunctionException;
+import compiler.exceptions.InvalidNameException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,20 +13,20 @@ public class Function extends ScopedEntity{
     private Type returnType;
     private List<Parameter> params;
 
-    public Function(String name, ArrayList<Parameter> params){
+    public Function(String name, ArrayList<Parameter> params) throws InvalidNameException {
         super(name);
         if(params != null){
             this.params = params;
         }else{
             this.params = new ArrayList<Parameter>();
         }
-        
+
+        System.out.printf("!!!!!!!!!!!!!!!!!!!!!!!!!!"+Arrays.toString(params.toArray()));
         initialize();
     }
     
-    private void initialize() {
+    private void initialize() throws InvalidNameException {
     	for (int i = 0; i < params.size(); i++) {
-			addIdentifier(params.get(i).getIdentifier());
 			addVariable(new Variable(params.get(i).getType() ,params.get(i).getIdentifier(), false));
 		}
     }

@@ -2,6 +2,7 @@ package compiler.analysis;
 
 import compiler.core.*;
 import compiler.exceptions.InvalidFunctionException;
+import compiler.exceptions.InvalidNameException;
 import compiler.exceptions.InvalidParameterException;
 import compiler.exceptions.InvalidVariableException;
 
@@ -33,10 +34,12 @@ public class SemanticImpl {
         tempIdList.add(id);
     }
     public void clearIdTempList() {
+        System.out.println("CLEARRRRRR!!!!111");
         tempIdList.clear();
     }
 
     public void createParameters(Type type) {
+        tempParameters.clear();
         for (int i = 0; i < tempIdList.size(); i++) {
             tempParameters.add(new DeclarationParameter(type,tempIdList.get(i)));
         }
@@ -65,13 +68,10 @@ public class SemanticImpl {
     }
 
     public void addVariablesFromTempList(Type type) throws Exception {
-        for (Variable variable : tempVariables) {
-            variable.setType(type);
-            addVariable(variable);
-
+        for (String identifier: tempIdList) {
+            addVariable(new Variable(type, identifier, false));
         }
-
-        tempVariables = new ArrayList<Variable>();
+        tempIdList.clear();
     }
 
     public void addVariableToTempList(Variable var) {
@@ -83,29 +83,15 @@ public class SemanticImpl {
         tempVariables.clear();
     }
 
-    public void printTempList() {
-       // System.out.println("!!!!!!!!!!!!!!!!!" + Arrays.toString(tempVariables.toArray()));
-    }
-
-    public void prinTempParameterList() {
-        //System.out.println("!!!!!!!!!!!!!!!!!"+Arrays.toString(tempParameters.toArray()));
-    }
-
-    public boolean checkVariableExistenceGlobal(String variableName) {
-        return globalVariables.get(variableName) != null ? true : false;
-    }
 
     public boolean checkIdentifierExistenceGlobal(String variableName) {
         return globalIdentifiers.get(variableName) != null ? true : false;
     }
 
     private void validateVariableGlobal(Variable variable) throws Exception {
-        if (checkVariableExistenceGlobal(variable.getIdentifier())) {
+        if (checkIdentifierExistenceGlobal(variable.getIdentifier())) {
             throw new InvalidVariableException("Name already exists");
         }
-//        if (!checkValidExistingType(variable.getType())) {
-//            throw new InvalidTypeException("Type non existing");
-//        }
     }
 
     private void addVariable(Variable variable) throws Exception {
@@ -115,14 +101,16 @@ public class SemanticImpl {
             globalVariables.put(variable.getIdentifier(), variable);
             globalIdentifiers.put(variable.getIdentifier(), variable.getIdentifier());
         } else {
-//            validateVariable(variable);
             getCurrentScope().addVariable(variable);
         }
 
-//        if (variable.getValue() != null) {
-//            checkVariableAttribution(variable.getIdentifier(),
-//                    variable.getValue());
-//        }
+    }
+
+    public void addIdentifier(String id) throws InvalidNameException {
+        if (globalIdentifiers.containsKey(id)) {
+            throw new InvalidNameException("Id "+id+ " ja esta em uso.");
+        }
+        globalIdentifiers.put(id, id);
     }
 
     public void checkIdentifierExistence(String id) throws InvalidFunctionException {
@@ -131,32 +119,18 @@ public class SemanticImpl {
         }
     }
 
-    public void validateFunction(String functionName, ArrayList<Parameter> params, Type declaredType) throws InvalidFunctionException, InvalidParameterException {
-//        if (declaredType == null) {
-//            throw new InvalidFunctionException(
-//                    "The function "
-//                            + functionName
-//                            + " is missing either a declared return type or a return statement in the end of it");
-//        }
+    public void validateFunction(String functionName, ArrayList<Parameter> params, Type declaredType) throws InvalidFunctionException, InvalidParameterException, InvalidNameException {
         Function temp = new Function(functionName, params);
         checkIdentifierExistence(temp.getName());
 
-//        if (params != null) {
-//            for (Parameter p : params) {
-//                variables.put(p.getIdentifier(), (Variable) p);
-//            }
-////            checkExistingParameter(params);
-//        }
-//        temp.setDeclaredReturnedType(declaredType);
         addFunctionProcedureAndNewScope(temp);
     }
 
-    public void addFunctionProcedureAndNewScope(ScopedEntity f) {
+    public void addFunctionProcedureAndNewScope(ScopedEntity f) throws InvalidNameException {
         if(scopeStack.isEmpty()){
-        	globalIdentifiers.put(f.getName(), f.getName());
+        	addIdentifier(f.getName());
         	functionsAndProcedures.add(f);
         } else {
-        	scopeStack.peek().addIdentifier(f.getName());
         	scopeStack.peek().addFunctionOrProcedure(f);
         }
         

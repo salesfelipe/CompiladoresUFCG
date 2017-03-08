@@ -137,12 +137,12 @@ label_optionals ::=
 ;
 
 constant_definition_part ::=
-  {:Logger.print("Constant definition part - Vazio");:} {: SemanticImpl.getInstance().addVariablesFromTempList(new Type(null)); :} |
+  {:Logger.print("Constant definition part - Vazio");:} |
   {:Logger.print("Constant definition part - line 2");:} CONST constant_definition SEMICOLON constant_definition_aux
 ;
 
 constant_definition ::=
-  {:Logger.print("Constant Definition");:} IDENTIFIER:i EQUAL constant {: SemanticImpl.getInstance().addVariableToTempList(new Variable(null, i, true)); :}
+  {:Logger.print("Constant Definition");:} IDENTIFIER:i EQUAL constant
 ;
 
 constant_definition_aux ::=
@@ -190,8 +190,8 @@ procedure_and_function_declaration_part ::=
 ;
 
 procedure_declaration ::=
-  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {:SemanticImpl.getInstance().createNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
-  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {:SemanticImpl.getInstance().createNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body {:RESULT=id;:}
+  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
+  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body {:RESULT=id;:}
 ;
 
 procedure_declaration_aux ::=
@@ -204,9 +204,9 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading:id {:SemanticImpl.getInstance().addFunctionAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:}  SEMICOLON function_body |
-	{:Logger.print("Function declaration - line 2");:} function_heading:id {:SemanticImpl.getInstance().addFunctionAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON directive  |
-	{:Logger.print("Function declaration - line 3");:} function_identification:id {:SemanticImpl.getInstance().addFunctionAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON function_body 
+  {:Logger.print("Function declaration - line 1");:} function_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:}  SEMICOLON function_body |
+	{:Logger.print("Function declaration - line 2");:} function_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON directive  |
+	{:Logger.print("Function declaration - line 3");:} function_identification:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON function_body
 ;
 
 function_body ::=
@@ -249,7 +249,7 @@ function_identifier ::=
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION {: SemanticImpl.getInstance().cleanTempList();:} IDENTIFIER:id optional_formal_parameter_list COLON result_type {:SemanticImpl.getInstance().printTempList(); RESULT=id;:}
+  {:Logger.print("Function Heading");:} FUNCTION {: SemanticImpl.getInstance().cleanTempList();:} IDENTIFIER:id optional_formal_parameter_list COLON result_type {:RESULT=id;:}
 ;
 
 procedure_heading ::=
@@ -818,12 +818,12 @@ function_identifier ::=
 ;*/
 
 identifier_list ::=
-  {:Logger.print("Identifier List");:} IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux {:SemanticImpl.getInstance().addVariableToTempList(new Variable(null, id, false));:}
+  {:Logger.print("Identifier List"); SemanticImpl.getInstance().clearIdTempList();:} IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux
 ;
 
 identifier_list_aux ::=
   {:Logger.print("Identifier List Aux - Vazio"); :} |
-  {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux {: SemanticImpl.getInstance().addVariableToTempList(new Variable(null, id, false)); :}
+  {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux
 ;
 
 expression_list ::=

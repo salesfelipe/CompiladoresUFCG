@@ -1,5 +1,7 @@
 package compiler.core;
 
+import compiler.exceptions.InvalidNameException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,15 +24,21 @@ public class ScopedEntity extends  NamedEntity {
         return variables;
     }
 
-    public void addVariable(Variable v) {
+    public void addVariable(Variable v) throws InvalidNameException {
+        this.addIdentifier(v.getIdentifier());
         this.variables.put(v.getIdentifier(), v);
     }
     
-    public void addFunctionOrProcedure(ScopedEntity s) {
-    	this.functionsAndProcedures.put(s.getName(), s);
+    public void addFunctionOrProcedure(ScopedEntity s) throws InvalidNameException {
+    	this.addIdentifier(s.getName());
+        this.functionsAndProcedures.put(s.getName(), s);
     }
-    
-    public void addIdentifier(String id) {
+
+    public void addIdentifier(String id) throws InvalidNameException {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+id);
+        if(this.identifiers.containsKey(id)){
+            throw new InvalidNameException("O nome: " + id + " Ja esta em uso no escopo atual!");
+        }
         this.identifiers.put(id, id);
     }
 
