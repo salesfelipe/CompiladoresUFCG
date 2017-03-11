@@ -101,7 +101,7 @@ start with compilation_unit;
 
 compilation_unit ::=
   {:Logger.print("Compilation UNIT");:}
-	program_heading block DOT {:Logger.print("END");:}
+	program_heading block DOT
 ;
 
 program_heading ::=
@@ -204,10 +204,10 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body:exp {:
-    System.out.println("BIRLSSSSSSSSSSS : " + exp);
-
-    SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);:} |
+  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body:exp
+  {:
+      SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);
+  :} |
 	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive
 ;
 
@@ -298,7 +298,7 @@ optional_label ::=
 
 simple_statement ::=
   {:Logger.print("Simple Statement - Vazio");:} |
-  {:Logger.print("Simple Statement - line 2");:} variable:id simple_statement_aux {:System.out.println(id);RESULT=SemanticImpl.getInstance().getTypeByID((String)id);:} |
+  {:Logger.print("Simple Statement - line 2");:} variable:id {:SemanticImpl.getInstance().setSelectedId((String)id);:} simple_statement_aux |
   {:Logger.print("Simple Statement - line 3");:} goto_statement
 ;
 
@@ -313,6 +313,9 @@ assignment_statement ::=
 
 procedure_statement ::=
   {:Logger.print("Procedure statement");:} actual_parameter_list
+  {:
+    SemanticImpl.getInstance().checkFunctionCall();
+  :}
 ;
 
 goto_statement ::=
@@ -413,29 +416,23 @@ label ::=
 
 actual_parameter_list ::=
   {:Logger.print("Actual Parameter List - Vazio");:} |
-  {:Logger.print("Actual Parameter List - line 2");:} LPAREN actual_parameter  actual_parameter_aux RPAREN
+  {:
+    Logger.print("Actual Parameter List - line 2");
+    SemanticImpl.getInstance().clearParameterList();
+  :} LPAREN actual_parameter  actual_parameter_aux RPAREN
 ;
 
 actual_parameter ::=
-  {:Logger.print("Actual Parameter - line 1");:} expression
+  {:Logger.print("Actual Parameter - line 1");:} expression:exp
+  {:
+    SemanticImpl.getInstance().addToTempParameter( new DeclarationParameter( ((Expression) exp).getType(), ((Expression) exp).getValue() ));
+  :}
 ;
 
 actual_parameter_aux ::=
   {:Logger.print("Actual Parameter Aux - Vazio");:} |
   {:Logger.print("Actual Parameter Aux - line 2");:} COMMA actual_parameter actual_parameter_aux
 ;
-
-/*actual_value ::=
-  {:Logger.print("Actual Value");:} expression
-;
-
-actual_procedure ::=
-  {:Logger.print("Actual Procedure");:} procedure_identifier
-;
-
-actual_function ::=
-  {:Logger.print("Actual Function");:} function_identifier
-;*/
 
 formal_parameter_section ::=
   {:Logger.print("Formal parameter section - line 1");:} value_parameter_section |
@@ -496,11 +493,6 @@ expression ::=
   {:Logger.print("Expression");:} simple_expression
 ;
 
-expression_aux ::=
-  {:Logger.print("Expression Aux - Vazio");:} |
-  {:Logger.print("Expression Aux - RELOP exp");:} relational_operator simple_expression
-;
-
 simple_expression ::=
   {:Logger.print("Simple Expression");:} sign_optional term simple_expression_aux
 ;
@@ -515,11 +507,6 @@ simple_expression_aux ::=
 term ::=
   {:Logger.print("Term");:} factor
 ;
-
-/*term_aux ::=
-  {:Logger.print("Term Aux - line 1");:} |
-  {:Logger.print("Term Aux - line 2");:} multiplication_operator factor term_aux
-;*/
 
 factor ::=
   {:Logger.print("Factor - number");:} number |
@@ -584,10 +571,6 @@ component_variable_aux ::=
 | {:Logger.print("Component Variable Aux - .field_identifier");:} DOT field_identifier
 | {:Logger.print("Component Variable Aux - UPARROW");:} UPARROW
 ;
-
-/*indexed_variable ::=
-  {:Logger.print("Indexed Variable");:} array_variable LBRAC expression_list RBRAC
-;*/
 
 field_designator ::=
   {:Logger.print("Field Designator");:} record_variable DOT field_identifier
@@ -758,10 +741,6 @@ variant ::=
   {:Logger.print("Variant");:} case_label_list COLON LPAREN field_list RPAREN
 ;
 
-// Input Output
-
-// end IN/OUT
-
 // Variable and Identifier Categories
 
 file_variable ::=
@@ -811,16 +790,6 @@ procedure_identifier ::=
 function_identifier ::=
   {:Logger.print("Function Identifier");:} IDENTIFIER
 ;
-
-/*bound_identifier ::=
-  {:Logger.print("Bound Identifier");:} IDENTIFIER
-;*/
-
-// Low Level Definitions
-
-/*variable_list ::=
- // WTF?
-;*/
 
 identifier_list ::=
   {:Logger.print("Identifier List"); SemanticImpl.getInstance().clearIdTempList();:} IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux

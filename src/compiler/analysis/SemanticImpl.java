@@ -18,6 +18,7 @@ public class SemanticImpl {
     private static Set<String> globalIdentifiers;
     private static List<String> tempIdList;
     private static List<Parameter> tempParameters;
+    private static String selectedId;
 
     private static void initCollections() {
         globalVariables = new HashMap<String, Variable>();
@@ -34,6 +35,14 @@ public class SemanticImpl {
 
     public void clearIdTempList() {
         tempIdList.clear();
+    }
+
+    public void addToTempParameter(Parameter param) {
+        tempParameters.add(param);
+    }
+
+    public void clearParameterList() {
+        tempParameters.clear();
     }
 
     public void createParameters(Type type) {
@@ -86,7 +95,7 @@ public class SemanticImpl {
     public void validateFunction(Expression e, String id) throws InvalidFunctionException {
         ((Function) functionsAndProcedures.get(id)).validateReturnedType(e.getType());
         if (!scopeStack.isEmpty()) {
-        exitCurrentScope();
+            exitCurrentScope();
         }
     }
 
@@ -133,5 +142,13 @@ public class SemanticImpl {
         if (!scopeStack.isEmpty())
             scopeStack.pop();
     }
+
+    public void setSelectedId(String id) {
+        selectedId = id;
+    }
+
+    public void checkFunctionCall() {
+        
+    };
 
 }
