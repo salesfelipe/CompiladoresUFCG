@@ -45,8 +45,7 @@ public class Function extends ScopedEntity{
         System.out.println(returnType.getName());
         System.out.println(declaredReturnType.getName());
         if (!returnType.equals(declaredReturnType))
-            throw new InvalidFunctionException("Function " + getName() + " was supposed to return " + declaredReturnType);
-        System.out.println("o erro esta em outro castelo");
+            throw new InvalidFunctionException("A Função " + getName() + " deveria retornar: " + declaredReturnType);
     }
 
 

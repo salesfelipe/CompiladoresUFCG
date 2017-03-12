@@ -107,7 +107,6 @@ public class SemanticImpl {
 
     public Expression getTypeByID(String id) throws InvalidVariableException {
         Type result;
-        System.out.println("++++++++++++++++++++++"+scopeStack.peek().getIdentifiers());
         if (globalVariables.containsKey(id)) {
             result = globalVariables.get(id).getType();
         }
@@ -128,6 +127,7 @@ public class SemanticImpl {
         else {
             throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
         }
+//        System.out.println("+++++++++++++++++++"+result.toString());
         return new Expression(result, null);
     }
 

@@ -206,7 +206,7 @@ procedure_body ::=
 function_declaration ::=
   {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body:exp
   {:
-      /*SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);*/
+      SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);
   :} |
 	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive
 ;
@@ -274,7 +274,7 @@ compiler_defined_directives ::=
 ;
 
 statement_sequence ::=
-  {:Logger.print("Statement sequence");:} statement:exp1 aux_statement_sequence:exp2 //{:if(exp2==null) {RESULT=exp1;} else {RESULT=exp2;};:}
+  {:Logger.print("Statement sequence");:} statement:exp1 aux_statement_sequence:exp2 {:if(exp2==null) {RESULT=exp1;} else {RESULT=exp2;};:}
 ;
 
 aux_statement_sequence ::=
@@ -298,7 +298,7 @@ optional_label ::=
 
 simple_statement ::=
   {:Logger.print("Simple Statement - Vazio");:} |
-  {:Logger.print("Simple Statement - line 2");:} variable:id {:SemanticImpl.getInstance().setSelectedId((String)id);:} simple_statement_aux |
+  {:Logger.print("Simple Statement - line 2");:} variable:id {:SemanticImpl.getInstance().setSelectedId((String)id);:} simple_statement_aux:exp {:RESULT=exp;:} |
   {:Logger.print("Simple Statement - line 3");:} goto_statement
 ;
 
@@ -425,7 +425,7 @@ actual_parameter_list ::=
 actual_parameter ::=
   {:Logger.print("Actual Parameter - line 1");:} expression:exp
   {:
-    /*SemanticImpl.getInstance().addToTempParameter( new DeclarationParameter( ((Expression) exp).getType(), ((Expression) exp).getValue() ));*/
+    SemanticImpl.getInstance().addToTempParameter( new DeclarationParameter( ((Expression) exp).getType(), ((Expression) exp).getValue() ));
   :}
 ;
 
@@ -515,8 +515,7 @@ factor ::=
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(new Type("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
   {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux
-/*{: SemanticImpl.getInstance().getTypeByID((String)id); :} */
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux {: RESULT=SemanticImpl.getInstance().getTypeByID((String)id); :}
 |
   {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(new Type("boolean"), (String)b);:}
 ;
