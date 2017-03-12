@@ -20,6 +20,6 @@ begin
    writeln('Now str4 is: ', str4);
 
    (* total lenghth of str4 after concatenation  *)
-   len := byte(str4[0]);
+   {len := byte(str4[0]);}
    writeln('Length of the final string str4: ', len);
 end.

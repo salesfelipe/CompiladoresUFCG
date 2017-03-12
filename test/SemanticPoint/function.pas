@@ -14,13 +14,13 @@ begin
 
    else
       result := num2;
-   max := result
+   max := s3
 end;
 
 begin
    a := 100;
    b := 200;
    (* calling a function to get max value *)
-   funcao_nao_declarada(a, b);
+  {funcao_nao_declarada(a, b);}
 
 end.

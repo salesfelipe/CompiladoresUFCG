@@ -4,6 +4,7 @@ import compiler.exceptions.InvalidNameException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScopedEntity extends  NamedEntity {
@@ -12,6 +13,7 @@ public class ScopedEntity extends  NamedEntity {
     private HashMap<String, Type> types;
     private HashMap<String, String> identifiers;
     private HashMap<String,ScopedEntity> functionsAndProcedures;
+    private List<Parameter> params;
 
     public ScopedEntity(String name) {
         super(name);
@@ -19,6 +21,14 @@ public class ScopedEntity extends  NamedEntity {
         types = new HashMap<String, Type>();
         identifiers = new HashMap<String, String>();
         functionsAndProcedures = new HashMap<String, ScopedEntity>();
+    }
+
+    public List<Parameter> getParams() {
+        return params;
+    }
+
+    public void setParams(List<Parameter> params) {
+        this.params = params;
     }
 
     public Boolean isProcedure() {

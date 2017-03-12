@@ -10,33 +10,26 @@ import java.util.*;
 
 
 public class Procedure extends ScopedEntity{
-    private List<Parameter> params;
     private HashMap<String, String> identifiers;
     private static HashMap<String, Variable> variables;
 
     public Procedure(String name, ArrayList<Parameter> params) throws InvalidNameException {
         super(name);
         if(params != null){
-            this.params = params;
-            
+            setParams(params);
         }else{
-            this.params = new ArrayList<Parameter>();
+            setParams(new ArrayList<Parameter>());
         }
         setIsProcedure(true);
         initialize();
     }
     
     private void initialize() throws InvalidNameException {
-    	for (int i = 0; i < params.size(); i++) {
-			addVariable(new Variable(params.get(i).getType() ,params.get(i).getIdentifier(), false));
+    	for (int i = 0; i < getParams().size(); i++) {
+			addVariable(new Variable(getParams().get(i).getType() ,getParams().get(i).getIdentifier(), false));
 		}
     }
 
-    public void setParams(List<Parameter> params) { this.params = params; }
-
-    public List<Parameter> getParams() {
-        return this.params;
-    }
 
     @Override
     public boolean equals(Object obj){

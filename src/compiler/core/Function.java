@@ -10,31 +10,26 @@ import java.util.List;
 public class Function extends ScopedEntity{
 
     private Type declaredReturnType;
-    private List<Parameter> params;
 
     public Function(String name, ArrayList<Parameter> params) throws InvalidNameException {
         super(name);
         if(params != null){
-            this.params = params;
+            setParams(params);
         }else{
-            this.params = new ArrayList<Parameter>();
+            setParams(new ArrayList<Parameter>());
         }
         initialize();
         setIsProcedure(false);
     }
     
     private void initialize() throws InvalidNameException {
-    	for (int i = 0; i < params.size(); i++) {
-			addVariable(new Variable(params.get(i).getType() ,params.get(i).getIdentifier(), false));
+    	for (int i = 0; i < getParams().size(); i++) {
+			addVariable(new Variable(getParams().get(i).getType(), getParams().get(i).getIdentifier(), false));
 		}
     }
     
     public Type getDeclaredReturnType() {
         return declaredReturnType;
-    }
-
-    public List<Parameter> getParams() {
-        return this.params;
     }
 
     public void setDeclaredReturnedType(Type type) {

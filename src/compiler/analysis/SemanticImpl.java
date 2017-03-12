@@ -127,8 +127,7 @@ public class SemanticImpl {
         else {
             throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
         }
-//        System.out.println("+++++++++++++++++++"+result.toString());
-        return new Expression(result, null);
+        return new Expression(result, id);
     }
 
     private void addIdentifier(String id) throws InvalidNameException {
@@ -139,6 +138,9 @@ public class SemanticImpl {
     }
 
     public void addFunctionProcedureAndNewScope(ScopedEntity f) throws InvalidNameException {
+        System.out.println("addFunctionProcedureAndNewScope:"+f.getParams());
+        List<Parameter> parametros = new ArrayList<Parameter>(f.getParams());
+        f.setParams(parametros);
         if (scopeStack.isEmpty()) {
             addIdentifier(f.getName());
             functionsAndProcedures.put(f.getName(), f);
@@ -161,7 +163,21 @@ public class SemanticImpl {
         selectedId = id;
     }
 
-    public void checkFunctionCall() {
+    public void checkFunctionCall() throws InvalidParameterException {
+//        System.out.println("tempParameters:"+tempParameters);
+//        System.out.println("SelectedId:"+selectedId);
+//        System.out.println("functionsAndProcedures:"+functionsAndProcedures.get(selectedId));
+        List<Parameter> parametrosFuncao = functionsAndProcedures.get(selectedId).getParams();
+        List<Parameter> parametrosChamada = tempParameters;
+        if (parametrosChamada.size() != parametrosFuncao.size())
+            throw new InvalidParameterException("Os parâmetros "+tempParameters+" estão incorretos.");
+        for (int i = 0 ; i < parametrosChamada.size(); i++) {
+            System.out.println("parametrosFuncao"+parametrosFuncao.get(i));
+            System.out.println("parametrosChamada"+parametrosChamada.get(i));
+            if (!parametrosFuncao.get(i).equals(parametrosChamada.get(i))) {
+                throw new InvalidParameterException("Os parâmetros "+tempParameters+" estão incorretos.");
+            }
+        }
 
     };
 
