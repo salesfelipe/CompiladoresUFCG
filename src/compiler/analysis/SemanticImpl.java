@@ -48,11 +48,11 @@ public class SemanticImpl {
     }
 
     public void createParameters(Type type) {
-        tempParameters.clear();
+//        tempParameters.clear();
         for (int i = 0; i < tempIdList.size(); i++) {
             tempParameters.add(new DeclarationParameter(type, tempIdList.get(i)));
         }
-        tempIdList.clear();
+//        tempIdList.clear();
     }
 
     public ArrayList<Parameter> getParameters() {
@@ -107,6 +107,7 @@ public class SemanticImpl {
 
     public Expression getTypeByID(String id) throws InvalidVariableException {
         Type result;
+        System.out.println("++++++++++++++++++++++"+scopeStack.peek().getIdentifiers());
         if (globalVariables.containsKey(id)) {
             result = globalVariables.get(id).getType();
         }
@@ -116,7 +117,6 @@ public class SemanticImpl {
             else
                 result = new Type("void");
         }
-        System.out.println("++++++++++++++++++++++"+scopeStack.peek().getIdentifiers());
         else if (scopeStack.peek().getIdentifiers().containsKey(id)) {
             if (scopeStack.peek().getVariables().containsKey(id)) {
                 result = scopeStack.peek().getVariables().get(id).getType();
@@ -150,8 +150,11 @@ public class SemanticImpl {
     }
 
     public void exitCurrentScope() {
-        if (!scopeStack.isEmpty())
+        if (!scopeStack.isEmpty()) {
             scopeStack.pop();
+            tempIdList.clear();
+            tempParameters.clear();
+        }
     }
 
     public void setSelectedId(String id) {

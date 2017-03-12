@@ -1,7 +1,7 @@
 program exProcedure;
 var
-   a, x c,  min: integer;
-procedure x(x, y, z: integer; var m: integer);
+   a, b, c,  min: integer;
+procedure olhaso(x, y, z : integer; var m: integer);
 (* Finds the minimum of the 3 values *)
 
 begin
