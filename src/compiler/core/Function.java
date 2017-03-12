@@ -20,6 +20,7 @@ public class Function extends ScopedEntity{
             this.params = new ArrayList<Parameter>();
         }
         initialize();
+        setIsProcedure(false);
     }
     
     private void initialize() throws InvalidNameException {

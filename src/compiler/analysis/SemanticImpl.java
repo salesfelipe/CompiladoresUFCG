@@ -10,6 +10,7 @@ import java.util.*;
 
 public class SemanticImpl {
 
+    private static ArrayList<Type> BASIC_TYPES;
     private static Stack<ScopedEntity> scopeStack;
 
     private static SemanticImpl singleton;
@@ -27,6 +28,7 @@ public class SemanticImpl {
         globalIdentifiers = new HashSet<String>();
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
+        initBasicTypes();
     }
 
     public void addIdToTempList(String id) {
@@ -109,10 +111,19 @@ public class SemanticImpl {
             result = globalVariables.get(id).getType();
         }
         else if (functionsAndProcedures.containsKey(id)) {
-            result = ((Function) functionsAndProcedures.get(id)).getDeclaredReturnType();
+            if (!functionsAndProcedures.get(id).isProcedure())
+                result = ((Function) functionsAndProcedures.get(id)).getDeclaredReturnType();
+            else
+                result = new Type("void");
         }
-        else if (scopeStack.peek().getVariables().containsKey(id)) {
-            result = scopeStack.peek().getVariables().get(id).getType();
+        System.out.println("++++++++++++++++++++++"+scopeStack.peek().getIdentifiers());
+        else if (scopeStack.peek().getIdentifiers().containsKey(id)) {
+            if (scopeStack.peek().getVariables().containsKey(id)) {
+                result = scopeStack.peek().getVariables().get(id).getType();
+            }
+            else {
+                result = ((Function)scopeStack.peek().getFunctionsAndProcedures().get(id)).getDeclaredReturnType();
+            }
         }
         else {
             throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
@@ -148,7 +159,25 @@ public class SemanticImpl {
     }
 
     public void checkFunctionCall() {
-        
+
     };
+
+    public boolean checkValidExistingType(Type type) {
+        return BASIC_TYPES.contains(type);
+    }
+
+    private static void initBasicTypes() {
+        BASIC_TYPES = new ArrayList<Type>() {
+            {
+                add(new Type("integer"));
+                add(new Type("string"));
+                add(new Type("char"));
+                add(new Type("real"));
+                add(new Type("boolean"));
+                add(new Type("nil"));
+                add(new Type("set"));
+            }
+        };
+    }
 
 }

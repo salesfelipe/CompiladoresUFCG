@@ -490,11 +490,11 @@ ordinal_type_identifier ::=
 ;
 
 expression ::=
-  {:Logger.print("Expression");:} simple_expression
+  {:Logger.print("Expression");:} simple_expression:exp {:RESULT=exp;:}
 ;
 
 simple_expression ::=
-  {:Logger.print("Simple Expression");:} sign_optional term simple_expression_aux
+  {:Logger.print("Simple Expression");:} sign_optional term:t simple_expression_aux {:RESULT=t;:}
 ;
 
 simple_expression_aux ::=
@@ -505,18 +505,18 @@ simple_expression_aux ::=
 ;
 
 term ::=
-  {:Logger.print("Term");:} factor
+  {:Logger.print("Term");:} factor:f {:RESULT=f;:}
 ;
 
 factor ::=
-  {:Logger.print("Factor - number");:} number |
-  {:Logger.print("Factor - string");:} string |
-  {:Logger.print("Factor - set");:} set |
-  {:Logger.print("Factor - NIL");:} NIL |
-  {:Logger.print("Factor - ( expression )");:} LPAREN expression RPAREN |
-  {:Logger.print("Factor - not factor");:} NOT factor |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER factor_aux |
-  {:Logger.print("Factor - boolean");:} boolean
+  {:Logger.print("Factor - number");:} number:n {:RESULT=n;:} |
+  {:Logger.print("Factor - string");:} string:s {:RESULT= new Expression(new Type("string"), (String)s);:} |
+  {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(new Type("set"), (String)s);:} |
+  {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(new Type("nil"), (String)n);:} |
+  {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
+  {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux {: SemanticImpl.getInstance().getTypeByID((String)id); :} |
+  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(new Type("boolean"), (String)b);:}
 ;
 
 factor_aux ::=
@@ -810,20 +810,20 @@ expression_list_aux ::=
 ;
 
 number ::=
-  {:Logger.print("Number - line 1");:} integer_number |
-  {:Logger.print("Number - line 2");:} real_number
+  {:Logger.print("Number - line 1");:} integer_number:i {:RESULT= new Expression(new Type("integer"), (String)i);:} |
+  {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(new Type("real"), (String)r);:}
 ;
 
 integer_number ::=
-  {:Logger.print("Integer Number" );:} digit_sequence
+  {:Logger.print("Integer Number" );:} digit_sequence:d {:RESULT=d;:}
 ;
 
 digit_sequence ::=
-  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL
+  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL:i {:RESULT=i;:}
 ;
 
 real_number ::=
-  {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL
+  {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL:f {:RESULT=f;:}
 ;
 
 sign ::=

@@ -22,7 +22,7 @@ public class Procedure extends ScopedEntity{
         }else{
             this.params = new ArrayList<Parameter>();
         }
-        
+        setIsProcedure(true);
         initialize();
     }
     

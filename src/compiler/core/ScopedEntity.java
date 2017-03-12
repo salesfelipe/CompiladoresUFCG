@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScopedEntity extends  NamedEntity {
+    private Boolean isProcedure;
     private HashMap<String, Variable> variables;
     private HashMap<String, Type> types;
     private HashMap<String, String> identifiers;
@@ -18,6 +19,14 @@ public class ScopedEntity extends  NamedEntity {
         types = new HashMap<String, Type>();
         identifiers = new HashMap<String, String>();
         functionsAndProcedures = new HashMap<String, ScopedEntity>();
+    }
+
+    public Boolean isProcedure() {
+        return isProcedure;
+    }
+
+    public void setIsProcedure(Boolean procedure) {
+        isProcedure = procedure;
     }
 
     public Map<String, Variable> getVariables() {
@@ -49,6 +58,13 @@ public class ScopedEntity extends  NamedEntity {
         return types;
     }
 
+    public HashMap<String, String> getIdentifiers() {
+        return identifiers;
+    }
+
+    public HashMap<String, ScopedEntity> getFunctionsAndProcedures() {
+        return functionsAndProcedures;
+    }
 
     @Override
     public String toString() {

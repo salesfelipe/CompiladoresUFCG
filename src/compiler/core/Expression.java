@@ -26,10 +26,8 @@ public class Expression {
     }
 
     public boolean isNumeric() {
-        return  getType().getName().equals("int")
-                ||getType().getName().equals("float")
-                ||getType().getName().equals("long")
-                ||getType().getName().equals("double");
+        return  getType().getName().equals("integer")
+                ||getType().getName().equals("real");
     }
 
     public String toString(){
