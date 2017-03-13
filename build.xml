@@ -74,6 +74,10 @@ Date:
       <arg value="test/SemanticPoint/procedure.pas"/>
       <arg value="false"/>
 		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/type_check.pas"/>
+      <arg value="false"/>
+		</java>
   </target>
 
 

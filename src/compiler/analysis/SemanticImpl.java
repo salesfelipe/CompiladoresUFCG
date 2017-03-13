@@ -130,20 +130,27 @@ public class SemanticImpl {
         return new Expression(result, id);
     }
 
+    private Boolean isScopedEntity(String id ) {
+        return functionsAndProcedures.containsKey(id);
+    }
+
     private void addIdentifier(String id) throws InvalidNameException {
-        if (globalIdentifiers.contains(id)) {
+        if (!isScopedEntity(id) && globalIdentifiers.contains(id)) {
             throw new InvalidNameException("Id " + id + " ja esta em uso.");
         }
-        globalIdentifiers.add(id);
+        else {
+
+            globalIdentifiers.add(id);
+        }
     }
 
     public void addFunctionProcedureAndNewScope(ScopedEntity f) throws InvalidNameException {
-        System.out.println("addFunctionProcedureAndNewScope:"+f.getParams());
+//        System.out.println("addFunctionProcedureAndNewScope:"+f.getParams());
         List<Parameter> parametros = new ArrayList<Parameter>(f.getParams());
         f.setParams(parametros);
         if (scopeStack.isEmpty()) {
-            addIdentifier(f.getName());
-            functionsAndProcedures.put(f.getName(), f);
+            addIdentifier(f.getName().toLowerCase());
+            functionsAndProcedures.put(f.getName().toLowerCase(), f);
         } else {
             scopeStack.peek().addFunctionOrProcedure(f);
         }
@@ -163,19 +170,18 @@ public class SemanticImpl {
         selectedId = id;
     }
 
-    public void checkFunctionCall() throws InvalidParameterException {
-//        System.out.println("tempParameters:"+tempParameters);
-//        System.out.println("SelectedId:"+selectedId);
-//        System.out.println("functionsAndProcedures:"+functionsAndProcedures.get(selectedId));
+    public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
+        selectedId = selectedId.toLowerCase();
+        if (!functionsAndProcedures.containsKey(selectedId))
+            throw new InvalidFunctionException("A função '" + selectedId + "' não existe");
+
         List<Parameter> parametrosFuncao = functionsAndProcedures.get(selectedId).getParams();
         List<Parameter> parametrosChamada = tempParameters;
         if (parametrosChamada.size() != parametrosFuncao.size())
-            throw new InvalidParameterException("Os parâmetros "+tempParameters+" estão incorretos.");
+            throw new InvalidParameterException("A quantidade de parâmetros da função "+selectedId+" está incorreta.");
         for (int i = 0 ; i < parametrosChamada.size(); i++) {
-            System.out.println("parametrosFuncao"+parametrosFuncao.get(i));
-            System.out.println("parametrosChamada"+parametrosChamada.get(i));
             if (!parametrosFuncao.get(i).equals(parametrosChamada.get(i))) {
-                throw new InvalidParameterException("Os parâmetros "+tempParameters+" estão incorretos.");
+                throw new InvalidParameterException("O parâmetro: '"+parametrosChamada.get(i)+" deveria ser do tipo "+parametrosFuncao.get(i).getType());
             }
         }
 

@@ -37,8 +37,6 @@ public class Function extends ScopedEntity{
     }
 
     public void validateReturnedType(Type returnType) throws InvalidFunctionException { // Checks if the function returned what it was supposed to..
-        System.out.println(returnType.getName());
-        System.out.println(declaredReturnType.getName());
         if (!returnType.equals(declaredReturnType))
             throw new InvalidFunctionException("A Função " + getName() + " deveria retornar: " + declaredReturnType);
     }

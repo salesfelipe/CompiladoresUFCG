@@ -16,6 +16,6 @@ begin
 end; { end of procedure findMin }
 
 begin
-   findMin(a, b, felipe, min); (* Procedure call *)
+   findMIN(a, b, c, 'c'); (* Procedure call *)
 
 end.

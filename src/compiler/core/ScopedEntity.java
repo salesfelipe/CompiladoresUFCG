@@ -76,6 +76,8 @@ public class ScopedEntity extends  NamedEntity {
         return functionsAndProcedures;
     }
 
+
+
     @Override
     public String toString() {
         return "ScopedEntity{" +
