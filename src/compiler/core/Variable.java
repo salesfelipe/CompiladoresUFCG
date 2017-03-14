@@ -9,7 +9,7 @@ public class Variable {
 
     public Variable(Type type, String identifier, Boolean isConstant) {
         this.type = type;
-        this.identifier = identifier;
+        this.identifier = identifier.toLowerCase();
         this.isConstant = isConstant;
     }
 
@@ -29,9 +29,9 @@ public class Variable {
         this.type = type;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
+//    public void setIdentifier(String identifier) {
+//        this.identifier = identifier.toLowerCase();
+//    }
 
     public void setValue(Expression value) {
         this.value = value;

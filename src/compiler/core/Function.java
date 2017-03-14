@@ -3,9 +3,7 @@ package compiler.core;
 import compiler.exceptions.InvalidFunctionException;
 import compiler.exceptions.InvalidNameException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Function extends ScopedEntity{
 
@@ -22,12 +20,6 @@ public class Function extends ScopedEntity{
         setIsProcedure(false);
     }
     
-    private void initialize() throws InvalidNameException {
-    	for (int i = 0; i < getParams().size(); i++) {
-			addVariable(new Variable(getParams().get(i).getType(), getParams().get(i).getIdentifier(), false));
-		}
-    }
-    
     public Type getDeclaredReturnType() {
         return declaredReturnType;
     }
@@ -40,7 +32,6 @@ public class Function extends ScopedEntity{
         if (!returnType.equals(declaredReturnType))
             throw new InvalidFunctionException("A Função " + getName() + " deveria retornar: " + declaredReturnType);
     }
-
 
     @Override
     public boolean equals(Object obj){

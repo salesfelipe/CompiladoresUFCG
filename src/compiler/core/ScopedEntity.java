@@ -7,81 +7,139 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ScopedEntity extends  NamedEntity {
+public class ScopedEntity {
+    private String name;
     private Boolean isProcedure;
-    private HashMap<String, Variable> variables;
-    private HashMap<String, Type> types;
-    private HashMap<String, String> identifiers;
-    private HashMap<String,ScopedEntity> functionsAndProcedures;
+    private Map<String, Variable> variables;
+    private Map<String, Type> types;
+    private Map<String, ScopedEntity> functionsAndProcedures;
     private List<Parameter> params;
 
     public ScopedEntity(String name) {
-        super(name);
+        this.name = name.toLowerCase();
         variables = new HashMap<String, Variable>();
         types = new HashMap<String, Type>();
-        identifiers = new HashMap<String, String>();
         functionsAndProcedures = new HashMap<String, ScopedEntity>();
     }
 
+    protected void initialize() throws InvalidNameException {
+        Map<String, Variable> temp = new HashMap<>();
+
+        Parameter p;
+        for (int i = 0; i < getParams().size(); i++) {
+            p = getParams().get(i);
+            if(temp.containsKey(p.getIdentifier())){
+                throw new InvalidNameException("Já existe um parametro com o nome: " + p.getIdentifier());
+            }
+
+            temp.put(p.getIdentifier(), new Variable(p.getType(),p.getIdentifier(),false));
+        }
+
+        addVariables(temp);
+    }
+
+
+    public Variable getVariable(String id) {
+        return variables.get(id);
+    }
+
+    public ScopedEntity getFunctionOrProcedure(String id) {
+        return functionsAndProcedures.get(id);
+    }
+
+    public boolean isIdBeenUsed(String id){
+        return variables.containsKey(id) || functionsAndProcedures.containsKey(id) || types.containsKey(id);
+    }
+
+    public boolean existsVariable(String id) {
+        return variables.containsKey(id);
+    }
+
+    public boolean existsFunctionOrProcedure(String id) {
+        return functionsAndProcedures.containsKey(id);
+    }
+
+    public String getName() { return name;}
+
     public List<Parameter> getParams() {
         return params;
+    }
+
+    public Boolean isProcedure() { return isProcedure; }
+
+    public Map<String, Variable> getVariables() {
+        return variables;
+    }
+
+    public Map<String, Type> getTypes() { return types; }
+
+    public Map<String, ScopedEntity> getFunctionsAndProcedures() {
+        return functionsAndProcedures;
     }
 
     public void setParams(List<Parameter> params) {
         this.params = params;
     }
 
-    public Boolean isProcedure() {
-        return isProcedure;
-    }
-
     public void setIsProcedure(Boolean procedure) {
         isProcedure = procedure;
     }
 
-    public Map<String, Variable> getVariables() {
-        return variables;
-    }
-
     public void addVariable(Variable v) throws InvalidNameException {
-        this.addIdentifier(v.getIdentifier());
-        this.variables.put(v.getIdentifier(), v);
-    }
-    
-    public void addFunctionOrProcedure(ScopedEntity s) throws InvalidNameException {
-    	this.addIdentifier(s.getName());
-        this.functionsAndProcedures.put(s.getName(), s);
-    }
+        String id  = v.getIdentifier();
 
-    public void addIdentifier(String id) throws InvalidNameException {
-        if(this.identifiers.containsKey(id)){
-            throw new InvalidNameException("O nome: " + id + " Ja esta em uso no escopo atual!");
+        if(variables.containsKey(id)){
+            throw new InvalidNameException("Já existe uma variável com o nome: " + id + " no escopo atual!");
         }
-        this.identifiers.put(id, id);
+
+        this.variables.put(id, v);
     }
 
-    public void addType(Type t) {
-        this.types.put(t.getName(), t);
+    public void addFunctionOrProcedure(ScopedEntity s) throws InvalidNameException {
+        String id  = s.getName();
+
+        if(variables.containsKey(id)){
+            throw new InvalidNameException("Já existe uma função/procedure com o nome: " + id + " no escopo atual!");
+        }
+
+        this.functionsAndProcedures.put(id, s);
     }
 
-    public Map<String, Type> getTypes() {
-        return types;
+    public void addType(Type t) throws InvalidNameException {
+        String id  = t.getName();
+
+        if(types.containsKey(id)){
+            throw new InvalidNameException("Já existe um tipo com o nome: " + id + " no escopo atual!");
+        }
     }
 
-    public HashMap<String, String> getIdentifiers() {
-        return identifiers;
+    public void addVariables(Map<String, Variable> vars) {
+        for (String key : vars.keySet()) {
+            if(!this.variables.containsKey(key)) {
+                this.variables.put(key, vars.get(key));
+            }
+        }
     }
 
-    public HashMap<String, ScopedEntity> getFunctionsAndProcedures() {
-        return functionsAndProcedures;
+    public void addFunctionsAndProcedures(Map<String, ScopedEntity> functionsAndProcedures) {
+        for (String key : functionsAndProcedures.keySet()) {
+            if(!this.functionsAndProcedures.containsKey(key)) {
+                this.functionsAndProcedures.put(key, functionsAndProcedures.get(key));
+            }
+        }
     }
 
-
+    public void addTypes(Map<String, Type> types) {
+        for (String key : types.keySet()) {
+            if(!this.types.containsKey(key)) {
+                this.types.put(key, types.get(key));
+            }
+        }
+    }
 
     @Override
     public String toString() {
-        return "ScopedEntity{" +
-                "variables=" + variables + " id " + getName() +
-                '}';
+        return "Scopo : " + name + ";" +
+                "Variables : " + variables + " ;";
     }
 }

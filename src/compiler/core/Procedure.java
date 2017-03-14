@@ -23,12 +23,6 @@ public class Procedure extends ScopedEntity{
         setIsProcedure(true);
         initialize();
     }
-    
-    private void initialize() throws InvalidNameException {
-    	for (int i = 0; i < getParams().size(); i++) {
-			addVariable(new Variable(getParams().get(i).getType() ,getParams().get(i).getIdentifier(), false));
-		}
-    }
 
 
     @Override

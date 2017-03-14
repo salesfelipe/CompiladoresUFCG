@@ -190,8 +190,8 @@ procedure_and_function_declaration_part ::=
 ;
 
 procedure_declaration ::=
-  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
-  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {:SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body {:RESULT=id;:}
+  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
+  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body {:RESULT=id;:}
 ;
 
 procedure_declaration_aux ::=
@@ -252,7 +252,7 @@ function_identifier ::=
 
 function_heading ::=
   {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type:rt {:
-    SemanticImpl.getInstance().addFunctionProcedureAndNewScope(new Function((String) id, SemanticImpl.getInstance().getParameters()));
+    SemanticImpl.getInstance().addFunctionProcedure(new Function((String) id, SemanticImpl.getInstance().getParameters()));
     SemanticImpl.getInstance().setReturnType(id, new Type((String)rt)); RESULT=id;
   :}
 ;

@@ -25,6 +25,6 @@ begin
    max(a,c,b);
 
    (* calling a function to get max value *)
-  {funcao_nao_declarada(a, b);}
+  funcao_nao_declarada(a, b);
 
 end.
