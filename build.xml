@@ -62,6 +62,7 @@ Date:
   </target>
 
 	<target name="semantico" depends="jar">
+    <!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/constant.pas"/>
       <arg value="false"/>
@@ -85,7 +86,63 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/global_scope.pas"/>
       <arg value="false"/>
+    </java>-->
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/atribuicao_expressoes.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/atribuicao_function_return.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/atribuicao_literais.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/atribuicao_type_coercao.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/declaracao1.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/declaracao2.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_call_length.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_call_return_type.pas"/>
+      <arg value="false"/>
     </java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_definition.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_return_exists.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/operadores.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/operadores2.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure_definition.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/repeat.pas"/>
+      <arg value="false"/>
+		</java>
   </target>
 
 

@@ -3,7 +3,7 @@ var
    a, b, ret : integer;
 
 (*function definition *)
-function ret(num1, num2: integer; s1, s2, s3: string): integer;
+function max(num1, num2: integer): integer;
 var
    (* local variable declaration *)
    result: integer;
@@ -14,14 +14,13 @@ begin
 
    else
       result := num2;
-   max := result;
+
+   max := 'sdads'
 end;
 
 begin
-   a := 100;
-   b := 200;
-   (* calling a function to get max value *)
-   ret := max(a, b);
+   a := 1;
+   b := 2;
+   max(a, b);
 
-   writeln( 'Max value is : ', ret );
 end.

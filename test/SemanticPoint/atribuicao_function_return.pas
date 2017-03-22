@@ -1,8 +1,8 @@
 program exFunction;
 var
-   a, b, ret : string;
+   a,b, ret : integer;
+   c : string;
 
-(*function definition *)
 function max(num1, num2: integer): integer;
 var
    (* local variable declaration *)
@@ -18,8 +18,5 @@ begin
 end;
 
 begin
-   a := 'teste';
-   b := 'teste';
-   max(a, b);
-
+   c := max(a,b)
 end.
