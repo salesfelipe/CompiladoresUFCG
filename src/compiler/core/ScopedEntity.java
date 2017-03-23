@@ -137,6 +137,8 @@ public class ScopedEntity {
         }
     }
 
+
+
     @Override
     public String toString() {
         return "Scopo : " + name + ";" +

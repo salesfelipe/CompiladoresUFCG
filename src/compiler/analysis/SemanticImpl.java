@@ -115,8 +115,20 @@ public class SemanticImpl {
         }
     }
 
-    public void setSelectedId(String id) {
+    public void setSelectedId(String id) throws InvalidVariableException {
         selectedId = id;
+
+        boolean result = false;
+
+        result = scopedRepository.existsVariable(id);
+
+        if(!result){
+            result = scopedRepository.existsFunctionOrProcedure(id);
+        }
+
+        if(!result){
+            throw new InvalidVariableException("O id: " + id +" nunca foi declarada.");
+        }
     }
 
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
