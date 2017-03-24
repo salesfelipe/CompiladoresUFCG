@@ -104,6 +104,10 @@ Date:
       <arg value="test/SemanticPoint/atribuicao_type_coercao.pas"/>
       <arg value="false"/>
 		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_return_exists.pas"/>
+      <arg value="true"/>
+		</java>
     <!--<java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/declaracao1.pas"/>
       <arg value="false"/>

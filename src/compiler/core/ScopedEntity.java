@@ -108,12 +108,6 @@ public class ScopedEntity {
             throw new InvalidNameException("Já existe uma função/procedure com o nome: " + id + " no escopo atual!");
         }
 
-        if(!s.isProcedure()) {
-            Function t = (Function) s;
-
-            s.addVariable(new Variable(t.getDeclaredReturnType(), t.getName(), false));
-        }
-
         this.functionsAndProcedures.put(id, s);
     }
 

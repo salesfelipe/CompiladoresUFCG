@@ -8,9 +8,13 @@ import java.util.*;
 public class Function extends ScopedEntity{
 
     private Type declaredReturnType;
+    private boolean hasReturn;
 
     public Function(String name, ArrayList<Parameter> params) throws InvalidNameException {
         super(name);
+
+        hasReturn = false;
+
         if(params != null){
             setParams(params);
         }else{
@@ -28,9 +32,15 @@ public class Function extends ScopedEntity{
         this.declaredReturnType = type;
     }
 
-    public void validateReturnedType(Type returnType) throws InvalidFunctionException { // Checks if the function returned what it was supposed to..
-        if (!returnType.equals(declaredReturnType))
-            throw new InvalidFunctionException("A Função " + getName() + " deveria retornar: " + declaredReturnType);
+    public void validateReturnedType() throws InvalidFunctionException { // Checks if the function returned what it was supposed to..
+
+        if(!hasReturn) {
+            throw new InvalidFunctionException("A Função " + getName() + " não tem um retorno");
+        }
+    }
+
+    public void setHasReturn(boolean b) {
+        hasReturn = true;
     }
 
     @Override

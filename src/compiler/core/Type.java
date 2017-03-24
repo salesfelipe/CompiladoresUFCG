@@ -22,7 +22,6 @@ public class Type {
     }
 
     public boolean isCompatible(Type type) {
-        System.out.println(compatibleTypes);
         return compatibleTypes.contains(type) || this.typeName.equals(type.getName());
     }
 

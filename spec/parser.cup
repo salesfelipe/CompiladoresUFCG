@@ -204,9 +204,9 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body:exp
+  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body
   {:
-      SemanticImpl.getInstance().validateFunction((Expression)exp, (String)id);
+      SemanticImpl.getInstance().validateFunction((String)id);
   :} |
 	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive
 ;

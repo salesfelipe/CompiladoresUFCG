@@ -69,14 +69,25 @@ public class SemanticImpl {
         scopedRepository.addVariable(variable);
     }
 
-    public void validateFunction(Expression e, String id) throws InvalidFunctionException {
-        ((Function) scopedRepository.getFunctionOrProcedure(id)).validateReturnedType(e.getType());
+    public void validateFunction(String id) throws InvalidFunctionException {
+        ((Function) scopedRepository.getFunctionOrProcedure(id)).validateReturnedType();
 
         exitCurrentScope();
     }
 
     public void setReturnType(String id, Type type) {
-        ((Function) scopedRepository.getFunctionOrProcedure(id)).setDeclaredReturnedType(type);
+        Function f = ((Function) scopedRepository.getFunctionOrProcedure(id));
+        f.setDeclaredReturnedType(type);
+
+        if(!f.isProcedure()) {
+            Variable v = new Variable(f.getDeclaredReturnType(), f.getName(), false);
+
+            try {
+                f.addVariable(v);
+            } catch (InvalidNameException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Expression getExpressionById(String id) throws InvalidVariableException {
@@ -160,6 +171,13 @@ public class SemanticImpl {
     
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
+
+        if(scopedRepository.existsFunctionOrProcedure(selectedId)) {
+            ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedId);
+            if(!s.isProcedure()){
+                ((Function) s).setHasReturn(true);
+            }
+        }
 
 		Variable variable = scopedRepository.getVariable(selectedId);
 
