@@ -6,7 +6,7 @@ import java.util.List;
 public class Type {
     private String typeName;
 
-    private List<Type> compatibleTypes;
+    public List<Type> compatibleTypes;
 
     public Type(String typeName) {
         this.typeName = typeName.toLowerCase();
@@ -22,6 +22,7 @@ public class Type {
     }
 
     public boolean isCompatible(Type type) {
+        System.out.println(compatibleTypes);
         return compatibleTypes.contains(type) || this.typeName.equals(type.getName());
     }
 

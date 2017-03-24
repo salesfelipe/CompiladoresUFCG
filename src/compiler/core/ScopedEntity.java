@@ -28,11 +28,11 @@ public class ScopedEntity {
         Parameter p;
         for (int i = 0; i < getParams().size(); i++) {
             p = getParams().get(i);
-            if(temp.containsKey(p.getIdentifier())){
+            if (temp.containsKey(p.getIdentifier())) {
                 throw new InvalidNameException("Já existe um parametro com o nome: " + p.getIdentifier());
             }
 
-            temp.put(p.getIdentifier(), new Variable(p.getType(),p.getIdentifier(),false));
+            temp.put(p.getIdentifier(), new Variable(p.getType(), p.getIdentifier(), false));
         }
 
         addVariables(temp);
@@ -47,7 +47,7 @@ public class ScopedEntity {
         return functionsAndProcedures.get(id);
     }
 
-    public boolean isIdBeenUsed(String id){
+    public boolean isIdBeenUsed(String id) {
         return variables.containsKey(id) || functionsAndProcedures.containsKey(id) || types.containsKey(id);
     }
 
@@ -59,19 +59,25 @@ public class ScopedEntity {
         return functionsAndProcedures.containsKey(id);
     }
 
-    public String getName() { return name;}
+    public String getName() {
+        return name;
+    }
 
     public List<Parameter> getParams() {
         return params;
     }
 
-    public Boolean isProcedure() { return isProcedure; }
+    public Boolean isProcedure() {
+        return isProcedure;
+    }
 
     public Map<String, Variable> getVariables() {
         return variables;
     }
 
-    public Map<String, Type> getTypes() { return types; }
+    public Map<String, Type> getTypes() {
+        return types;
+    }
 
     public Map<String, ScopedEntity> getFunctionsAndProcedures() {
         return functionsAndProcedures;
@@ -86,9 +92,9 @@ public class ScopedEntity {
     }
 
     public void addVariable(Variable v) throws InvalidNameException {
-        String id  = v.getIdentifier();
+        String id = v.getIdentifier();
 
-        if(variables.containsKey(id)){
+        if (variables.containsKey(id)) {
             throw new InvalidNameException("Já existe uma variável com o nome: " + id + " no escopo atual!");
         }
 
@@ -96,26 +102,34 @@ public class ScopedEntity {
     }
 
     public void addFunctionOrProcedure(ScopedEntity s) throws InvalidNameException {
-        String id  = s.getName();
+        String id = s.getName();
 
-        if(variables.containsKey(id)){
+        if (variables.containsKey(id)) {
             throw new InvalidNameException("Já existe uma função/procedure com o nome: " + id + " no escopo atual!");
+        }
+
+        if(!s.isProcedure()) {
+            Function t = (Function) s;
+
+            s.addVariable(new Variable(t.getDeclaredReturnType(), t.getName(), false));
         }
 
         this.functionsAndProcedures.put(id, s);
     }
 
     public void addType(Type t) throws InvalidNameException {
-        String id  = t.getName();
+        String id = t.getName();
 
-        if(types.containsKey(id)){
+        if (types.containsKey(id)) {
             throw new InvalidNameException("Já existe um tipo com o nome: " + id + " no escopo atual!");
         }
+
+        types.put(id, t);
     }
 
     public void addVariables(Map<String, Variable> vars) {
         for (String key : vars.keySet()) {
-            if(!this.variables.containsKey(key)) {
+            if (!this.variables.containsKey(key)) {
                 this.variables.put(key, vars.get(key));
             }
         }
@@ -123,7 +137,7 @@ public class ScopedEntity {
 
     public void addFunctionsAndProcedures(Map<String, ScopedEntity> functionsAndProcedures) {
         for (String key : functionsAndProcedures.keySet()) {
-            if(!this.functionsAndProcedures.containsKey(key)) {
+            if (!this.functionsAndProcedures.containsKey(key)) {
                 this.functionsAndProcedures.put(key, functionsAndProcedures.get(key));
             }
         }
@@ -131,7 +145,7 @@ public class ScopedEntity {
 
     public void addTypes(Map<String, Type> types) {
         for (String key : types.keySet()) {
-            if(!this.types.containsKey(key)) {
+            if (!this.types.containsKey(key)) {
                 this.types.put(key, types.get(key));
             }
         }

@@ -308,8 +308,12 @@ simple_statement_aux ::=
 ;
 
 assignment_statement ::=
-  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression:exp {:RESULT=exp;
-  SemanticImpl.getInstance().checkTypeOfAssignment((Expression) exp);:}
+  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression:exp
+  {:
+    RESULT=exp;
+
+    SemanticImpl.getInstance().checkTypeOfAssignment((Expression) exp);
+  :}
 ;
 
 procedure_statement ::=

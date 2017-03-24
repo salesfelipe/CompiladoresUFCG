@@ -20,7 +20,7 @@ public class SemanticImpl {
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
-        scopedRepository = ScopedEntityRepository.getInstance();
+        scopedRepository = new ScopedEntityRepository();
     }
 
     public void addIdToTempList(String id) {
@@ -154,15 +154,15 @@ public class SemanticImpl {
 
     };
     
-    public Type getTypeById(String id){
-    	return scopedRepository.getTypeById(id);
+    public Type getTypeById(String id) throws Exception {
+        return scopedRepository.getTypeById(id);
     }
     
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
-				
+
 		Variable variable = scopedRepository.getVariable(selectedId);
-				
+
 		if (!variable.getType().isCompatible((exp.getType()))) {
 			throw new InvalidAssignmentException("Atribuição inválida");
 		}

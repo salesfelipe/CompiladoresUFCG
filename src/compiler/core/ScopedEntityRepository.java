@@ -14,28 +14,14 @@ public class ScopedEntityRepository {
 
     private static final String GLOBAL_SCOPE_NAME = "global-scope";
 
+    public Stack<ScopedEntity> scopeStack;
 
-    private static ScopedEntityRepository singleton;
-
-    private static Stack<ScopedEntity> scopeStack;
-
-    private static void initiate() {
-        scopeStack = new Stack<ScopedEntity>();
+    public  ScopedEntityRepository(){
+        scopeStack = new Stack<>();
         initiateGlobalScope();
     }
 
-    private ScopedEntityRepository(){}
-
-    public static ScopedEntityRepository getInstance() {
-        if (singleton == null) {
-            singleton = new ScopedEntityRepository();
-            initiate();
-        }
-
-        return singleton;
-    }
-
-    private static void initiateGlobalScope() {
+    private void initiateGlobalScope() {
         ScopedEntity global = new ScopedEntity(GLOBAL_SCOPE_NAME);
 
         List<Type> primitiveTypes = Type.getPrimitiveTypes();
@@ -94,8 +80,14 @@ public class ScopedEntityRepository {
         return scopeStack.peek().getName().equals(GLOBAL_SCOPE_NAME);
     }
     
-    public Type getTypeById(String id){
-    	return scopeStack.peek().getTypes().get(id);
+    public Type getTypeById(String id) throws Exception {
+        Type result = scopeStack.peek().getTypes().get(id.toLowerCase());
+
+        if(result == null) {
+            throw new Exception("type n encontrado");
+        }
+
+        return result;
     }
 
     public void exitCurrentScope() {
