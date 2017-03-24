@@ -180,7 +180,7 @@ variable_declaration_part_aux ::=
 ;
 
 variable_declaration ::=
-  {:Logger.print("Variable declaration");:} identifier_list COLON type:t {: SemanticImpl.getInstance().addVariablesFromTempList(new Type((String)t)); :}
+  {:Logger.print("Variable declaration");:} identifier_list COLON type:t {: SemanticImpl.getInstance().addVariablesFromTempList(SemanticImpl.getInstance().getTypeById((String)t)); :}
 ;
 
 procedure_and_function_declaration_part ::=
@@ -253,7 +253,7 @@ function_identifier ::=
 function_heading ::=
   {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type:rt {:
     SemanticImpl.getInstance().addFunctionProcedure(new Function((String) id, SemanticImpl.getInstance().getParameters()));
-    SemanticImpl.getInstance().setReturnType(id, new Type((String)rt)); RESULT=id;
+    SemanticImpl.getInstance().setReturnType(id, SemanticImpl.getInstance().getTypeById((String)rt)); RESULT=id;
   :}
 ;
 
@@ -308,7 +308,8 @@ simple_statement_aux ::=
 ;
 
 assignment_statement ::=
-  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression:exp {:RESULT=exp;:}
+  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression:exp {:RESULT=exp;
+  SemanticImpl.getInstance().checkTypeOfAssignment((Expression) exp);:}
 ;
 
 procedure_statement ::=
@@ -443,11 +444,11 @@ formal_parameter_section ::=
 ;
 
 value_parameter_section ::=
-  {:Logger.print("Value parameter section");:} identifier_list COLON parameter_type:pt {:SemanticImpl.getInstance().createParameters(new Type((String) pt));:}
+  {:Logger.print("Value parameter section");:} identifier_list COLON parameter_type:pt {:SemanticImpl.getInstance().createParameters(SemanticImpl.getInstance().getTypeById((String) pt));:}
 ;
 
 variable_parameter_section ::=
-  {:Logger.print("Variable parameter section");:} VAR identifier_list COLON parameter_type:pt {:SemanticImpl.getInstance().createParameters(new Type((String) pt));:}
+  {:Logger.print("Variable parameter section");:} VAR identifier_list COLON parameter_type:pt {:SemanticImpl.getInstance().createParameters(SemanticImpl.getInstance().getTypeById((String) pt));:}
 ;
 
 procedure_parameter_section ::=
@@ -510,14 +511,14 @@ term ::=
 
 factor ::=
   {:Logger.print("Factor - number");:} number:n {:RESULT=n;:} |
-  {:Logger.print("Factor - string");:} string:s {:RESULT= new Expression(new Type("string"), (String)s);:} |
-  {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(new Type("set"), (String)s);:} |
-  {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(new Type("nil"), (String)n);:} |
+  {:Logger.print("Factor - string");:} string:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("string"), (String)s);:} |
+  {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("set"), (String)s);:} |
+  {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
   {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux {: RESULT=SemanticImpl.getInstance().getTypeByID((String)id); :}
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux {: RESULT=SemanticImpl.getInstance().getExpressionById((String)id); :}
 |
-  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(new Type("boolean"), (String)b);:}
+  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("boolean"), (String)b);:}
 ;
 
 factor_aux ::=
@@ -811,8 +812,8 @@ expression_list_aux ::=
 ;
 
 number ::=
-  {:Logger.print("Number - line 1");:} integer_number:i {:RESULT= new Expression(new Type("integer"), (String)i);:} |
-  {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(new Type("real"), (String)r);:}
+  {:Logger.print("Number - line 1");:} integer_number:i {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), (String)i);:} |
+  {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), (String)r);:}
 ;
 
 integer_number ::=

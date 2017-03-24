@@ -22,7 +22,7 @@ public class Type {
     }
 
     public boolean isCompatible(Type type) {
-        return compatibleTypes.contains(type);
+        return compatibleTypes.contains(type) || this.typeName.equals(type.getName());
     }
 
     public boolean isNumeric () {

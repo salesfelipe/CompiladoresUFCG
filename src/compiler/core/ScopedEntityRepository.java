@@ -93,6 +93,10 @@ public class ScopedEntityRepository {
     public boolean isEmpty(){
         return scopeStack.peek().getName().equals(GLOBAL_SCOPE_NAME);
     }
+    
+    public Type getTypeById(String id){
+    	return scopeStack.peek().getTypes().get(id);
+    }
 
     public void exitCurrentScope() {
         if (isEmpty()) {

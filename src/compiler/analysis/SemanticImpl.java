@@ -1,6 +1,7 @@
 package compiler.analysis;
 
 import compiler.core.*;
+import compiler.exceptions.InvalidAssignmentException;
 import compiler.exceptions.InvalidFunctionException;
 import compiler.exceptions.InvalidNameException;
 import compiler.exceptions.InvalidParameterException;
@@ -78,7 +79,7 @@ public class SemanticImpl {
         ((Function) scopedRepository.getFunctionOrProcedure(id)).setDeclaredReturnedType(type);
     }
 
-    public Expression getTypeByID(String id) throws InvalidVariableException {
+    public Expression getExpressionById(String id) throws InvalidVariableException {
         Type result;
 
         if (scopedRepository.existsVariable(id)) {
@@ -120,7 +121,12 @@ public class SemanticImpl {
 
         boolean result = false;
 
-        result = scopedRepository.existsVariable(id);
+        checkVariableExistence(id);
+    }
+
+	public void checkVariableExistence(String id) throws InvalidVariableException {
+		boolean result;
+		result = scopedRepository.existsVariable(id);
 
         if(!result){
             result = scopedRepository.existsFunctionOrProcedure(id);
@@ -129,7 +135,7 @@ public class SemanticImpl {
         if(!result){
             throw new InvalidVariableException("O id: " + id +" nunca foi declarada.");
         }
-    }
+	}
 
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
         selectedId = selectedId.toLowerCase();
@@ -147,5 +153,20 @@ public class SemanticImpl {
         }
 
     };
+    
+    public Type getTypeById(String id){
+    	return scopedRepository.getTypeById(id);
+    }
+    
+	public boolean checkTypeOfAssignment(Expression exp)
+			throws InvalidAssignmentException {
+				
+		Variable variable = scopedRepository.getVariable(selectedId);
+				
+		if (!variable.getType().isCompatible((exp.getType()))) {
+			throw new InvalidAssignmentException("Atribuição inválida");
+		}
+		return true;
+	}
 
 }
