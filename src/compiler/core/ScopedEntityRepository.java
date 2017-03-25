@@ -1,6 +1,7 @@
 package compiler.core;
 
 import compiler.exceptions.InvalidNameException;
+import compiler.exceptions.InvalidTypeException;
 
 import java.util.List;
 import java.util.Map;
@@ -80,11 +81,11 @@ public class ScopedEntityRepository {
         return scopeStack.peek().getName().equals(GLOBAL_SCOPE_NAME);
     }
     
-    public Type getTypeById(String id) throws Exception {
+    public Type getTypeById(String id) throws InvalidTypeException {
         Type result = scopeStack.peek().getTypes().get(id.toLowerCase());
 
         if(result == null) {
-            throw new Exception("type n encontrado");
+            throw new InvalidTypeException("O tipo: " + id + " não foi encontrado no escopo atual");
         }
 
         return result;

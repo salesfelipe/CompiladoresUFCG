@@ -84,7 +84,7 @@ actual_parameter, actual_value, actual_variable, actual_function, actual_procedu
 non terminal value_parameter_section, variable_parameter_section, procedure_parameter_section, function_parameter_section, parameter_type,
 conformant_array_schema, packed_conformant_array_schema, unpacked_conformant_array_schema, bound_specification, bound_specification_aux;
 non terminal ordinal_type_identifier, simple_expression, expression_aux, relational_operator, term, simple_expression_aux,
-factor, term_aux, multiplication_operator, set, bound_identifier, function_designator, component_variable;
+factor, term_aux, /*multiplication_operator,*/ set, bound_identifier, function_designator, component_variable;
 non terminal referenced_variable, field_identifier, indexed_variable, field_designator, file_buffer, array_variable, expression_list,
 element_list, element_list_aux, optional_actual_parameter_list, file_variable;
 non terminal field_list_aux, fixed_part, fixed_part_aux, variant_part, record_section, tag_field, variant, variant_part_aux;
@@ -495,18 +495,24 @@ ordinal_type_identifier ::=
 ;
 
 expression ::=
-  {:Logger.print("Expression");:} simple_expression:exp {:RESULT=exp;:}
+  {:Logger.print("Expression");:} simple_expression:exp {:
+    RESULT=exp;
+    System.out.println(exp);
+  :}
 ;
 
 simple_expression ::=
-  {:Logger.print("Simple Expression");:} sign_optional term:t simple_expression_aux {:RESULT=t;:}
+  {:Logger.print("Simple Expression");:} sign_optional term:t
+  {:SemanticImpl.getInstance().setSelectedExp((Expression)t);:}
+  simple_expression_aux:exp {:RESULT = exp;:}
+
 ;
 
 simple_expression_aux ::=
   {:Logger.print("Simple Expression Aux - Vazio");:} |
-  {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator term simple_expression_aux |
-  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator term simple_expression_aux |
-  {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator    term simple_expression_aux
+  {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator:a term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)a,(Expression)t) ;:} simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;:} simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
 ;
 
 term ::=
@@ -531,37 +537,37 @@ factor_aux ::=
 ;
 
 relational_operator ::=
-  {:Logger.print("Relational Operator - =");:} EQUAL |
-  {:Logger.print("Relational Operator - <>");:} NOTEQUAL |
-  {:Logger.print("Relational Operator - <");:} LT |
-  {:Logger.print("Relational Operator - <=");:} LE |
-  {:Logger.print("Relational Operator - >=");:} GE |
-  {:Logger.print("Relational Operator - >");:} GT
+  {:Logger.print("Relational Operator - =");:}  EQUAL:e      {:RESULT = e;  :} |
+  {:Logger.print("Relational Operator - <>");:} NOTEQUAL:ne  {:RESULT = ne; :} |
+  {:Logger.print("Relational Operator - <");:}  LT:lt        {:RESULT = lt; :} |
+  {:Logger.print("Relational Operator - <=");:} LE:le        {:RESULT = le; :} |
+  {:Logger.print("Relational Operator - >=");:} GE:ge        {:RESULT = ge; :} |
+  {:Logger.print("Relational Operator - >");:}  GT:gt        {:RESULT = gt; :}
 ;
 
 arithmetic_operator ::=
-  {:Logger.print("Arithmetic Operator : +");:} PLUS |
-  {:Logger.print("Arithmetic Operator : -");:} MINUS |
-  {:Logger.print("Arithmetic Operator : *");:} STAR |
-  {:Logger.print("Arithmetic Operator : /");:} SLASH |
-  {:Logger.print("Arithmetic Operator : %");:} MOD
+  {:Logger.print("Arithmetic Operator : +");:} PLUS:p   {:RESULT = p;  :}  |
+  {:Logger.print("Arithmetic Operator : -");:} MINUS:m  {:RESULT = m;  :}  |
+  {:Logger.print("Arithmetic Operator : *");:} STAR:st  {:RESULT = st; :} |
+  {:Logger.print("Arithmetic Operator : /");:} SLASH:sl {:RESULT = sl; :} |
+  {:Logger.print("Arithmetic Operator : %");:} MOD:mo   {:RESULT = mo; :}
 ;
 
 boolean_operator ::=
-  {:Logger.print("Boolean Operator - ");:} AND |
-  {:Logger.print("Boolean Operator - ");:} NOT |
-  {:Logger.print("Boolean Operator - ");:} OR |
-  {:Logger.print("Boolean Operator - ");:} ORELSE |
-  {:Logger.print("Boolean Operator - ");:} ANDTHEN
+  {:Logger.print("Boolean Operator - ");:} AND:a       {:RESULT = a;:}  |
+  {:Logger.print("Boolean Operator - ");:} NOT:n       {:RESULT = n;:}  |
+  {:Logger.print("Boolean Operator - ");:} OR:o        {:RESULT = o;:}  |
+  {:Logger.print("Boolean Operator - ");:} ORELSE:oe   {:RESULT = oe;:} |
+  {:Logger.print("Boolean Operator - ");:} ANDTHEN:at  {:RESULT = at;:}
 ;
 
-multiplication_operator ::=
-  {:Logger.print("Multiplication Operator - line 1");:} STAR |
-  {:Logger.print("Multiplication Operator - line 2");:} DIV |
-  {:Logger.print("Multiplication Operator - line 3");:} SLASH |
-  {:Logger.print("Multiplication Operator - line 4");:} MOD |
-  {:Logger.print("Multiplication Operator - line 5");:} AND
-;
+/*multiplication_operator ::=
+  {:Logger.print("Multiplication Operator - line 1");:} STAR:s   | {:RESULT = s;:}
+  {:Logger.print("Multiplication Operator - line 2");:} DIV:d    | {:RESULT = d;:}
+  {:Logger.print("Multiplication Operator - line 3");:} SLASH:sl | {:RESULT = sl;:}
+  {:Logger.print("Multiplication Operator - line 4");:} MOD:m    | {:RESULT = m;:}
+  {:Logger.print("Multiplication Operator - line 5");:} AND:a      {:RESULT = a;:}
+;*/
 
 variable ::=
   {:Logger.print("Variable - line 1");:} variable_identifier:id component_variable {:RESULT=id;:}

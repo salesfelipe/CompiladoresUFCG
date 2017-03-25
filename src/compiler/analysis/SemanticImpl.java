@@ -1,11 +1,7 @@
 package compiler.analysis;
 
 import compiler.core.*;
-import compiler.exceptions.InvalidAssignmentException;
-import compiler.exceptions.InvalidFunctionException;
-import compiler.exceptions.InvalidNameException;
-import compiler.exceptions.InvalidParameterException;
-import compiler.exceptions.InvalidVariableException;
+import compiler.exceptions.*;
 
 import java.util.*;
 
@@ -16,6 +12,7 @@ public class SemanticImpl {
     private static List<Parameter> tempParameters;
     private static String selectedId;
     private static ScopedEntityRepository scopedRepository;
+    private static Expression selectedExp;
 
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
@@ -130,9 +127,45 @@ public class SemanticImpl {
     public void setSelectedId(String id) throws InvalidVariableException {
         selectedId = id;
 
-        boolean result = false;
-
         checkVariableExistence(id);
+    }
+
+    public void setSelectedExp(Expression exp) {
+        selectedExp = exp;
+    }
+
+    public Expression getSelectedExp() {
+        return selectedExp;
+    }
+
+    public Expression checkOperation(String op, Expression exp) throws InvalidOperationException, InvalidTypeException {
+
+        if(!selectedExp.getType().isCompatible(exp.getType())){
+            throw new InvalidOperationException("O operador '" +  op + "' não é compatível com os tipos: (" + selectedExp.getType().getName() + "," + exp.getType().getName() +")" );
+        }
+
+        if(isRelationalOp(op)){
+            return new Expression(singleton.getTypeById("boolean"));
+        } else {
+            return new Expression(singleton.getTypeById(Type.resultantType(selectedExp.getType(),exp.getType())));
+        }
+
+
+    }
+
+    public boolean isRelationalOp(String op) {
+        List<String> operadores = new ArrayList<String>(){
+            {
+                add("<");
+                add(">");
+                add("=");
+                add("<=");
+                add(">=");
+                add("<>");
+            }
+        };
+
+        return operadores.contains(op);
     }
 
 	public void checkVariableExistence(String id) throws InvalidVariableException {
@@ -164,11 +197,11 @@ public class SemanticImpl {
         }
 
     };
-    
-    public Type getTypeById(String id) throws Exception {
+
+    public Type getTypeById(String id) throws InvalidTypeException {
         return scopedRepository.getTypeById(id);
     }
-    
+
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
 

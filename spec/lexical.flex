@@ -160,27 +160,27 @@ Y = [yY]
                                                   return symbol(sym.RPAREN); }
 
   /* Relational Operators */
-  "="                                          { return symbol(sym.EQUAL); }
-	">="                                         { return symbol(sym.GE); }
-	">"                                          { return symbol(sym.GT); }
-	"<="                                         { return symbol(sym.LE); }
-	"<"                                          { return symbol(sym.LT); }
-	"<>"                                         { return symbol(sym.NOTEQUAL); }
+  "="                                          { return symbol(sym.EQUAL,    yytext()); }
+	">="                                         { return symbol(sym.GE,       yytext()); }
+	">"                                          { return symbol(sym.GT,       yytext()); }
+	"<="                                         { return symbol(sym.LE,       yytext()); }
+	"<"                                          { return symbol(sym.LT,       yytext()); }
+	"<>"                                         { return symbol(sym.NOTEQUAL, yytext()); }
 
   /* Arithmetic Operators */
-  "+"                                          { return symbol(sym.PLUS, yytext()); }
+  "+"                                          { return symbol(sym.PLUS,  yytext()); }
   "-"                                          { return symbol(sym.MINUS, yytext()); }
 	"/"                                          { return symbol(sym.SLASH, yytext()); }
-	"*"                                          { return symbol(sym.STAR, yytext()); }
-  "%"                                          { return symbol(sym.MOD, yytext());}
+	"*"                                          { return symbol(sym.STAR,  yytext()); }
+  "%"                                          { return symbol(sym.MOD,   yytext());}
 	/* "**"                                         { return symbol(sym.STARSTAR); } */
 
   /* Boolean Operators */
-  {A}{N}{D}			                   		         { return symbol(sym.AND, yytext()); }
+  {A}{N}{D}			                   		         { return symbol(sym.AND,     yytext()); }
   {A}{N}{D}" "{T}{H}{E}{N}			               { return symbol(sym.ANDTHEN, yytext()); }
-  {O}{R}                                       { return symbol(sym.OR, yytext()); }
-  {O}{R}" "{E}{L}{S}{E}                        { return symbol(sym.ORELSE, yytext()); }
-  {N}{O}{T}                                    { return symbol(sym.NOT, yytext()); }
+  {O}{R}                                       { return symbol(sym.OR,      yytext()); }
+  {O}{R}" "{E}{L}{S}{E}                        { return symbol(sym.ORELSE,  yytext()); }
+  {N}{O}{T}                                    { return symbol(sym.NOT,     yytext()); }
 
   /* Bit Operators */
 /*  {X}{O}{R}                                    { return symbol(sym.XOR); } */

@@ -12,7 +12,6 @@ begin
    else
       result := num2;
 
-   max := 2;
 end;
 
 begin

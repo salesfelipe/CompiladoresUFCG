@@ -5,7 +5,8 @@ var
 begin
    c := true OR false;
 
-   a := '1' + a;
-   a := 1 + true;
+   b := 1 + 1 + 1 + 2;
+
+   a := (1 = 1) or (true = false);
 
 end.

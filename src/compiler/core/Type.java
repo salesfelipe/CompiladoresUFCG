@@ -38,7 +38,6 @@ public class Type {
         Type character = new Type("Char");
         Type nil = new Type("Nil");
 
-        integer.addCompatibility(real);
         real.addCompatibility(integer);
         string.addCompatibility(character);
 
@@ -54,6 +53,18 @@ public class Type {
         };
 
         return result;
+    }
+
+    public static String resultantType(Type t, Type t2){
+        if(t.typeName.equalsIgnoreCase("real") || t2.typeName.equalsIgnoreCase("real")) {
+            return "real";
+        }
+
+        if(t.typeName.equalsIgnoreCase("string") || t2.typeName.equalsIgnoreCase("string")) {
+            return "string";
+        }
+
+        return t.typeName;
     }
 
     @Override

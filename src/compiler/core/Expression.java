@@ -8,10 +8,6 @@ public class Expression {
         this.type = t;
     }
 
-    public Expression(String name) {
-        type = new Type("UNKNOWN");
-    }
-
     public Expression(Type t, String value) {
         this.type = t;
         this.value = value;

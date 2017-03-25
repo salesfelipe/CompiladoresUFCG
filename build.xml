@@ -88,7 +88,7 @@ Date:
       <arg value="false"/>
     </java>-->
 
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/atribuicao_expressoes.pas"/>
       <arg value="false"/>
 		</java>
@@ -106,8 +106,8 @@ Date:
 		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/function_return_exists.pas"/>
-      <arg value="true"/>
-		</java>
+      <arg value="false"/>
+		</java> -->
     <!--<java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/declaracao1.pas"/>
       <arg value="false"/>
@@ -131,7 +131,7 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/function_return_exists.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/operadores.pas"/>
       <arg value="false"/>
@@ -140,6 +140,7 @@ Date:
       <arg value="test/SemanticPoint/operadores2.pas"/>
       <arg value="false"/>
 		</java>
+    <!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/procedure_definition.pas"/>
       <arg value="false"/>
