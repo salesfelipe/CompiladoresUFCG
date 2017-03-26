@@ -156,18 +156,18 @@ Date:
 
     <!-- Avulsos -->
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/lesson1.pas"/>
-      <arg value="false"/>
+      <arg value="test/TutorialsPoint/lesson1.pas"/>
+      <arg value="true"/>
 		</java>
 
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/radius.pas"/>
+    <!-- <java jar="${jar.dist}" fork="true">
+      <arg value="test/TutorialsPoint/radius.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!--  Tutorials Point-->
 
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/helloworld.pas"/>
       <arg value="false"/>
     </java>
@@ -175,10 +175,10 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/constant.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!--    - Conditional Statements -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/nestedifelse.pas"/>
       <arg value="false"/>
 		</java>
@@ -197,10 +197,10 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/nested-case.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!--    - Operations -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/arithmetic_op.pas"/>
       <arg value="false"/>
 		</java>
@@ -211,10 +211,10 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/relational-op.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!--    - Arrays -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/2darray.pas"/>
       <arg value="false"/>
 		</java>
@@ -225,11 +225,11 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/packed-array.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
 
     <!--    - Loops -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/for.pas"/>
       <arg value="false"/>
 		</java>
@@ -256,16 +256,16 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/while-break.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!-- Boolean exp -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/booleanexp.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!-- Types -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/enumered-types.pas"/>
       <arg value="false"/>
 		</java>
@@ -280,17 +280,17 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/variable-types.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
     <!-- Function -->
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/function.pas"/>
       <arg value="false"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/procedure.pas"/>
       <arg value="false"/>
-		</java>
+		</java> -->
 
   </target>
 
