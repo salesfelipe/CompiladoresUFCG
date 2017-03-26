@@ -66,7 +66,7 @@ Date:
 		</java> -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/non_existent_function_call.pas"/>
-      <arg value="false"/>
+      <arg value="true"/>
 		</java>
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/non_existent_procedure_call.pas"/>

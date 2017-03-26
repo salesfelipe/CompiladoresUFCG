@@ -3,7 +3,7 @@ var
    a, b, max : integer;
 
 (*function definition *)
-function ret(num1, num2: integer; s1, s2, s3: string): integer;
+function ret(num1, num2: integer): integer;
 var
    (* local variable declaration *)
    result: integer;
@@ -19,9 +19,7 @@ begin
 end;
 
 begin
-   a := 100;
-   b := 200;
-   ret := 100;
-   ret := max(a, b);
+   b := 10;
+   a := ret(a, c);
 
 end.

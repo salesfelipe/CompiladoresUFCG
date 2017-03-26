@@ -183,6 +183,10 @@ public class SemanticImpl {
         }
 	}
 
+	public boolean existsFunctionOrProcedure(String id) {
+        return scopedRepository.existsFunctionOrProcedure(id);
+    }
+
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
         selectedId = selectedId.toLowerCase();
         if (!scopedRepository.existsFunctionOrProcedure(selectedId))
