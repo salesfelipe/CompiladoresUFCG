@@ -159,11 +159,11 @@ Date:
       <arg value="test/TutorialsPoint/lesson1.pas"/>
       <arg value="true"/>
 		</java>
-
-    <!-- <java jar="${jar.dist}" fork="true">
+    
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/radius.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
 
     <!--  Tutorials Point-->
 
