@@ -13,6 +13,7 @@ public class SemanticImpl {
     private static String selectedId;
     private static ScopedEntityRepository scopedRepository;
     private static Expression selectedExp;
+    private static String selectedFunctionId;
 
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
@@ -128,6 +129,11 @@ public class SemanticImpl {
         }
     }
 
+    public void setSelectedFunctionId(String id) throws InvalidVariableException {
+        selectedFunctionId = id;
+
+    }
+
     public void setSelectedId(String id) throws InvalidVariableException {
         selectedId = id;
 
@@ -188,14 +194,14 @@ public class SemanticImpl {
     }
 
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
-        selectedId = selectedId.toLowerCase();
-        if (!scopedRepository.existsFunctionOrProcedure(selectedId))
-            throw new InvalidFunctionException("A função '" + selectedId + "' não existe");
+        selectedFunctionId = selectedFunctionId.toLowerCase();
+        if (!scopedRepository.existsFunctionOrProcedure(selectedFunctionId))
+            throw new InvalidFunctionException("A função '" + selectedFunctionId + "' não existe");
 
-        List<Parameter> parametrosFuncao = scopedRepository.getFunctionOrProcedure(selectedId).getParams();
+        List<Parameter> parametrosFuncao = scopedRepository.getFunctionOrProcedure(selectedFunctionId).getParams();
         List<Parameter> parametrosChamada = tempParameters;
         if (parametrosChamada.size() != parametrosFuncao.size())
-            throw new InvalidParameterException("A quantidade de parâmetros da função "+selectedId+" está incorreta.");
+            throw new InvalidParameterException("A quantidade de parâmetros da função "+selectedFunctionId+" está incorreta.");
         for (int i = 0 ; i < parametrosChamada.size(); i++) {
             if (!parametrosFuncao.get(i).equals(parametrosChamada.get(i))) {
                 throw new InvalidParameterException("O parâmetro: '"+parametrosChamada.get(i)+" deveria ser do tipo "+parametrosFuncao.get(i).getType());

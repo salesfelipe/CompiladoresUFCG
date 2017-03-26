@@ -535,7 +535,7 @@ factor ::=
   {:
     if (SemanticImpl.getInstance().existsFunctionOrProcedure((String)id)) {
       System.out.println("OOOOOOLLAAAAAAAAAAAAAAAAAA" + id);
-      SemanticImpl.getInstance().setSelectedId((String)id);
+      SemanticImpl.getInstance().setSelectedFunctionId((String)id);
     }
     RESULT=SemanticImpl.getInstance().getExpressionById((String)id);
   :}
