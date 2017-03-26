@@ -142,7 +142,7 @@ constant_definition_part ::=
 ;
 
 constant_definition ::=
-  {:Logger.print("Constant Definition");:} IDENTIFIER:id EQUAL constant {: SemanticImpl.getInstance().addVariable(new Variable(null, id, true));:}
+  {:Logger.print("Constant Definition");:} IDENTIFIER:id EQUAL constant:c {: SemanticImpl.getInstance().addVariable(new Variable( ((Expression) c).getType(), id, true));:}
 ;
 
 constant_definition_aux ::=
@@ -519,8 +519,8 @@ term ::=
 ;
 
 factor ::=
-  {:Logger.print("Factor - number");:} number:n {:RESULT=n;:} |
-  {:Logger.print("Factor - string");:} string:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("string"), (String)s);:} |
+  {:Logger.print("Factor - number");:} number:n {:RESULT= n;:} |
+  {:Logger.print("Factor - string");:} string:s {:RESULT= s;:} |
   {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("set"), (String)s);:} |
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
@@ -848,7 +848,7 @@ sign_optional ::=
 ;
 
 string ::=
-  {:Logger.print("String");:} STRING_LITERAL:s {:RESULT=s;:}
+  {:Logger.print("String");:} STRING_LITERAL:s {:RESULT= new Expression( SemanticImpl.getInstance().getTypeById("string"), (String) s);:}
 ;
 
 boolean ::=
@@ -862,7 +862,7 @@ type_identifier ::=
 
 constant ::=
   {:Logger.print("Contant - [sign] const_aux");:}  sign_optional const_aux:ca {:RESULT=ca;:} |
-  {:Logger.print("Contant - String");:} string:s {:RESULT=s;:}
+  {:Logger.print("Contant - String");:} string:s {:RESULT= s;:}
 ;
 
 const_aux ::=

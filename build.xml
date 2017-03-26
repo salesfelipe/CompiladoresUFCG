@@ -157,9 +157,9 @@ Date:
     <!-- Avulsos -->
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/lesson1.pas"/>
-      <arg value="true"/>
+      <arg value="false"/>
 		</java>
-    
+
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/radius.pas"/>
       <arg value="false"/>
@@ -167,15 +167,10 @@ Date:
 
     <!--  Tutorials Point-->
 
-    <!-- <java jar="${jar.dist}" fork="true">
-      <arg value="test/TutorialsPoint/helloworld.pas"/>
-      <arg value="false"/>
-    </java>
-
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/constant.pas"/>
       <arg value="false"/>
-		</java> -->
+		</java>
 
     <!--    - Conditional Statements -->
     <!-- <java jar="${jar.dist}" fork="true">

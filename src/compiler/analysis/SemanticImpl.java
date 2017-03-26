@@ -105,6 +105,8 @@ public class SemanticImpl {
             throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
         }
 
+        System.out.println(result);
+
         return new Expression(result, id);
     }
 
@@ -140,7 +142,9 @@ public class SemanticImpl {
 
     public Expression checkOperation(String op, Expression exp) throws InvalidOperationException, InvalidTypeException {
 
-        if(!selectedExp.getType().isCompatible(exp.getType())){
+
+        System.out.println(selectedExp);
+        if(!(selectedExp.getType().isCompatible(exp.getType()) || exp.getType().isCompatible(selectedExp.getType()))){
             throw new InvalidOperationException("O operador '" +  op + "' não é compatível com os tipos: (" + selectedExp.getType().getName() + "," + exp.getType().getName() +")" );
         }
 
