@@ -205,12 +205,6 @@ public class SemanticImpl {
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
 
-
-        System.out.println("Expression: ");
-        System.out.println(exp.toString());
-        System.out.println("Id:");
-        System.out.println(selectedId);
-
         if(scopedRepository.existsFunctionOrProcedure(selectedId)) {
             ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedId);
             if(!s.isProcedure()){

@@ -62,19 +62,19 @@ public class ScopedEntityRepository {
     }
 
     public ScopedEntity getFunctionOrProcedure(String id) {
-        return scopeStack.peek().getFunctionOrProcedure(id);
+        return scopeStack.peek().getFunctionOrProcedure(id.toLowerCase());
     }
 
     public Variable getVariable(String id) {
-        return scopeStack.peek().getVariable(id);
+        return scopeStack.peek().getVariable(id.toLowerCase());
     }
 
     public boolean existsVariable(String id) {
-        return scopeStack.peek().existsVariable(id);
+        return scopeStack.peek().existsVariable(id.toLowerCase());
     }
 
     public boolean existsFunctionOrProcedure(String id) {
-        return scopeStack.peek().existsFunctionOrProcedure(id);
+        return scopeStack.peek().existsFunctionOrProcedure(id.toLowerCase());
     }
 
     public boolean isEmpty(){

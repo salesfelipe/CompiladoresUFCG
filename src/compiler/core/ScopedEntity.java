@@ -52,7 +52,7 @@ public class ScopedEntity {
     }
 
     public boolean existsVariable(String id) {
-        return variables.containsKey(id);
+        return variables.containsKey(id.toLowerCase());
     }
 
     public boolean existsFunctionOrProcedure(String id) {
