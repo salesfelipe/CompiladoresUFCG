@@ -349,7 +349,7 @@ while_statement ::=
 ;
 
 repeat_statement ::=
-  {:Logger.print("Repeat statement");:} REPEAT statement_sequence UNTIL expression
+  {:Logger.print("Repeat statement");:} REPEAT statement_sequence UNTIL expression:exp {: SemanticImpl.getInstance().checkRepeat((Expression) exp); :}
 ;
 
 for_statement ::=
@@ -497,7 +497,6 @@ ordinal_type_identifier ::=
 expression ::=
   {:Logger.print("Expression");:} simple_expression:exp {:
     RESULT=exp;
-    System.out.println(exp);
   :}
 ;
 
@@ -509,7 +508,7 @@ simple_expression ::=
 ;
 
 simple_expression_aux ::=
-  {:Logger.print("Simple Expression Aux - Vazio");:} |
+  {:Logger.print("Simple Expression Aux - Vazio");:} {: RESULT = SemanticImpl.getInstance().getSelectedExp(); :}|
   {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator:a term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)a,(Expression)t) ;:} simple_expression_aux |
   {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;:} simple_expression_aux |
   {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
