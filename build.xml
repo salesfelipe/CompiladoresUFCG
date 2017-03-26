@@ -61,6 +61,13 @@ Date:
   <target name="compt" depends="jar, test">
   </target>
 
+  <target name="gerador" depends="jar">
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/test.pas"/>
+      <arg value="false"/>
+		</java>
+  </target>
+
 	<target name="semantico" depends="jar">
     <!--
     <java jar="${jar.dist}" fork="true">
