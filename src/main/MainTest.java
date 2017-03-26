@@ -48,7 +48,9 @@ public class MainTest {
 			System.out.println(ANSI_GREEN + "The compilation process was successfully finished!" + ANSI_RESET);
 		} catch (Exception e) {
 
-			System.out.println(ANSI_RED + e.getMessage() + ANSI_RESET);
+			System.out.println(ANSI_RED  + e.getMessage() + ANSI_RESET);
+			e.printStackTrace();
+
 		}
 
 		System.out.println(ANSI_WHITE_BACKGROUND + " " +  ANSI_RESET);

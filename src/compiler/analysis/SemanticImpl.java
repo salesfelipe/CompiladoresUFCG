@@ -205,6 +205,12 @@ public class SemanticImpl {
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
 
+
+        System.out.println("Expression: ");
+        System.out.println(exp.toString());
+        System.out.println("Id:");
+        System.out.println(selectedId);
+
         if(scopedRepository.existsFunctionOrProcedure(selectedId)) {
             ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedId);
             if(!s.isProcedure()){
@@ -219,5 +225,12 @@ public class SemanticImpl {
 		}
 		return true;
 	}
+
+	public void checkRepeat(Expression exp) throws InvalidRepeatStatement {
+        if (! exp.getType().getName().equalsIgnoreCase("boolean")){
+            throw new InvalidRepeatStatement("A expression do repeat tem que retornar um boolean");
+        }
+
+    }
 
 }
