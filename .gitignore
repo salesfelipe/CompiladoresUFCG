@@ -1,3 +1,4 @@
+/dist/*
 *.imi
 *.class
 *.out
