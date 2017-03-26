@@ -2,7 +2,6 @@ program exFunction;
 var
    a, b, ret : integer;
 
-(*function definition *)
 function max(num1, num2: integer): integer;
 var
    (* local variable declaration *)
@@ -23,5 +22,4 @@ begin
    (* calling a function to get max value *)
    ret := max(a, b);
 
-   writeln( 'Max value is : ', ret );
 end.

@@ -161,7 +161,12 @@ type_definition_part_aux ::=
 ;
 
 type_definition ::=
-  {:Logger.print("Type definition");:} IDENTIFIER EQUAL type
+  {:Logger.print("Type definition");:} IDENTIFIER:id EQUAL type
+  {:
+    Type t = new Type(id);
+    SemanticImpl.getInstance().addType( t );
+    SemanticImpl.getInstance().addVariablesFromTempList(t);
+  :}
 ;
 
 uses_definition_part ::=
@@ -634,7 +639,7 @@ primary_type ::=
 
 
 simple_type ::=
-  {:Logger.print("Simple Type - line 1");:} subrange_type |
+  {:Logger.print("Simple Type - line 1");:} subrange_type:s {: RESULT = s; :} |
   {:Logger.print("Simple Type - line 2");:} enumerated_type
 ;
 
@@ -643,31 +648,31 @@ enumerated_type ::=
 ;
 
 subrange_type ::=
-  {:Logger.print("Subrange Type");:} lower_bound DOTDOT upper_bound
+  {:Logger.print("Subrange Type");:} lower_bound:l DOTDOT upper_bound:u {: RESULT = ((Expression)l).getType().getName(); :}
 ;
 
 lower_bound ::=
-  {:Logger.print("Lower Bound");:} constant
+  {:Logger.print("Lower Bound");:} constant:c {: RESULT = c;:}
 ;
 
 upper_bound ::=
-  {:Logger.print("Upper Bound");:} constant
+  {:Logger.print("Upper Bound");:} constant:c {: RESULT = c;:}
 ;
 
 structured_type ::=
-  {:Logger.print("Structure Type - line 1");:} unpacked_structured_type |
-  {:Logger.print("Structure Type - line 2");:} PACKED unpacked_structured_type
+  {:Logger.print("Structure Type - line 1");:} unpacked_structured_type:t {:RESULT = t;:} |
+  {:Logger.print("Structure Type - line 2");:} PACKED unpacked_structured_type:t {:RESULT = t;:}
 ;
 
 unpacked_structured_type ::=
-  {:Logger.print("Unpacked Structured Type - line 1");:} array_type |
+  {:Logger.print("Unpacked Structured Type - line 1");:} array_type: t {:RESULT = t;:} |
   {:Logger.print("Unpacked Structured Type - line 2");:} record_type |
   {:Logger.print("Unpacked Structured Type - line 3");:} set_type |
   {:Logger.print("Unpacked Structured Type - line 4");:} file_type
 ;
 
 array_type ::=
-  {:Logger.print("Array Type");:} ARRAY LBRAC index_type array_type_aux RBRAC OF element_type
+  {:Logger.print("Array Type");:} ARRAY LBRAC index_type array_type_aux RBRAC OF element_type:t {: RESULT = t;:}
 ;
 
 array_type_aux ::=
@@ -680,7 +685,7 @@ index_type ::=
 ;
 
 element_type ::=
-  {:Logger.print("Element Type");:} type
+  {:Logger.print("Element Type");:} type:t {:RESULT = t;:}
 ;
 
 record_type ::=
@@ -848,7 +853,16 @@ sign_optional ::=
 ;
 
 string ::=
-  {:Logger.print("String");:} STRING_LITERAL:s {:RESULT= new Expression( SemanticImpl.getInstance().getTypeById("string"), (String) s);:}
+  {:Logger.print("String");:} STRING_LITERAL:s
+  {:
+    String result = "string";
+
+    if( ((String)s).length() == 3 ) {
+      result = "char";
+    }
+
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById(result), (String) s);
+  :}
 ;
 
 boolean ::=

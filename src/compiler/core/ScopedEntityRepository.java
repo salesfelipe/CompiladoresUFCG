@@ -61,6 +61,10 @@ public class ScopedEntityRepository {
         scopeStack.peek().addVariable(variable);
     }
 
+    public void addType(Type t) throws InvalidNameException {
+        scopeStack.peek().addType(t);
+    }
+
     public ScopedEntity getFunctionOrProcedure(String id) {
         return scopeStack.peek().getFunctionOrProcedure(id.toLowerCase());
     }

@@ -15,7 +15,6 @@ begin
          goto 1;
       end;
 
-      writeln('value of a: ', a);
       a:= a +1;
    until a = 20;
 end.

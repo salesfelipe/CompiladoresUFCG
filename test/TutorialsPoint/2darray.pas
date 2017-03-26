@@ -11,7 +11,6 @@ begin
    for i:=0 to 3 do
    begin
       for j:=0 to 3 do
-         write(a[i,j],' ');
-      writeln;
+
    end;
 end.

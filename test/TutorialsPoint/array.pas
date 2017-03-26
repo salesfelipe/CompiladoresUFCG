@@ -10,5 +10,5 @@ begin
     (* output each array element's value *)
 
    for j:= 1 to 10 do
-      writeln('Element[', j, '] = ', n[j] );
+   
 end.

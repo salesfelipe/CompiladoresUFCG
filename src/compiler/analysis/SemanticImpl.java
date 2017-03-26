@@ -66,6 +66,10 @@ public class SemanticImpl {
         scopedRepository.addVariable(variable);
     }
 
+    public void addType(Type t) throws InvalidNameException {
+        scopedRepository.addType(t);
+    }
+
     public void validateFunction(String id) throws InvalidFunctionException {
         ((Function) scopedRepository.getFunctionOrProcedure(id)).validateReturnedType();
 
@@ -105,8 +109,6 @@ public class SemanticImpl {
             throw new InvalidVariableException("A variável " + id +" nunca foi declarada.");
         }
 
-        System.out.println(result);
-
         return new Expression(result, id);
     }
 
@@ -142,8 +144,6 @@ public class SemanticImpl {
 
     public Expression checkOperation(String op, Expression exp) throws InvalidOperationException, InvalidTypeException {
 
-
-        System.out.println(selectedExp);
         if(!(selectedExp.getType().isCompatible(exp.getType()) || exp.getType().isCompatible(selectedExp.getType()))){
             throw new InvalidOperationException("O operador '" +  op + "' não é compatível com os tipos: (" + selectedExp.getType().getName() + "," + exp.getType().getName() +")" );
         }
@@ -153,8 +153,6 @@ public class SemanticImpl {
         } else {
             return new Expression(singleton.getTypeById(Type.resultantType(selectedExp.getType(),exp.getType())));
         }
-
-
     }
 
     public boolean isRelationalOp(String op) {
@@ -219,7 +217,7 @@ public class SemanticImpl {
 		Variable variable = scopedRepository.getVariable(selectedId);
 
 		if (!variable.getType().isCompatible((exp.getType()))) {
-			throw new InvalidAssignmentException("Atribuição inválida");
+			throw new InvalidAssignmentException("Atribuição inválida: (" + variable.getType().getName()  + ", " + exp.getType().getName() + ")");
 		}
 		return true;
 	}

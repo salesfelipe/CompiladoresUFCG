@@ -11,10 +11,8 @@ begin
       begin
          (* skip the iteration *)
          a := a + 1;
-         continue;
       end;
 
-      writeln('value of a: ', a);
       a := a+1;
    until ( a = 20 );
 end.

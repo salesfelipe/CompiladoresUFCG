@@ -8,9 +8,9 @@ begin
    begin
       for j := 2 to i do
          if (i mod j)=0  then
-            break; {* if factor found, not prime *}
+            i := 3;
 
       if(j = i) then
-         writeln(i , ' is prime' );
+
    end;
 end.

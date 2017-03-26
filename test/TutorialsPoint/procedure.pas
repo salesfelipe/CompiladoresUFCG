@@ -15,9 +15,5 @@ begin
 end; { end of procedure findMin }
 
 begin
-   writeln(' Enter three numbers: ');
-   readln( a, b, c);
    findMin(a, b, c, min); (* Procedure call *)
-
-   writeln(' Minimum: ', min);
 end.

@@ -1,13 +1,15 @@
 program exEnumeration;
 type
 beverage = (coffee, tea, milk, water, coke, limejuice);
+food = (bread, cake, toats, pizza, steak);
 
 var
 drink:beverage;
+eat:food;
 
 begin
-   writeln('Which drink do you want?');
-   drink := limejuice;
+   eat := cake;
+   drink := milk;
 
-   writeln('You can drink ', drink);
+
 end.
