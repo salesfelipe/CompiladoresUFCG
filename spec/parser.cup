@@ -324,7 +324,6 @@ assignment_statement ::=
 procedure_statement ::=
   {:Logger.print("Procedure statement");:} actual_parameter_list
   {:
-    System.out.println("ALOOOOOOOOOOOOOOOOOOOOOOOOO");
     SemanticImpl.getInstance().checkFunctionCall();
   :}
 ;
@@ -531,14 +530,7 @@ factor ::=
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
   {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux:fa
-  {:
-    if (SemanticImpl.getInstance().existsFunctionOrProcedure((String)id)) {
-      System.out.println("OOOOOOLLAAAAAAAAAAAAAAAAAA" + id);
-      SemanticImpl.getInstance().setSelectedFunctionId((String)id);
-    }
-    RESULT=SemanticImpl.getInstance().getExpressionById((String)id);
-  :}
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux {: RESULT=SemanticImpl.getInstance().getExpressionById((String)id); :}
 |
   {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("boolean"), (String)b);:}
 ;
@@ -616,7 +608,6 @@ element_list_aux ::=
 
 function_designator ::=
   {:Logger.print("Function Designator");:} optional_actual_parameter_list
-  {:SemanticImpl.getInstance().checkFunctionCall();:}
 ;
 
 optional_actual_parameter_list ::=
