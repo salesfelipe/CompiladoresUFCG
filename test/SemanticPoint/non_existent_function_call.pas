@@ -22,6 +22,6 @@ begin
    a := 100;
    b := 200;
 
-   b := ret(a,b);
+   b := max(a,b);
 
 end.
