@@ -14,6 +14,9 @@ public class SemanticImpl {
     private static ScopedEntityRepository scopedRepository;
     private static Expression selectedExp;
 
+    public static boolean expressionCheck = false;
+    public static String functionCallName;
+
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
@@ -199,6 +202,27 @@ public class SemanticImpl {
         }
 
     };
+
+    public void checkFunctionCall(String id) throws InvalidParameterException, InvalidFunctionException {
+        selectedId = id.toLowerCase();
+        if (!scopedRepository.existsFunctionOrProcedure(selectedId))
+            throw new InvalidFunctionException("A função '" + selectedId + "' não existe");
+
+        List<Parameter> parametrosFuncao = scopedRepository.getFunctionOrProcedure(selectedId).getParams();
+        List<Parameter> parametrosChamada = tempParameters;
+        if (parametrosChamada.size() != parametrosFuncao.size())
+            throw new InvalidParameterException("A quantidade de parâmetros da função "+selectedId+" está incorreta.");
+        for (int i = 0 ; i < parametrosChamada.size(); i++) {
+            if (!parametrosFuncao.get(i).equals(parametrosChamada.get(i))) {
+                throw new InvalidParameterException("O parâmetro: '"+parametrosChamada.get(i)+" deveria ser do tipo "+parametrosFuncao.get(i).getType());
+            }
+        }
+
+    };
+
+    public boolean isFunctionOrProcedure(String id) {
+        return scopedRepository.existsFunctionOrProcedure(id);
+    }
 
     public Type getTypeById(String id) throws InvalidTypeException {
         return scopedRepository.getTypeById(id);
