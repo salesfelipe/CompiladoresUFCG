@@ -6,9 +6,6 @@ var
 PI, r, d, c : real;   {variable declaration: radius, dia, circumference}
 
 begin
-   writeln('Enter the radius of the circle');
-   readln(r);
    d := 2 * r ;
    c :=  PI * d;
-   writeln('The circumference of the circle is ',c);
 end.

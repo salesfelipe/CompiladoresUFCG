@@ -6,5 +6,5 @@ begin
    a := 10;
    repeat
       a := a + 1
-   until a = 2;
+   until a + 2;
 end.

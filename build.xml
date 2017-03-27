@@ -58,30 +58,20 @@ Date:
     </jar>
   </target>
 
-  <target name="compt" depends="jar, test">
-  </target>
-
-  <target name="gerador" depends="jar">
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/test.pas"/>
-      <arg value="false"/>
-		</java>
-  </target>
-
 	<target name="semantico" depends="jar">
-    <!--
+
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/constant.pas"/>
+      <arg value="test/SemanticPoint/constant_same_var.pas"/>
       <arg value="false"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/function.pas"/>
+      <arg value="test/SemanticPoint/non_existent_function_call.pas"/>
       <arg value="false"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/procedure.pas"/>
+      <arg value="test/SemanticPoint/non_existent_procedure_call.pas"/>
       <arg value="false"/>
-		</java>
+		</java><!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/type_check.pas"/>
       <arg value="false"/>
@@ -151,15 +141,14 @@ Date:
       <arg value="test/SemanticPoint/procedure_definition.pas"/>
       <arg value="false"/>
 		</java>-->
-
-    <java jar="${jar.dist}" fork="true">
+    <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/repeat.pas"/>
-      <arg value="true"/>
-		</java>
+      <arg value="false"/>
+		</java> -->
   </target>
 
 
-	<target name="test">
+	<target name="sintatico" depends="jar">
 
     <!-- Avulsos -->
     <java jar="${jar.dist}" fork="true">
@@ -196,6 +185,10 @@ Date:
       <arg value="test/TutorialsPoint/if-stmt.pas"/>
       <arg value="false"/>
 		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/TutorialsPoint/if-stmt-bool.pas"/>
+      <arg value="false"/>
+    </java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/nested-case.pas"/>
       <arg value="false"/>
@@ -291,6 +284,10 @@ Date:
       <arg value="test/TutorialsPoint/procedure.pas"/>
       <arg value="false"/>
 		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/TutorialsPoint/nested-function.pas"/>
+      <arg value="false"/>
+    </java>
 
   </target>
 

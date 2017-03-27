@@ -1,12 +1,13 @@
 program exFunction;
 var
-   a, b, ret : integer;
+   a, b, max : integer;
 
 (*function definition *)
 function ret(num1, num2: integer; s1, s2, s3: string): integer;
 var
    (* local variable declaration *)
    result: integer;
+   c : integer;
 
 begin
    if (num1 > num2) then
@@ -14,14 +15,13 @@ begin
 
    else
       result := num2;
-   max := result;
+   ret := result;
 end;
 
 begin
    a := 100;
    b := 200;
-   (* calling a function to get max value *)
+   ret := 100;
    ret := max(a, b);
 
-   writeln( 'Max value is : ', ret );
 end.
