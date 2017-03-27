@@ -21,13 +21,12 @@ public class Expression {
         return value;
     }
 
-    public boolean isNumeric() {
-        return  getType().getName().equals("integer")
-                ||getType().getName().equals("real");
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String toString(){
-        return "Expression of type: " + getType();
+        return "Expression of type: " + getType() + "\nValue: " + value ;
     }
 
 }

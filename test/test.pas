@@ -3,5 +3,6 @@ var
    a : integer;
 
 begin
-   a := 1;
+   a := (4 - 2) * a;
+
 end.

@@ -229,4 +229,7 @@ public class SemanticImpl {
 
     }
 
+    public Variable getVariable() {
+        return scopedRepository.getVariable(selectedId);
+    }
 }

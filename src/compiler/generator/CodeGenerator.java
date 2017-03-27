@@ -1,5 +1,10 @@
 package compiler.generator;
+import compiler.analysis.SemanticImpl;
+import compiler.core.Expression;
 import compiler.core.Register;
+import compiler.core.Type;
+import compiler.core.Variable;
+import compiler.exceptions.InvalidTypeException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,13 +46,65 @@ public class CodeGenerator
     private void initAssemblyCode() {
         code = "";
 
-        code += lineCount + ": LD SP, # " + stackCount + "\n";
-
-        incrementLineCount();
+        writeCommand("LD SP, # " + stackCount + "\n");
     }
 
-    private void incrementLineCount() {
+    private void writeCommand(String command) {
+        code +=  lineCount + ": " + command;
         lineCount += 8;
+    }
+
+    public void generateAssignment(Variable var, Expression exp) {
+        String command = "ST " + var.getIdentifier() + ", " + exp.getValue();
+
+        writeCommand(command);
+    }
+
+    public Expression generateCommandByOp(String op, Expression exp1, Expression exp2) throws InvalidTypeException {
+
+        String typeResu = Type.resultantType(exp1.getType(),exp2.getType());
+        Expression result = new Expression(SemanticImpl.getInstance().getTypeById(typeResu));
+        String register = allocateRegister();
+        String selectOp = "";
+
+        switch ( op ) {
+            case "+":
+                selectOp = "ADD";
+                break;
+            case "-":
+                selectOp = "SUB";
+                break;
+            case "*":
+                selectOp = "MUL";
+            default:
+                break;
+        }
+
+        writeCommand( selectOp + " " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+
+        result.setValue(register);
+
+        if(op.equalsIgnoreCase("+")){
+
+        }
+
+        return result;
+    }
+
+    public String generateLoadValueToRegister(String value){
+        String register = allocateRegister();
+
+        writeCommand("LD " + register + ", #" + value + "\n");
+
+        return register;
+    }
+
+    private String allocateRegister(){
+        String register = "r" + registerCount;
+
+        registerCount++;
+
+        return register;
     }
 
     public void generateFinalAssemblyCode() throws IOException {

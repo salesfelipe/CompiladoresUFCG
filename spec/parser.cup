@@ -2,6 +2,7 @@ import java_cup.runtime.*;
 import compiler.core.*;
 import compiler.analysis.*;
 import compiler.util.*;
+import compiler.generator.*;
 import java.util.ArrayList;
 
 parser code  {:
@@ -318,6 +319,7 @@ assignment_statement ::=
     RESULT=exp;
 
     SemanticImpl.getInstance().checkTypeOfAssignment((Expression) exp);
+    CodeGenerator.getInstance().generateAssignment( SemanticImpl.getInstance().getVariable(),(Expression) exp);
   :}
 ;
 
@@ -513,9 +515,19 @@ simple_expression ::=
 ;
 
 simple_expression_aux ::=
-  {:Logger.print("Simple Expression Aux - Vazio");:} {: RESULT = SemanticImpl.getInstance().getSelectedExp(); :}|
-  {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator:a term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)a,(Expression)t) ;:} simple_expression_aux |
-  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;:} simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Vazio");:} {: RESULT = SemanticImpl.getInstance().getSelectedExp(); :} |
+
+  {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator:a term:t simple_expression_aux:exp {:
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)a,(Expression)t);
+    expression.setValue(((Expression)t).getValue());
+    expression = CodeGenerator.getInstance().generateCommandByOp((String) a, (Expression) exp, expression);
+
+    RESULT = expression; :} |
+
+  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:
+    RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;
+  :} simple_expression_aux |
+
   {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
 ;
 
@@ -816,6 +828,7 @@ identifier_list_aux ::=
   {:Logger.print("Identifier List Aux - line 2");:} COMMA IDENTIFIER:id {:SemanticImpl.getInstance().addIdToTempList(id);:} identifier_list_aux
 ;
 
+
 expression_list ::=
   {:Logger.print("Expression List");:} expression expression_list_aux
 ;
@@ -826,7 +839,11 @@ expression_list_aux ::=
 ;
 
 number ::=
-  {:Logger.print("Number - line 1");:} integer_number:i {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), (String)i);:} |
+  {:Logger.print("Number - line 1");:} integer_number:i
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) i);
+    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), reg);
+  :} |
   {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), (String)r);:}
 ;
 
