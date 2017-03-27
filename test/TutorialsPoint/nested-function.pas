@@ -8,7 +8,7 @@ function E(x: real): real;
         F := x + y
     end;
 begin
-    E := F(3) + F(4)
+    E := F(3.0) + F(4.0)
 end;
 
 begin

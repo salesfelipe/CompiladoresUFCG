@@ -67,11 +67,11 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/non_existent_function_call.pas"/>
       <arg value="false"/>
-		</java><!--
+		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/non_existent_procedure_call.pas"/>
       <arg value="false"/>
-		</java>
+		</java><!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/type_check.pas"/>
       <arg value="false"/>
@@ -286,7 +286,7 @@ Date:
 		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/TutorialsPoint/nested-function.pas"/>
-      <arg value="false"/>
+      <arg value="true"/>
     </java>
 
   </target>
