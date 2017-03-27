@@ -99,6 +99,14 @@ public class CodeGenerator
         return register;
     }
 
+    public String generateLoadVarToRegister(String value){
+        String register = allocateRegister();
+
+        writeCommand("LD " + register + ", " + value + "\n");
+
+        return register;
+    }
+
     private String allocateRegister(){
         String register = "r" + registerCount;
 

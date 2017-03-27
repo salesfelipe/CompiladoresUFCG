@@ -17,6 +17,8 @@ src/compiler/generated/
 .idea/
 .*/
 
+*.asm
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
