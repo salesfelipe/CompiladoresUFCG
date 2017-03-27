@@ -1,8 +1,9 @@
 program test;
 var
-   a : integer;
+   a, b : boolean;
 
 begin
-   a := (4 - 2) * a;
+   a := true;
+   b := a + a;
 
 end.

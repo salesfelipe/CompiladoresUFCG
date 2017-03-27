@@ -30,9 +30,9 @@ Date:
   </target>
 
   <target name="cup">
-	<java jar="${cup.jar}" fork="true">
-	  <arg line="${cup.args}"/>
-	</java>
+  	<java jar="${cup.jar}" fork="true">
+  	  <arg line="${cup.args}"/>
+  	</java>
   </target>
 
   <target name="generate" depends="clean, jflex, cup  ">
@@ -165,7 +165,6 @@ Date:
       <arg value="false"/>
 		</java> -->
   </target>
-
 
 	<target name="sintatico" depends="jar">
 
@@ -308,6 +307,13 @@ Date:
       <arg value="true"/>
     </java>
 
+  </target>
+
+  <target name="gerador" depends="jar">
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/test.pas"/>
+      <arg value="false"/>
+ 		</java>
   </target>
 
 </project>

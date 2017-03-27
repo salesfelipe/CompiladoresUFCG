@@ -522,11 +522,17 @@ simple_expression_aux ::=
     expression.setValue(((Expression)t).getValue());
     expression = CodeGenerator.getInstance().generateCommandByOp((String) a, (Expression) exp, expression);
 
-    RESULT = expression; :} |
+    RESULT = expression;
+  :} |
 
-  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:
-    RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;
-  :} simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t simple_expression_aux:exp {:
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t);
+    expression.setValue(((Expression)t).getValue());
+
+    expression = CodeGenerator.getInstance().generateCommandByOp((String) r, (Expression) exp, expression);
+
+    RESULT = expression;
+  :} |
 
   {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
 ;
@@ -553,7 +559,7 @@ factor ::=
     exp.setValue( CodeGenerator.getInstance().generateLoadVarToRegister(exp.getValue()));
     RESULT = exp;
   :} |
-  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("boolean"), (String)b);:}
+  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= b;:}
 ;
 
 factor_aux ::=
@@ -859,7 +865,11 @@ number ::=
     String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) i);
     RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), reg);
   :} |
-  {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), (String)r);:}
+  {:Logger.print("Number - line 2");:} real_number:r
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) r);
+    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), reg);
+  :}
 ;
 
 integer_number ::=
@@ -892,14 +902,22 @@ string ::=
     if( ((String)s).length() == 3 ) {
       result = "char";
     }
-
-    RESULT= new Expression( SemanticImpl.getInstance().getTypeById(result), (String) s);
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) s);
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById(result), reg);
   :}
 ;
 
 boolean ::=
-  {:Logger.print("True");:} TRUE |
+  {:Logger.print("True");:} TRUE
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister("1");
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById("boolean"), reg);
+  :} |
   {:Logger.print("False");:} FALSE
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister("0");
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById("boolean"), reg);
+  :}
 ;
 
 type_identifier ::=
