@@ -522,11 +522,17 @@ simple_expression_aux ::=
     expression.setValue(((Expression)t).getValue());
     expression = CodeGenerator.getInstance().generateCommandByOp((String) a, (Expression) exp, expression);
 
-    RESULT = expression; :} |
+    RESULT = expression;
+  :} |
 
-  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t {:
-    RESULT = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t) ;
-  :} simple_expression_aux |
+  {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t simple_expression_aux:exp {:
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t);
+    expression.setValue(((Expression)t).getValue());
+
+    expression = CodeGenerator.getInstance().generateCommandByOp((String) r, (Expression) exp, expression);
+
+    RESULT = expression;
+  :} |
 
   {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
 ;

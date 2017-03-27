@@ -1,4 +1,5 @@
 package compiler.generator;
+import compiler.analysis.Semantic;
 import compiler.analysis.SemanticImpl;
 import compiler.core.Expression;
 import compiler.core.Register;
@@ -66,6 +67,7 @@ public class CodeGenerator
         Expression result = new Expression(SemanticImpl.getInstance().getTypeById(typeResu));
         String register = allocateRegister();
         String selectOp = "";
+        boolean isRelational = false;
 
         switch ( op ) {
             case "+":
@@ -76,17 +78,69 @@ public class CodeGenerator
                 break;
             case "*":
                 selectOp = "MUL";
+                break;
+            case "/":
+                selectOp = "DIV";
+                break;
+            case ">":
+                isRelational = true;
+                writeCommand("SUB " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BLTZ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD " + register + ", #0, #1 \n");
+                writeCommand("BR " + ( lineCount + 16) + "\n");
+                writeCommand("ADD " + register + ", #0, #0  \n");
+                break;
+            case "=":
+                isRelational = true;
+                writeCommand("SUB " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BEQ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD " + register + ", #0, #0 \n");
+                writeCommand("BR " + ( lineCount + 16) + "\n");
+                writeCommand("ADD " + register + ", #0, #1  \n");
+                break;
+            case "<":
+                isRelational = true;
+                writeCommand("SUB " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BGTZ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD " + register + ", #0, #1 \n");
+                writeCommand("BR " + ( lineCount + 16) + "\n");
+                writeCommand("ADD " + register + ", #0, #0  \n");
+                break;
+            case ">=":
+                isRelational = true;
+                writeCommand("SUB " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BLEZ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD " + register + ", #0, #1 \n");
+                writeCommand("BR " + ( lineCount + 16) + "\n");
+                writeCommand("ADD " + register + ", #0, #0  \n");
+                break;
+            case "<=":
+                isRelational = true;
+                writeCommand("SUB  " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BGEZ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD  " + register + ", #0, #1 \n");
+                writeCommand("BR   " + ( lineCount + 16) + "\n");
+                writeCommand("ADD  " + register + ", #0, #0  \n");
+                break;
+            case "<>":
+                isRelational = true;
+                writeCommand("SUB " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                writeCommand("BEQ " + register + ", " + (lineCount + 24) + "\n");
+                writeCommand("ADD " + register + ", #0, #1 \n");
+                writeCommand("BR  " + ( lineCount + 16) + "\n");
+                writeCommand("ADD " + register + ", #0, #0  \n");
+                break;
             default:
                 break;
         }
 
-        writeCommand( selectOp + " " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+        if (!isRelational) {
+            writeCommand( selectOp + " " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+        } else {
+            result.setType(SemanticImpl.getInstance().getTypeById("boolean"));
+        }
 
         result.setValue(register);
-
-        if(op.equalsIgnoreCase("+")){
-
-        }
 
         return result;
     }

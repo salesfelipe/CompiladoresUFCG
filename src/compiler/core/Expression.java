@@ -25,6 +25,8 @@ public class Expression {
         this.value = value;
     }
 
+    public void setType(Type t) { this.type  = t; }
+
     public String toString(){
         return "Expression of type: " + getType() + "\nValue: " + value ;
     }

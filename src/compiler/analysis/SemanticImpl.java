@@ -155,6 +155,7 @@ public class SemanticImpl {
         } else {
             return new Expression(singleton.getTypeById(Type.resultantType(selectedExp.getType(),exp.getType())));
         }
+
     }
 
     public boolean isRelationalOp(String op) {
