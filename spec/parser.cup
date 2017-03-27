@@ -542,17 +542,13 @@ factor ::=
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
   {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
-  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id
+  {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux
   {:
-    SemanticImpl.getInstance().expressionCheck = SemanticImpl.getInstance().isFunctionOrProcedure((String)id);
-
-    if(SemanticImpl.getInstance().expressionCheck) {
-      SemanticImpl.getInstance().functionCallName = id;
-      System.out.println("!!!SETOU " + SemanticImpl.getInstance().functionCallName);
+    if( SemanticImpl.getInstance().isFunctionCall) {
+      SemanticImpl.getInstance().setSelectedId((String) id);
+      SemanticImpl.getInstance().checkFunctionCall();
     }
 
-  :} factor_aux
-  {:
     Expression exp = SemanticImpl.getInstance().getExpressionById((String)id);
     exp.setValue( CodeGenerator.getInstance().generateLoadVarToRegister(exp.getValue()));
     RESULT = exp;
@@ -561,8 +557,14 @@ factor ::=
 ;
 
 factor_aux ::=
-  {:Logger.print("Factor Aux - variable");:} component_variable |
+  {:Logger.print("Factor Aux - variable");:} component_variable
+  {:
+    SemanticImpl.getInstance().isFunctionCall = false;
+  :} |
   {:Logger.print("Factor Aux - function");:} function_designator
+  {:
+    SemanticImpl.getInstance().isFunctionCall = true;
+  :}
 ;
 
 relational_operator ::=
@@ -637,7 +639,7 @@ function_designator ::=
 
 optional_actual_parameter_list ::=
   {:Logger.print("Optional Actual Parameter List - Vazio");:} |
-  {:Logger.print("Optional Actual Parameter List - line 2");:} actual_parameter_list {: SemanticImpl.getInstance().checkFunctionCall( SemanticImpl.getInstance().functionCallName);:}
+  {:Logger.print("Optional Actual Parameter List - line 2");:} actual_parameter_list
 ;
 
 file_buffer ::=
