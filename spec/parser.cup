@@ -553,7 +553,7 @@ factor ::=
     exp.setValue( CodeGenerator.getInstance().generateLoadVarToRegister(exp.getValue()));
     RESULT = exp;
   :} |
-  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("boolean"), (String)b);:}
+  {:Logger.print("Factor - boolean");:} boolean:b {:RESULT= b;:}
 ;
 
 factor_aux ::=
@@ -862,7 +862,7 @@ number ::=
   {:Logger.print("Number - line 2");:} real_number:r
   {:
     String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) r);
-    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), reg;
+    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), reg);
   :}
 ;
 
@@ -896,14 +896,22 @@ string ::=
     if( ((String)s).length() == 3 ) {
       result = "char";
     }
-
-    RESULT= new Expression( SemanticImpl.getInstance().getTypeById(result), (String) s);
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) s);
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById(result), reg);
   :}
 ;
 
 boolean ::=
-  {:Logger.print("True");:} TRUE |
+  {:Logger.print("True");:} TRUE
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister("1");
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById("boolean"), reg);
+  :} |
   {:Logger.print("False");:} FALSE
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister("0");
+    RESULT= new Expression( SemanticImpl.getInstance().getTypeById("boolean"), reg);
+  :}
 ;
 
 type_identifier ::=

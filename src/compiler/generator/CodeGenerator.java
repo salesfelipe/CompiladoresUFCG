@@ -55,7 +55,7 @@ public class CodeGenerator
     }
 
     public void generateAssignment(Variable var, Expression exp) {
-        String command = "ST " + var.getIdentifier() + ", " + exp.getValue();
+        String command = "ST " + var.getIdentifier() + ", " + exp.getValue() + "\n";
 
         writeCommand(command);
     }
