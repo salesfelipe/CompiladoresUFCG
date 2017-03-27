@@ -203,7 +203,7 @@ public class SemanticImpl {
         }
 
     };
-    
+
     public boolean isFunctionOrProcedure(String id) {
         return scopedRepository.existsFunctionOrProcedure(id);
     }

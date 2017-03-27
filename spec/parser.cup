@@ -859,7 +859,11 @@ number ::=
     String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) i);
     RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), reg);
   :} |
-  {:Logger.print("Number - line 2");:} real_number:r {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), (String)r);:}
+  {:Logger.print("Number - line 2");:} real_number:r
+  {:
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) r);
+    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), reg;
+  :}
 ;
 
 integer_number ::=
