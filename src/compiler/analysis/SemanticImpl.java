@@ -186,7 +186,6 @@ public class SemanticImpl {
 	}
 
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
-        System.out.println("!!! NO ID");
         selectedId = selectedId.toLowerCase();
 
         if (!scopedRepository.existsFunctionOrProcedure(selectedId))

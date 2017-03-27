@@ -15,6 +15,6 @@ begin
 end; { end of procedure findMin }
 
 begin
-  findMin(a, b, c, min); (* Inexistent Procedure call *)
+  findMin(a, b, c, min);  { Inexistent Procedure call }
 
 end.

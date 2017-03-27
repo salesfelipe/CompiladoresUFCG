@@ -7,5 +7,5 @@ begin
    (* repeat until loop execution *)
    repeat
       a := a + 1
-   until a = 20;
+   until a < 20 + 2 - 3 / 4 / 5;
 end.

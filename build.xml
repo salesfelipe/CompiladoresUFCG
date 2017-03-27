@@ -59,21 +59,8 @@ Date:
   </target>
 
 	<target name="semantico" depends="jar">
-
-    <!-- <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/constant_same_var.pas"/>
-      <arg value="false"/>
-		</java> -->
     <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/non_existent_function_call.pas"/>
-      <arg value="false"/>
-		</java>
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/non_existent_procedure_call.pas"/>
-      <arg value="false"/>
-		</java><!--
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/type_check.pas"/>
+      <arg value="test/SemanticPoint/repeat.pas"/>
       <arg value="false"/>
 		</java>
     <java jar="${jar.dist}" fork="true">
@@ -81,9 +68,44 @@ Date:
       <arg value="false"/>
     </java>
     <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_call_assignment.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_return_exists.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_return_type.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_call_parameters_number.pas"/>
+      <arg value="false"/>
+    </java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_call_parameters_type.pas"/>
+      <arg value="false"/>
+    </java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/function_repeated_parameters_type.pas"/>
+      <arg value="false"/>
+    </java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure_call.pas"/>
+      <arg value="false"/>
+		</java>
+    
+
+   <!--
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/constant_same_var.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/global_scope.pas"/>
       <arg value="false"/>
-    </java>-->
+    </java> -->
 
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/atribuicao_expressoes.pas"/>
@@ -101,10 +123,7 @@ Date:
       <arg value="test/SemanticPoint/atribuicao_type_coercao.pas"/>
       <arg value="false"/>
 		</java>
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/function_return_exists.pas"/>
-      <arg value="false"/>
-		</java> -->
+     -->
     <!--<java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/declaracao1.pas"/>
       <arg value="false"/>

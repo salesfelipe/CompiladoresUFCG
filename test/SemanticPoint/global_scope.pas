@@ -1,7 +1,7 @@
 program exFunction;
 var
    a, b : string;
-   c, d : integer;
+	 c, d : integer;
 
 (*function definition *)
 function max(num1, num2: integer): integer;
@@ -19,10 +19,8 @@ begin
 end;
 
 begin
-   a := 'letra a';
-   b := 'letra b';
-   c := 100;
-   d := 200;
-   min(c, d); { a função min não existe }
+   a := 'teste';
+   b := 'teste';
+   max(a, b); {a função max não existe}
 
 end.

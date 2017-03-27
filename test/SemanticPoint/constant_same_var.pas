@@ -3,7 +3,7 @@ const
 PI = 3.141592654;
 
 var
-PI, r, d, c : real;   {variable declaration: radius, dia, circumference}
+PI, r, d, c : real;   {A variavel PI ja foi declarada como constante}
 
 begin
    d := 2 * r ;
