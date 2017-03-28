@@ -102,7 +102,7 @@ start with compilation_unit;
 
 compilation_unit ::=
   {:Logger.print("Compilation UNIT");:}
-	program_heading block DOT
+	program_heading block  {: CodeGenerator.getInstance().generateHalt(); :} DOT
 ;
 
 program_heading ::=
@@ -356,8 +356,14 @@ while_statement ::=
 ;
 
 repeat_statement ::=
-  {:Logger.print("Repeat statement");:} REPEAT statement_sequence UNTIL expression:exp {: SemanticImpl.getInstance().checkRepeat((Expression) exp); :}
-;
+  {:Logger.print("Repeat statement");:} REPEAT
+  {:
+    CodeGenerator.getInstance().generateLabelRepeat();
+  :} statement_sequence UNTIL expression:exp
+  {:
+    SemanticImpl.getInstance().checkRepeat((Expression) exp);
+    CodeGenerator.getInstance().generateBranchToLabel((Expression) exp);
+  :} ;
 
 for_statement ::=
   {:Logger.print("For Statement - line 1");:} FOR variable_identifier ASSIGNMENT initial_expression TO final_expression DO statement |
