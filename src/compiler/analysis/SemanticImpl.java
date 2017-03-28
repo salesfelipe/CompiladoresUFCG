@@ -15,6 +15,7 @@ public class SemanticImpl {
     private static Expression selectedExp;
     public  static boolean isFunctionCall;
 
+
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();

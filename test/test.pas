@@ -1,9 +1,12 @@
 program test;
 var
-   a, b : boolean;
+   a : integer;
+   b, c: integer;
 
 begin
-   a := true;
-   b := a + a;
-
+  a := 10;
+  (* repeat until loop execution *)
+  repeat
+     a := 1
+  until a = 20;
 end.
