@@ -110,6 +110,9 @@ public class CodeGenerator
         String register = allocateRegister();
         String selectOp = "";
         boolean isRelational = false;
+        boolean isBoolean = false;
+
+        op = op.toLowerCase();
 
         switch ( op ) {
             case "+":
@@ -170,13 +173,24 @@ public class CodeGenerator
                 writeCommand("BR  " + ( lineCount + 16) + "\n");
                 writeCommand("ADD " + register + ", #0, #1  \n");
                 break;
+            case "and":
+                isBoolean = true;
+                writeCommand("AND " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                break;
+            case "or":
+                isBoolean = true;
+                writeCommand("OR " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
+                break;
+            case "not":
+                isBoolean = true;
+                writeCommand("XOR " + register + ", " +  exp1.getValue()  + ", #true \n");
             default:
                 break;
         }
 
-        if (!isRelational) {
+        if (!isRelational && !isBoolean) {
             writeCommand( selectOp + " " + register + ", " + exp1.getValue() + ", " + exp2.getValue() + "\n");
-        } else {
+        } else if( isRelational ) {
             result.setType(SemanticImpl.getInstance().getTypeById("boolean"));
         }
 
