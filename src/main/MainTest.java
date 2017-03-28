@@ -53,7 +53,7 @@ public class MainTest {
 		} catch (Exception e) {
 
 			System.out.println(ANSI_RED  + e.getMessage() + ANSI_RESET);
-			e.printStackTrace();
+//			e.printStackTrace();
 
 		}
 

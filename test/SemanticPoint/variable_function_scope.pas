@@ -1,9 +1,7 @@
 program exFunction;
 var
-   a, b : string;
-   c, d : integer;
+   a, b, ret : integer;
 
-(*function definition *)
 function max(num1, num2: integer): integer;
 var
    (* local variable declaration *)
@@ -19,10 +17,8 @@ begin
 end;
 
 begin
-   a := 'letra a';
-   b := 'letra b';
-   c := 100;
-   d := 200;
-   min(c, d); { a função min não existe }
+	 max := 100;
+   b := 200;
+   ret := max(a, b); {a e b não foram instanciados}
 
 end.

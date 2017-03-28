@@ -11,11 +11,10 @@ begin
       result := num1
    else
       result := num2;
-   { o retorno deveria vir aqui}
+   max := 'franklin best professor';
 end;
 
 begin
    a := 1;
    b := 2;
-   max(a, b);
 end.

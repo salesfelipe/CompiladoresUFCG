@@ -1,6 +1,7 @@
 program exFunction;
 var
    a, b, max : integer;
+   d, e, f : string;
 
 (*function definition *)
 function ret(num1, num2: integer; s1, s2, s3: string): integer;
@@ -21,7 +22,10 @@ end;
 begin
    a := 100;
    b := 200;
+   d := 'rafael';
+   e := 'felipe';
+   f := 'ana';
 
-   b := max(a,b);
+   b := circle(a,b,d,e,f); {b := funcao inexistente}
 
 end.
