@@ -36,6 +36,8 @@ public class ScopedEntity {
         }
 
         addVariables(temp);
+
+        temp = new HashMap<>();
     }
 
     public Variable getVariable(String id) {
@@ -46,11 +48,9 @@ public class ScopedEntity {
         return functionsAndProcedures.get(id);
     }
 
-    public boolean isIdBeenUsed(String id) {
-        return variables.containsKey(id) || functionsAndProcedures.containsKey(id) || types.containsKey(id);
-    }
 
     public boolean existsVariable(String id) {
+
         return variables.containsKey(id.toLowerCase());
     }
 
@@ -144,10 +144,15 @@ public class ScopedEntity {
         }
     }
 
+    public void printFunctions() {
+        for (String key : functionsAndProcedures.keySet()) {
+          System.out.println("Function :"  + functionsAndProcedures.get(key).getName());
+        }
+
+    }
 
     @Override
     public String toString() {
-        return "Scopo : " + name + ";" +
-                "Variables : " + variables + " ;";
+        return "Scopo : " + name + "\n" + "Variables : " + variables +  "\n";
     }
 }

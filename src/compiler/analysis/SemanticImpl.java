@@ -129,7 +129,6 @@ public class SemanticImpl {
         f.setParams(parametros);
 
         scopedRepository.addFunctionOrProcedure(f);
-
     }
 
     public void exitCurrentScope() {
@@ -204,6 +203,7 @@ public class SemanticImpl {
 
         List<Parameter> parametrosFuncao = scopedRepository.getFunctionOrProcedure(selectedId).getParams();
         List<Parameter> parametrosChamada = tempParameters;
+        
         if (parametrosChamada.size() != parametrosFuncao.size())
             throw new InvalidParameterException("A quantidade de parâmetros da função "+selectedId+" está incorreta.");
         for (int i = 0 ; i < parametrosChamada.size(); i++) {
@@ -229,14 +229,22 @@ public class SemanticImpl {
             ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedId);
             if(!s.isProcedure()){
                 ((Function) s).setHasReturn(true);
+                if(  !((Function) s).getDeclaredReturnType().isCompatible(exp.getType())){
+                    throw new InvalidAssignmentException("Atribuição inválida: (" + ((Function) s).getDeclaredReturnType().getName()  + ", " + exp.getType().getName() + ")");
+                }
+            } else {
+                throw new InvalidAssignmentException("Atribuição inválida: O Id" + selectedId  + " é uma procedure ");
+            }
+
+
+        }else {
+            Variable variable = scopedRepository.getVariable(selectedId);
+
+            if (!variable.getType().isCompatible((exp.getType()))) {
+                throw new InvalidAssignmentException("Atribuição inválida: (" + variable.getType().getName()  + ", " + exp.getType().getName() + ")");
             }
         }
 
-		Variable variable = scopedRepository.getVariable(selectedId);
-
-		if (!variable.getType().isCompatible((exp.getType()))) {
-			throw new InvalidAssignmentException("Atribuição inválida: (" + variable.getType().getName()  + ", " + exp.getType().getName() + ")");
-		}
 		return true;
 	}
 

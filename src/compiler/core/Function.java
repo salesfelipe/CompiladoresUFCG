@@ -40,7 +40,7 @@ public class Function extends ScopedEntity{
     }
 
     public void setHasReturn(boolean b) {
-        hasReturn = true;
+        hasReturn = b;
     }
 
     @Override

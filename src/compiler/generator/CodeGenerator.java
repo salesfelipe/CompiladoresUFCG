@@ -66,8 +66,9 @@ public class CodeGenerator
         code +=  "codeBody : " ;
     }
 
-    public void generateAssignment(Variable var, Expression exp) {
-        String command = "ST " + var.getIdentifier() + ", " + exp.getValue() + "\n";
+    public void generateAssignment(String var, Expression exp) {
+        
+        String command = "ST " + var + ", " + exp.getValue() + "\n";
 
         writeCommand(command);
     }

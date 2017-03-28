@@ -39,7 +39,6 @@ public class ScopedEntityRepository {
     }
 
     private void createNewScope(ScopedEntity scope) {
-
         Map<String, Variable> vars = scopeStack.peek().getVariables();
         Map<String, ScopedEntity> functionsAndProcedures = scopeStack.peek().getFunctionsAndProcedures();
         Map<String, Type> types = scopeStack.peek().getTypes();
@@ -98,7 +97,7 @@ public class ScopedEntityRepository {
 
     public void exitCurrentScope() {
         if (!isEmpty()) {
-            scopeStack.pop();
+          scopeStack.pop();
         }
     }
 }
