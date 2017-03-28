@@ -528,7 +528,7 @@ simple_expression_aux ::=
   {:Logger.print("Simple Expression Aux - Vazio");:} {: RESULT = SemanticImpl.getInstance().getSelectedExp(); :} |
 
   {:Logger.print("Simple Expression Aux - Arithmetic Operation");:} arithmetic_operator:a term:t simple_expression_aux:exp {:
-    Expression expression = SemanticImpl.getInstance().checkOperation((String)a,(Expression)t);
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)a,(Expression)exp,(Expression)t);
     expression.setValue(((Expression)t).getValue());
     expression = CodeGenerator.getInstance().generateCommandByOp((String) a, (Expression) exp, expression);
 
@@ -536,7 +536,7 @@ simple_expression_aux ::=
   :} |
 
   {:Logger.print("Simple Expression Aux - Relational Operation");:} relational_operator:r term:t simple_expression_aux:exp {:
-    Expression expression = SemanticImpl.getInstance().checkOperation((String)r,(Expression)t);
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)r,(Expression)exp,(Expression)t);
     expression.setValue(((Expression)t).getValue());
 
     expression = CodeGenerator.getInstance().generateCommandByOp((String) r, (Expression) exp, expression);
@@ -544,7 +544,17 @@ simple_expression_aux ::=
     RESULT = expression;
   :} |
 
-  {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t {:RESULT = SemanticImpl.getInstance().checkOperation((String)b,(Expression)t) ;:} simple_expression_aux
+  {:Logger.print("Simple Expression Aux - Boolean Operation");:}    boolean_operator:b    term:t  simple_expression_aux:exp {:
+    SemanticImpl.getInstance().checkBooleanOp((String)b, (Expression) exp, (Expression) t);
+    Expression expression = SemanticImpl.getInstance().checkOperation((String)b,(Expression)exp,(Expression)t);
+    expression.setValue(((Expression)t).getValue());
+
+
+
+    expression = CodeGenerator.getInstance().generateCommandByOp((String) b, (Expression) exp, expression);
+
+    RESULT = expression;
+  :}
 ;
 
 term ::=
@@ -557,7 +567,13 @@ factor ::=
   {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("set"), (String)s);:} |
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
   {:Logger.print("Factor - ( expression )");:} LPAREN expression:exp RPAREN {:RESULT=exp;:} |
-  {:Logger.print("Factor - not factor");:} NOT factor:f {:RESULT=f;:} |
+  {:Logger.print("Factor - not factor");:} NOT:op factor:f
+  {:
+    SemanticImpl.getInstance().checkBooleanOp((String)op, (Expression)f , (Expression)f);
+    CodeGenerator.getInstance().generateCommandByOp((String)op,(Expression)f,(Expression)f);
+
+    RESULT=f;
+  :} |
   {:Logger.print("Factor - variable | function");:} IDENTIFIER:id factor_aux
   {:
     if( SemanticImpl.getInstance().isFunctionCall) {

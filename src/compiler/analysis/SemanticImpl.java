@@ -12,16 +12,17 @@ public class SemanticImpl {
     private static List<Parameter> tempParameters;
     private static String selectedId;
     private static ScopedEntityRepository scopedRepository;
-    private static Expression selectedExp;
     public  static boolean isFunctionCall;
     private static Stack<String> functionValidation;
     public  static String selectedAssignmentId;
+    private static Stack<Expression>  opValidation;
 
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
         scopedRepository = new ScopedEntityRepository();
         functionValidation = new Stack<String>();
+        opValidation = new Stack<Expression>();
     }
 
     public void setSelectedAssignmentId(){
@@ -150,23 +151,24 @@ public class SemanticImpl {
     }
 
     public void setSelectedExp(Expression exp) {
-        selectedExp = exp;
+        opValidation.push(exp);
     }
 
     public Expression getSelectedExp() {
-        return selectedExp;
+        return opValidation.pop();
     }
 
-    public Expression checkOperation(String op, Expression exp) throws InvalidOperationException, InvalidTypeException {
+    public Expression checkOperation(String op, Expression exp, Expression exp2) throws InvalidOperationException, InvalidTypeException {
 
-        if(!(selectedExp.getType().isCompatible(exp.getType()) || exp.getType().isCompatible(selectedExp.getType()))){
-            throw new InvalidOperationException("O operador '" +  op + "' não é compatível com os tipos: (" + selectedExp.getType().getName() + "," + exp.getType().getName() +")" );
+        if(!(exp.getType().isCompatible(exp2.getType()) || exp2.getType().isCompatible(exp.getType()))){
+            throw new InvalidOperationException("O operador '" +  op + "' não é compatível com os tipos: (" + exp.getType().getName() + "," + exp2.getType().getName() +")" );
         }
+
 
         if(isRelationalOp(op)){
             return new Expression(singleton.getTypeById("boolean"));
         } else {
-            return new Expression(singleton.getTypeById(Type.resultantType(selectedExp.getType(),exp.getType())));
+            return new Expression(singleton.getTypeById(Type.resultantType(exp.getType(),exp2.getType())));
         }
 
     }
@@ -257,6 +259,12 @@ public class SemanticImpl {
             throw new InvalidRepeatStatement("A expression do repeat tem que retornar um boolean");
         }
 
+    }
+
+    public void checkBooleanOp(String op, Expression exp1, Expression exp2)  throws  InvalidOperationException{
+        if (! exp1.getType().getName().equalsIgnoreCase("boolean") || !exp2.getType().getName().equalsIgnoreCase("boolean")){
+            throw new InvalidOperationException("O operador '" + op + "' só pode ser aplicado a booleans");
+        }
     }
 
     public Variable getVariable() {
