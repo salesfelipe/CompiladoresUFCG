@@ -17,8 +17,5 @@ begin
 end;
 
 begin
-	 max := 100;
-   b := 200;
-   ret := max(a, b); {a e b não foram instanciados}
-
+   ret := max(num1, num2); {a e b não foram instanciados}
 end.

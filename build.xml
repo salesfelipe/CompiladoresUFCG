@@ -115,27 +115,19 @@ Date:
       <arg value="test/SemanticPoint/expression_literals.pas"/>
       <arg value="false"/>
 		</java>
-
-
-
-
-
-    <!-- <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/variable_function_scope.pas"/>
-      <arg value="false"/>
-		</java> -->
-
-
-
-   <!--
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/constant_same_var.pas"/>
-      <arg value="false"/>
-		</java>
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/global_scope.pas"/>
       <arg value="false"/>
-    </java> -->
+    </java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/variable_function_scope.pas"/>
+      <arg value="false"/>
+		</java>
+
+
+
+
+
 
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/atribuicao_expressoes.pas"/>

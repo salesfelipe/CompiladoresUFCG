@@ -5,5 +5,5 @@ var
     b : boolean;
 
 begin
-    b := (a > 2) + ret - 3 * 4 / 5;
+    b := (a > 2) + ret * 2 / 5;
 end.
