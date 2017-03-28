@@ -1,6 +1,7 @@
 program exProcedure;
 var
    a, b, c,  min: integer;
+   d : string;
 procedure findMin(x, y, z: integer; var m: integer);
 
 begin
@@ -14,6 +15,6 @@ begin
 end;
 
 begin
-   findadMin(a, b, c, min); (* Procedure call *)
+   findMin(a, b, c, d); (* Procedure is called using parameters of different type *)
 
 end.

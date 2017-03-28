@@ -95,7 +95,20 @@ Date:
       <arg value="test/SemanticPoint/procedure_call.pas"/>
       <arg value="false"/>
 		</java>
-    
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure_call_parameters_number.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure_call_repeated_parameters.pas"/>
+      <arg value="false"/>
+		</java>
+    <java jar="${jar.dist}" fork="true">
+      <arg value="test/SemanticPoint/procedure_call_parameters_type.pas"/>
+      <arg value="false"/>
+		</java>
+
+
 
    <!--
     <java jar="${jar.dist}" fork="true">
@@ -156,10 +169,7 @@ Date:
       <arg value="test/SemanticPoint/operadores2.pas"/>
       <arg value="false"/>
 		</java>
-    <java jar="${jar.dist}" fork="true">
-      <arg value="test/SemanticPoint/procedure_definition.pas"/>
-      <arg value="false"/>
-		</java>-->
+    -->
     <!-- <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/repeat.pas"/>
       <arg value="false"/>
