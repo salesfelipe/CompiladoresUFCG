@@ -318,12 +318,12 @@ simple_statement_aux ::=
 ;
 
 assignment_statement ::=
-  {:Logger.print("Assignment Statement");:} ASSIGNMENT expression:exp
+  {:Logger.print("Assignment Statement"); SemanticImpl.getInstance().setSelectedAssignmentId(); :} ASSIGNMENT expression:exp
   {:
     RESULT=exp;
 
     SemanticImpl.getInstance().checkTypeOfAssignment((Expression) exp);
-    CodeGenerator.getInstance().generateAssignment( SemanticImpl.getInstance().getSelectedId(),(Expression) exp);
+    CodeGenerator.getInstance().generateAssignment( SemanticImpl.getInstance().selectedAssignmentId,(Expression) exp);
   :}
 ;
 

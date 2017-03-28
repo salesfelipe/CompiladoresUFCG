@@ -15,13 +15,17 @@ public class SemanticImpl {
     private static Expression selectedExp;
     public  static boolean isFunctionCall;
     private static Stack<String> functionValidation;
-
+    public  static String selectedAssignmentId;
 
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
         scopedRepository = new ScopedEntityRepository();
         functionValidation = new Stack<String>();
+    }
+
+    public void setSelectedAssignmentId(){
+        selectedAssignmentId = selectedId;
     }
 
     public void addToFunctionValidation(String id) {
@@ -225,20 +229,20 @@ public class SemanticImpl {
 	public boolean checkTypeOfAssignment(Expression exp)
 			throws InvalidAssignmentException {
 
-        if(scopedRepository.existsFunctionOrProcedure(selectedId)) {
-            ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedId);
+        if(scopedRepository.existsFunctionOrProcedure(selectedAssignmentId)) {
+            ScopedEntity s = scopedRepository.getFunctionOrProcedure(selectedAssignmentId);
             if(!s.isProcedure()){
                 ((Function) s).setHasReturn(true);
                 if(  !((Function) s).getDeclaredReturnType().isCompatible(exp.getType())){
                     throw new InvalidAssignmentException("Atribuição inválida: (" + ((Function) s).getDeclaredReturnType().getName()  + ", " + exp.getType().getName() + ")");
                 }
             } else {
-                throw new InvalidAssignmentException("Atribuição inválida: O Id" + selectedId  + " é uma procedure ");
+                throw new InvalidAssignmentException("Atribuição inválida: O Id" + selectedAssignmentId  + " é uma procedure ");
             }
 
 
         }else {
-            Variable variable = scopedRepository.getVariable(selectedId);
+            Variable variable = scopedRepository.getVariable(selectedAssignmentId);
 
             if (!variable.getType().isCompatible((exp.getType()))) {
                 throw new InvalidAssignmentException("Atribuição inválida: (" + variable.getType().getName()  + ", " + exp.getType().getName() + ")");
