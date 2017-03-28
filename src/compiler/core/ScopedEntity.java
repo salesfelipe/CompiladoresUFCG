@@ -38,7 +38,6 @@ public class ScopedEntity {
         addVariables(temp);
     }
 
-
     public Variable getVariable(String id) {
         return variables.get(id);
     }

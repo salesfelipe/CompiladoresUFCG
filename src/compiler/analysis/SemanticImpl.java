@@ -14,12 +14,22 @@ public class SemanticImpl {
     private static ScopedEntityRepository scopedRepository;
     private static Expression selectedExp;
     public  static boolean isFunctionCall;
+    private static Stack<String> functionValidation;
 
 
     private static void initCollections() {
         tempIdList = new ArrayList<String>();
         tempParameters = new ArrayList<Parameter>();
         scopedRepository = new ScopedEntityRepository();
+        functionValidation = new Stack<String>();
+    }
+
+    public void addToFunctionValidation(String id) {
+        functionValidation.push(id);
+    }
+
+    public String removeFunctionValidation(){
+        return functionValidation.pop();
     }
 
     public void addIdToTempList(String id) {
@@ -136,7 +146,6 @@ public class SemanticImpl {
         checkVariableExistence(id);
     }
 
-
     public void setSelectedExp(Expression exp) {
         selectedExp = exp;
     }
@@ -188,7 +197,6 @@ public class SemanticImpl {
 	}
 
     public void checkFunctionCall() throws InvalidParameterException, InvalidFunctionException {
-        System.out.println("!!! NO ID");
         selectedId = selectedId.toLowerCase();
 
         if (!scopedRepository.existsFunctionOrProcedure(selectedId))
@@ -245,5 +253,13 @@ public class SemanticImpl {
 
     public Variable getVariable(String id) {
         return scopedRepository.getVariable(id);
+    }
+
+    public String getSelectedId() {
+        return selectedId;
+    }
+
+    public boolean isOutOfFunction(){
+        return scopedRepository.isEmpty();
     }
 }

@@ -39,6 +39,7 @@ public class ScopedEntityRepository {
     }
 
     private void createNewScope(ScopedEntity scope) {
+
         Map<String, Variable> vars = scopeStack.peek().getVariables();
         Map<String, ScopedEntity> functionsAndProcedures = scopeStack.peek().getFunctionsAndProcedures();
         Map<String, Type> types = scopeStack.peek().getTypes();
@@ -84,7 +85,7 @@ public class ScopedEntityRepository {
     public boolean isEmpty(){
         return scopeStack.peek().getName().equals(GLOBAL_SCOPE_NAME);
     }
-    
+
     public Type getTypeById(String id) throws InvalidTypeException {
         Type result = scopeStack.peek().getTypes().get(id.toLowerCase());
 
@@ -96,7 +97,7 @@ public class ScopedEntityRepository {
     }
 
     public void exitCurrentScope() {
-        if (isEmpty()) {
+        if (!isEmpty()) {
             scopeStack.pop();
         }
     }

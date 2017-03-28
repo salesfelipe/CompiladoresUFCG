@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -25,6 +27,7 @@ public class CodeGenerator
     public Integer stackCount;
     public Integer lineCount;
     private Stack<String> repeatLabels;
+    private Map<String, Integer> functions;
 
     public Integer repeatCount;
 
@@ -34,6 +37,7 @@ public class CodeGenerator
         stackCount = 600;
         repeatCount = 0;
         repeatLabels = new Stack<>();
+        functions = new HashMap<>();
 
         initAssemblyCode();
     }
@@ -49,12 +53,17 @@ public class CodeGenerator
     private void initAssemblyCode() {
         code = "";
 
-        writeCommand("LD SP, # " + stackCount + "\n");
+        writeCommand("LD SP, #" + stackCount + "\n");
+        writeCommand("BR codeBody \n");
     }
 
     private void writeCommand(String command) {
         code +=  lineCount + ": " + command;
         lineCount += 8;
+    }
+
+    public void generateCodeBody(){
+        code +=  "codeBody : " ;
     }
 
     public void generateAssignment(Variable var, Expression exp) {
@@ -76,6 +85,21 @@ public class CodeGenerator
 
         writeCommand("BEQ " + exp.getValue()  + ", " +  regTrue + ", "+ ( lineCount + 16) + "\n");
         writeCommand("BR " + repeatLabels.pop() +"\n");
+    }
+
+    public void generateFunctionBody(String name) {
+        functions.put(name, lineCount);
+    }
+
+    public void generateFunctionReturn() {
+        writeCommand("BR *0(SP) \n");
+    }
+
+    public void generateFunctionCall(String name) {
+        writeCommand("ADD SP, SP, #" + name + "Size \n");
+        writeCommand("ST *SP, #" + (lineCount + 16) + "\n");
+        writeCommand("BR " + functions.get(name) + "\n");
+        writeCommand("SUB SP, SP, #" + name + "Size \n");
     }
 
     public Expression generateCommandByOp(String op, Expression exp1, Expression exp2) throws InvalidTypeException {

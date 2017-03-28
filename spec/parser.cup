@@ -124,6 +124,7 @@ declaration_part ::=
 ;
 
 statement_part ::=
+  {: if(SemanticImpl.getInstance().isOutOfFunction()) { CodeGenerator.getInstance().generateCodeBody(); }:}
   {:Logger.print("Statement Part");:} BEGIN statement_sequence:exp END {:RESULT=exp;:}
 ;
 
@@ -196,8 +197,8 @@ procedure_and_function_declaration_part ::=
 ;
 
 procedure_declaration ::=
-  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:RESULT=id;:} |
-  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body {:RESULT=id;:}
+  {:Logger.print("Procedure declaration - line 1");:} procedure_heading:id {: CodeGenerator.getInstance().generateFunctionBody((String) id); :}{:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_declaration_aux {:CodeGenerator.getInstance().generateFunctionReturn();:} {:RESULT=id;:} |
+  {:Logger.print("Procedure declaration - line 2");:} procedure_identification:id {: CodeGenerator.getInstance().generateFunctionBody((String) id); :} {:SemanticImpl.getInstance().addFunctionProcedure(new Procedure((String) id, SemanticImpl.getInstance().getParameters()));:} SEMICOLON procedure_body    {:CodeGenerator.getInstance().generateFunctionReturn();:} {:RESULT=id;:}
 ;
 
 procedure_declaration_aux ::=
@@ -210,15 +211,16 @@ procedure_body ::=
 ;
 
 function_declaration ::=
-  {:Logger.print("Function declaration - line 1");:} function_heading:id SEMICOLON function_body
+  {:Logger.print("Function declaration - line 1");:} function_heading:id {: SemanticImpl.getInstance().addToFunctionValidation((String)id); CodeGenerator.getInstance().generateFunctionBody((String) id); :} SEMICOLON function_body {: CodeGenerator.getInstance().generateFunctionReturn();:}
   {:
-      SemanticImpl.getInstance().validateFunction((String)id);
+      String functionName = SemanticImpl.getInstance().removeFunctionValidation();
+      SemanticImpl.getInstance().validateFunction(functionName);
   :} |
 	{:Logger.print("Function declaration - line 2");:} function_heading SEMICOLON directive
 ;
 
 function_body ::=
-  {:Logger.print("Function Body");:} block:exp {:RESULT = exp;:}
+  {:Logger.print("Function Body");:} block
 ;
 
 directive ::=
@@ -257,9 +259,11 @@ function_identifier ::=
 ;
 
 function_heading ::=
-  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type:rt {:
+  {:Logger.print("Function Heading");:} FUNCTION IDENTIFIER:id optional_formal_parameter_list COLON result_type:rt
+  {:
     SemanticImpl.getInstance().addFunctionProcedure(new Function((String) id, SemanticImpl.getInstance().getParameters()));
-    SemanticImpl.getInstance().setReturnType(id, SemanticImpl.getInstance().getTypeById((String)rt)); RESULT=id;
+    SemanticImpl.getInstance().setReturnType(id, SemanticImpl.getInstance().getTypeById((String)rt));
+    RESULT=id;
   :}
 ;
 
@@ -309,7 +313,7 @@ simple_statement ::=
 ;
 
 simple_statement_aux ::=
-  {:Logger.print("Simple Statement Aux - procedure");:} procedure_statement:exp {:RESULT=exp;:} |
+  {:Logger.print("Simple Statement Aux - procedure");:} {: CodeGenerator.getInstance().generateFunctionCall(SemanticImpl.getInstance().getSelectedId());:} procedure_statement:exp {:RESULT=exp;:} |
   {:Logger.print("Simple Statement Aux - assignment");:} assignment_statement:exp {:RESULT=exp;:}
 ;
 
