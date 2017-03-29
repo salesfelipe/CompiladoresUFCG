@@ -1,7 +1,7 @@
 program test;
 var
-   c: boolean;
+   c: real;
 
 begin
-   c := 2 or 3;
+   c := 3 + -2 ;
 end.
