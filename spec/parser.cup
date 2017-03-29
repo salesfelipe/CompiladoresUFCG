@@ -562,7 +562,26 @@ term ::=
 ;
 
 factor ::=
-  {:Logger.print("Factor - number");:} number:n {:RESULT= n;:} |
+  {:Logger.print("Factor - number");:} sign_optional:s number:n
+  {:
+    Expression exp;
+    exp = (Expression) n;
+
+    String resu = "";
+
+    if(s != null){
+      resu = ((String)s) + exp.getValue();
+    }else {
+      resu = exp.getValue();
+    }
+
+    String reg = CodeGenerator.getInstance().generateLoadValueToRegister(resu);
+
+    exp.setValue(reg);
+
+    RESULT = exp;
+
+  :} |
   {:Logger.print("Factor - string");:} string:s {:RESULT= s;:} |
   {:Logger.print("Factor - set");:} set:s {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("set"), (String)s);:} |
   {:Logger.print("Factor - NIL");:} NIL:n {:RESULT= new Expression(SemanticImpl.getInstance().getTypeById("nil"), (String)n);:} |
@@ -886,38 +905,28 @@ expression_list_aux ::=
 ;
 
 number ::=
-  {:Logger.print("Number - line 1");:} integer_number:i
-  {:
-    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) i);
-    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("integer"), reg);
-  :} |
-  {:Logger.print("Number - line 2");:} real_number:r
-  {:
-    String reg = CodeGenerator.getInstance().generateLoadValueToRegister((String) r);
-    RESULT= new Expression(SemanticImpl.getInstance().getTypeById("real"), reg);
-  :}
+  {:Logger.print("Number - line 1");:} integer_number:i {: RESULT = i; :} |
+  {:Logger.print("Number - line 2");:} real_number:r    {: RESULT = r; :}
 ;
 
 integer_number ::=
-  {:Logger.print("Integer Number" );:} digit_sequence:d {:RESULT=d;:}
-;
-
-digit_sequence ::=
-  {:Logger.print("Digit Sequence");:} sign_optional INTEGER_LITERAL:i {:RESULT=i;:}
+  {:Logger.print("Integer Number");:} INTEGER_LITERAL:i
+  {: RESULT = new Expression(SemanticImpl.getInstance().getTypeById("integer"), (String) i);:}
 ;
 
 real_number ::=
-  {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL:f {:RESULT=f;:}
+  {:Logger.print("Real Number");:} FLOATING_POINT_LITERAL:f
+  {: RESULT = new Expression(SemanticImpl.getInstance().getTypeById("real"), (String) f);:}
 ;
 
 sign ::=
-  {:Logger.print("Sign: +");:} PLUS |
-  {:Logger.print("Sign: -");:} MINUS
+  {:Logger.print("Sign: +");:} PLUS:p {:RESULT = p;:} |
+  {:Logger.print("Sign: -");:} MINUS:m {:RESULT = m;:}
 ;
 
 sign_optional ::=
   {:Logger.print("Sign Optional - Vazio");:} |
-  {:Logger.print("Sign Optional - line 2");:} sign
+  {:Logger.print("Sign Optional - line 2");:} sign:s {:RESULT = s;:}
 ;
 
 string ::=

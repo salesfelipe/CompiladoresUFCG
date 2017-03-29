@@ -335,7 +335,7 @@ Date:
   <target name="gerador" depends="jar">
     <java jar="${jar.dist}" fork="true">
       <arg value="test/test.pas"/>
-      <arg value="false"/>
+      <arg value="true"/>
  		</java>
   </target>
 
