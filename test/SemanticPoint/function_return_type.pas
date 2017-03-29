@@ -11,7 +11,7 @@ begin
       result := num1
    else
       result := num2;
-   max := 'franklin best professor';
+   max := 'franklin best professor'; {max deveria retornar uma string}
 end;
 
 begin

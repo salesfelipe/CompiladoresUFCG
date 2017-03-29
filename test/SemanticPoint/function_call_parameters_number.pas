@@ -3,13 +3,10 @@ var
    a, b, max : integer;
    d, e, f : string;
 
-(*function definition *)
 function ret(num1, num2: integer; s1, s2, s3: string): integer;
 var
-   (* local variable declaration *)
    result: integer;
    c : integer;
-
 begin
    if (num1 > num2) then
       result := num1
@@ -27,5 +24,4 @@ begin
    f := 'ana';
 
    b := ret(a,e,f); { numero de parametros diferente do requerido por ret}
-
 end.

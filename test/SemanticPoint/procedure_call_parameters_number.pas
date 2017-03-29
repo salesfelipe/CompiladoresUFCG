@@ -1,8 +1,8 @@
 program exProcedure;
 var
    a, b, c,  min: integer;
+
 procedure findMax(x, y, z: integer);
-(* Finds the minimum of the 3 values *)
 var m : integer;
 begin
    if x < y then
@@ -12,9 +12,8 @@ begin
 
    if z < m then
       m:= z;
-end; { end of procedure findMin }
+end;
 
 begin
-  findMax(a, b);  { Inexistent Procedure call }
-
+  findMax(a, b);  { findMax recebe 3 parametros }
 end.

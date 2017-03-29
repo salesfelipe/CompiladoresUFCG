@@ -15,6 +15,10 @@ begin
 end;
 
 begin
-   findMin(a, b, c, d); (* Procedure is called using parameters of different type *)
+   a := 100;
+   b := 200;
+   c := 300;
+   d := 'MOF';
+   findMin(a, b, c, d); { o correto é findMin(int,int,int,int) }
 
 end.

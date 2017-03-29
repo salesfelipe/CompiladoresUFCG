@@ -3,8 +3,7 @@ var
    a, b, c,  min: integer;
 	 s : string;
 procedure findMax(x, y, z: integer; var m: integer; m : string);
-(* m is declared twice *)
-
+                                     (* m is declared twice *)
 begin
    if x < y then
       m:= x
@@ -13,7 +12,7 @@ begin
 
    if z < m then
       m:= z;
-end; { end of procedure findMin }
+end;
 
 begin
   findMax(a, b, c, min);

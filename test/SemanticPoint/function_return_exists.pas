@@ -11,7 +11,7 @@ begin
       result := num1
    else
       result := num2;
-   { o retorno deveria vir aqui}
+   { o retorno deveria estar aqui}
 end;
 
 begin

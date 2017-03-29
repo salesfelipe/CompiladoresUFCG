@@ -2,18 +2,14 @@ program exFunction;
 var
    a, b, max : integer;
    d, e, f : string;
-
-(*function definition *)
 function ret(num1, num2: integer; s1, s2 : string; num1 : string): integer;
+                                        { O parametro num1 é declarado 2x* }
 var
-   (* local variable declaration *)
    result: integer;
    c : integer;
-
 begin
    if (num1 > num2) then
       result := num1
-
    else
       result := num2;
    ret := result;

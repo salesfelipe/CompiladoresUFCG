@@ -1,7 +1,7 @@
 program exFunction;
 var
-   a, b, max : integer;
-   d, e, f : string;
+   i1, i2, max : integer;
+   s1, s2, s3 : string;
 
 (*function definition *)
 function ret(num1, num2: integer; s1, s2, s3: string): integer;
@@ -20,12 +20,12 @@ begin
 end;
 
 begin
-   a := 100;
-   b := 200;
-   d := 'rafael';
-   e := 'felipe';
-   f := 'ana';
+   i1 := 100;
+   i2 := 200;
+   s1 := 'rafael';
+   s2 := 'felipe';
+   s3 := 'ana';
 
-   b := ret(e,f,d,a,b); {b := funcao inexistente}
+   max := ret(s1,s2,s3,i1,i2); { o correto é ret(int,int,string,string,string) }
 
 end.
