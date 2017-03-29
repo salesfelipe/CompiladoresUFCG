@@ -111,7 +111,8 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/expression_booleans.pas"/>
       <arg value="false"/>
-		</java><!--
+		</java>
+    <!--
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/expression_literals.pas"/>
       <arg value="false"/>
@@ -123,14 +124,8 @@ Date:
     <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/variable_function_scope.pas"/>
       <arg value="false"/>
-		</java> -->
-
-
-
-
-
-
-    <!-- <java jar="${jar.dist}" fork="true">
+		</java>
+    <java jar="${jar.dist}" fork="true">
       <arg value="test/SemanticPoint/atribuicao_expressoes.pas"/>
       <arg value="false"/>
 		</java>
@@ -328,7 +323,7 @@ Date:
   <target name="gerador" depends="jar">
     <java jar="${jar.dist}" fork="true">
       <arg value="test/test.pas"/>
-      <arg value="true"/>
+      <arg value="false"/>
  		</java>
   </target>
 
